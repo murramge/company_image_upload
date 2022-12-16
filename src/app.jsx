@@ -1,0 +1,45 @@
+import React, { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ConsumerMain from "./consumer/consumerMain/consumerMain.jsx";
+import ConsumerUpload from "./consumer/consumerUpload/consumerUpload.jsx";
+import ConsumerConfirm from "./consumer/consumerConfirm/consumerConfirm.jsx";
+
+function App(props) {
+  let [datas, setDatas] = useState({
+    1: {
+      id: 1,
+      message: "gogo",
+      image: [],
+    },
+  });
+
+  const onUpload = (data) => {
+    setDatas((datas) => {
+      {
+        const updated = { ...datas };
+        updated[data.id] = data;
+        return updated;
+      }
+    });
+  };
+
+  return (
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/:id" element={<ConsumerMain />}></Route>
+          <Route
+            path="/upload/:id"
+            element={<ConsumerUpload onUpload={onUpload} />}
+          ></Route>
+          <Route
+            path="/confirm/:id"
+            element={<ConsumerConfirm datas={datas} />}
+          ></Route>
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
+}
+
+export default App;
