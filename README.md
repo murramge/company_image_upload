@@ -30,3 +30,8 @@ https://think0wise.tistory.com/6
 https://jae04099.tistory.com/entry/React-React-Router%EC%99%80-useParams
 
 https://hianna.tistory.com/346
+
+cors
+https://velog.io/@yunsungyang-omc/React-React-App%EC%97%90%EC%84%9C-CORS-%EC%9D%B4%EC%8A%88-%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0
+
+https://woochan-dev.tistory.com/94

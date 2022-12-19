@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 function ConsumerUpload(props) {
   const messageRef = useRef();
@@ -9,6 +9,7 @@ function ConsumerUpload(props) {
 
   const [images, setimages] = useState([]);
   const [datas, setData] = useState();
+  const [idx, setindex] = useState();
 
   const { id } = useParams();
 
@@ -26,11 +27,20 @@ function ConsumerUpload(props) {
     navigate(`/${id}`);
   };
 
-  console.log(datas);
-  const handleDelete = () => {
-    const { onDelete } = props;
-    onDelete(datas);
+  const handleDelete = (e) => {
+    e.preventDefault();
+
+    const index = e.target.value;
+    setindex(index);
+    delete images[index];
+    setimages(images);
+    return images;
   };
+
+  console.log(images);
+  useEffect(() => {
+    setimages(images);
+  });
 
   const handleFileChange = (e) => {
     console.log(e.target.files);
@@ -99,12 +109,13 @@ function ConsumerUpload(props) {
               />
 
               <div>
-                {images.map((image) => (
+                {images.map((image, index) => (
                   <>
-                    <button name="Delete" onClick={handleDelete}>
+                    <button value={index} onClick={handleDelete}>
                       ❌
                     </button>
-                    <img key={image} src={image}></img>
+
+                    <img value={index} src={image}></img>
                   </>
                 ))}
               </div>

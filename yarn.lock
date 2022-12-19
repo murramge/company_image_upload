@@ -2658,6 +2658,13 @@
   "resolved" "https://registry.npmjs.org/ast-types-flow/-/ast-types-flow-0.0.7.tgz"
   "version" "0.0.7"
 
+"async-await@^0.1.40":
+  "integrity" "sha512-9IGJ44NTygkoUJV/mt4c5N2gfpZRXv11ZfUJ0WsAbSiQCvyQNvRe3sXOy9F/AmwQ/9gNNMq3DJBTRrhehuaa7Q=="
+  "resolved" "https://registry.npmjs.org/async-await/-/async-await-0.1.40.tgz"
+  "version" "0.1.40"
+  dependencies:
+    "promise-thunk" ">=0.1.16"
+
 "async@^3.2.3":
   "integrity" "sha512-iAB+JbDEGXhyIUavoDl9WP/Jj106Kz9DEn1DPgYw5ruDn0e3Wgi3sKFm55sASdGBNOQB8F59d9qQ7deqrHA8wQ=="
   "resolved" "https://registry.npmjs.org/async/-/async-3.2.4.tgz"
@@ -7589,6 +7596,11 @@
   "integrity" "sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag=="
   "resolved" "https://registry.npmjs.org/process-nextick-args/-/process-nextick-args-2.0.1.tgz"
   "version" "2.0.1"
+
+"promise-thunk@>=0.1.16":
+  "integrity" "sha512-1MbQBmnWCUcrSuaN676FCbPr/HexGvguRF3POtamaf4zR6lNy6H4fL6SG7Jv5CbdVQixX/Y2espyrLOtvZW4Ig=="
+  "resolved" "https://registry.npmjs.org/promise-thunk/-/promise-thunk-0.1.17.tgz"
+  "version" "0.1.17"
 
 "promise@^8.1.0":
   "integrity" "sha512-rZPNPKTOYVNEEKFaq1HqTgOwZD+4/YHS5ukLzQCypkj+OkYx7iv0mA91lJlpPPZ8vMau3IIGj5Qlwrx+8iiSmg=="

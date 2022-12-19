@@ -1,34 +1,51 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import bizinfo from "../../API/bizinfo";
-import Bizinfoapi from "../../API/bizinfoapi";
+import axios from "axios";
 
 function ConsumerMain(props) {
+  const [bizinfo, setbizinfo] = useState([]);
+  const [errorcode, seterrorcode] = useState();
+  const config = {
+    method: "get",
+    url: "/api/bizContent/info/A3200007",
+    headers: {},
+  };
+
+  useEffect(() => {
+    axios(config)
+      .then((response) => response.data)
+      .then((item) => `${setbizinfo(item.data)} ${seterrorcode(item.code)}`)
+      .catch((error) => console.log(error));
+  }, []);
+
+  console.log(errorcode);
+
   const { id } = useParams();
 
   const [bizinfodata, setbizinfodata] = useState([]);
   const [expireddate, setexpireddate] = useState();
 
-  const bizInfo = bizinfo.infodata.reduce((data, item) => {
-    data = data.concat(item);
-    return data;
+  const bizInfo = Array(bizinfo).reduce((dt, item) => {
+    dt = dt.concat(item);
+    return dt;
   }, []);
-  console.log(bizInfo);
-  console.log(Bizinfoapi);
+
+  const bizinfo_uuid = String(bizinfo.uuid);
 
   useEffect(() => {
     bizInfo.map((item) => {
-      if (item.uuid == id) {
+      if (bizinfo_uuid == id) {
         setbizinfodata([
-          [item.company_name],
-          [item.main_phonenumber],
-          [item.biz_addr],
-          [item.categorys[0]],
+          item.company_name,
+          item.main_phonenumber,
+          item.biz_addr,
+          item.categorys,
         ]);
+
         setexpireddate(item.expired_date);
       }
     });
-  }, []);
+  }, [bizinfo]);
 
   const navigate = useNavigate();
   const ImageUpdate = () => {
@@ -38,6 +55,10 @@ function ConsumerMain(props) {
   const UpdateConfirm = () => {
     navigate(`/confirm/${id}`);
   };
+
+  if (errorcode != 0) {
+    navigate(`/confirm/${id}`);
+  }
 
   return (
     <div className="bg-slate-300 grid gap-10 lg:grid-cols-2 xl:grid-cols-3 xl:place-content-center py-20  min-h-screen ">
@@ -53,9 +74,9 @@ function ConsumerMain(props) {
             })}
           </div>
           <div className="ml-4">
-            {bizinfodata.map((item, key) => {
+            {bizinfodata.map((item) => {
               return (
-                <div key={key} className="flex justify-between my-2 w-max">
+                <div className="flex justify-between my-2 w-max">
                   <span className="text-gray-500 ">{item}</span>
                 </div>
               );
