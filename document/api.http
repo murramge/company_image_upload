@@ -2,7 +2,8 @@
 @uuid = A3200007
 @uuid_quote = "A3200007"
 
-@fileStorageId = 50245
+@fileStorageId = 50285
+
 
 # URL 정보 가져오기
 GET {{baseUrl}}/api/bizContent/info/{{uuid}} HTTP/1.1

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 function ConsumerConfirm(props) {
   const { datas } = props;
   const [promotion, setPromotion] = useState();
-  const [images, setimage] = useState();
+  const [images, setimage] = useState([]);
   const [switchs, setswitchs] = useState("");
 
   const messageClick = () => {
@@ -24,10 +24,11 @@ function ConsumerConfirm(props) {
     });
     console.log(datad);
     const { image } = datad;
-    setimage(image);
+    setimage(Array.from(image || []));
     setswitchs("image");
   };
   console.log(switchs);
+  console.log(images);
 
   return (
     <>
@@ -70,11 +71,7 @@ function ConsumerConfirm(props) {
         </div>
         <div className="bg-white sm:bg-white md:bg-white lg:bg-orange-400 xl:bg-purple-300 2xl:bg-amber-300 p-6 rounded-3xl shadow-xl h-96">
           {switchs == "promotion" && <textarea value={promotion}></textarea>}
-          {switchs == "image" && <img src={images}></img>}
-
-          {/* {images.map((image) => (
-                 switchs=="image" <img key={image} src={image}></img>
-                ))} */}
+          {images.map((image) => switchs == "image" && <img src={image}></img>)}
         </div>
       </div>
     </>

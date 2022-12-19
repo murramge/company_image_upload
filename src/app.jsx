@@ -22,6 +22,13 @@ function App(props) {
       }
     });
   };
+  const onDelete = (data) => {
+    setDatas((datas) => {
+      const updated = { ...datas };
+      delete updated[data.id];
+      return updated;
+    });
+  };
 
   return (
     <>
@@ -30,7 +37,7 @@ function App(props) {
           <Route path="/:id" element={<ConsumerMain />}></Route>
           <Route
             path="/upload/:id"
-            element={<ConsumerUpload onUpload={onUpload} />}
+            element={<ConsumerUpload onUpload={onUpload} onDelete={onDelete} />}
           ></Route>
           <Route
             path="/confirm/:id"

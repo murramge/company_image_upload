@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import bizinfo from "./../../bizinfo/bizinfo";
+import bizinfo from "../../API/bizinfo";
+import Bizinfoapi from "../../API/bizinfoapi";
 
 function ConsumerMain(props) {
   const { id } = useParams();
@@ -13,6 +14,7 @@ function ConsumerMain(props) {
     return data;
   }, []);
   console.log(bizInfo);
+  console.log(Bizinfoapi);
 
   useEffect(() => {
     bizInfo.map((item) => {

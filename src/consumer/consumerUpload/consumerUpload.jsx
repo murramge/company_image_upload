@@ -8,21 +8,28 @@ function ConsumerUpload(props) {
   const [files, setfile] = useState([]);
 
   const [images, setimages] = useState([]);
+  const [datas, setData] = useState();
 
   const { id } = useParams();
 
-  const handleClick = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const { onUpload } = props;
     const data = {
       id: Date.now,
       message: messageRef.current.value || " ",
-      image: images[0] || " ",
+      image: images.map((image) => image) || " ",
     };
-
+    setData(data);
     onUpload(data);
 
     navigate(`/${id}`);
+  };
+
+  console.log(datas);
+  const handleDelete = () => {
+    const { onDelete } = props;
+    onDelete(datas);
   };
 
   const handleFileChange = (e) => {
@@ -93,7 +100,12 @@ function ConsumerUpload(props) {
 
               <div>
                 {images.map((image) => (
-                  <img key={image} src={image}></img>
+                  <>
+                    <button name="Delete" onClick={handleDelete}>
+                      ❌
+                    </button>
+                    <img key={image} src={image}></img>
+                  </>
                 ))}
               </div>
             </div>
@@ -138,7 +150,7 @@ function ConsumerUpload(props) {
                 hover:bg-blue-700 hover:text-white
                 active:bg-blue-500
                 focus:bg-blue-700"
-                onClick={handleClick}
+                onClick={handleSubmit}
               >
                 등록 하기
               </button>
