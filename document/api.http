@@ -1,0 +1,59 @@
+@baseUrl = http://115.89.138.200:8081
+@uuid = A3200007
+@uuid_quote = "A3200007"
+
+@fileStorageId = 50245
+
+# URL 정보 가져오기
+GET {{baseUrl}}/api/bizContent/info/{{uuid}} HTTP/1.1
+Content-Type: application/json
+
+###
+# 자료 등록 API
+POST {{baseUrl}}/api/bizContent/putContent HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="uuid"
+
+{{uuid}}
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="businessMemo"
+
+businessMemo
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="images"; filename="first.png"
+Content-Type: image/png
+
+< ./test_files/first.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="images"; filename="second.png"
+Content-Type: image/png
+
+< ./test_files/second.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="docs"; filename="testfile1.docx"
+
+< ./test_files/testfile1.docx
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="docs"; filename="testfile2.docx"
+
+< ./test_files/testfile2.docx
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+#파일 미리보기(이미지, PDF 기준)
+GET {{baseUrl}}/api/bizContent/preview/{{fileStorageId}} HTTP/1.1
+
+###
+#파일 다운로드
+GET {{baseUrl}}/api/bizContent/download/{{fileStorageId}} HTTP/1.1
+
+###
+# 등록된 자료 가져오기
+POST {{baseUrl}}/api/bizContent/contentDetail HTTP/1.1
+Content-Type: application/json
+
+{
+    "uuid": {{uuid_quote}}
+}
