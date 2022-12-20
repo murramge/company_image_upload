@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 function ConsumerUpload(props) {
   const messageRef = useRef();
@@ -17,7 +17,7 @@ function ConsumerUpload(props) {
     event.preventDefault();
     const { onUpload } = props;
     const data = {
-      id: Date.now,
+      ide: Date.now,
       message: messageRef.current.value || " ",
       image: images.map((image) => image) || " ",
     };
@@ -32,18 +32,13 @@ function ConsumerUpload(props) {
 
     const index = e.target.value;
     setindex(index);
-    delete images[index];
+    images.splice(index, 1);
+    console.log(images);
     setimages(images);
     return images;
   };
 
-  console.log(images);
-  useEffect(() => {
-    setimages(images);
-  });
-
   const handleFileChange = (e) => {
-    console.log(e.target.files);
     setfile(Array.from(e.target.files || []));
   };
 

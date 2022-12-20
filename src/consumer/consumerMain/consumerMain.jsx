@@ -18,8 +18,6 @@ function ConsumerMain(props) {
       .catch((error) => console.log(error));
   }, []);
 
-  console.log(errorcode);
-
   const { id } = useParams();
 
   const [bizinfodata, setbizinfodata] = useState([]);
@@ -55,10 +53,6 @@ function ConsumerMain(props) {
   const UpdateConfirm = () => {
     navigate(`/confirm/${id}`);
   };
-
-  if (errorcode != 0) {
-    navigate(`/confirm/${id}`);
-  }
 
   return (
     <div className="bg-slate-300 grid gap-10 lg:grid-cols-2 xl:grid-cols-3 xl:place-content-center py-20  min-h-screen ">

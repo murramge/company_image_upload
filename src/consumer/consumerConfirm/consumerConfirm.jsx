@@ -1,10 +1,15 @@
 import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-function ConsumerConfirm(props) {
-  const { datas } = props;
+const ConsumerConfirm = (props) => {
+  const { datas, onUpdate } = props;
   const [promotion, setPromotion] = useState();
+  const [messagesave, setmessagesave] = useState();
   const [images, setimage] = useState([]);
   const [switchs, setswitchs] = useState("");
+  const [idx, setindex] = useState();
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   const messageClick = () => {
     let datad;
@@ -17,19 +22,53 @@ function ConsumerConfirm(props) {
     setswitchs("promotion");
   };
 
+  const messageChange = (e) => {
+    e.preventDefault();
+    const value = e.currentTarget.value;
+    setPromotion(value);
+  };
+
   const imageClick = () => {
     let datad;
     Object.keys(datas).map((key) => {
       datad = datas[key];
     });
-    console.log(datad);
+
     const { image } = datad;
     setimage(Array.from(image || []));
     setswitchs("image");
   };
-  console.log(switchs);
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    let datad;
+    Object.keys(datas).map((key) => {
+      datad = datas[key];
+    });
+    const { ide } = datad;
+    const index = e.target.value;
+    setindex(index);
+    images.splice(index, 1);
+    console.log(images);
+    setimage(images);
+    onUpdate({ ide: ide, message: promotion, image: images || [] });
+    return images;
+  };
+
   console.log(images);
 
+  const handleModify = (e) => {
+    let datad;
+    Object.keys(datas).map((key) => {
+      datad = datas[key];
+    });
+    const { ide } = datad;
+
+    e.preventDefault();
+    console.log(ide);
+    onUpdate({ ide: ide, [e.target.name]: promotion, image: images || [] });
+  };
+  console.log(datas);
   return (
     <>
       <div className="text-center p-3 bg-slate-500 ">
@@ -70,12 +109,29 @@ function ConsumerConfirm(props) {
           </div>
         </div>
         <div className="bg-white sm:bg-white md:bg-white lg:bg-orange-400 xl:bg-purple-300 2xl:bg-amber-300 p-6 rounded-3xl shadow-xl h-96">
-          {switchs == "promotion" && <textarea value={promotion}></textarea>}
-          {images.map((image) => switchs == "image" && <img src={image}></img>)}
+          {switchs == "promotion" && (
+            <>
+              <textarea value={promotion} onChange={messageChange}></textarea>
+              <button onClick={handleModify} name="message">
+                수정하기
+              </button>
+            </>
+          )}
+          {images.map(
+            (image, index) =>
+              switchs == "image" && (
+                <>
+                  <button value={index} onClick={handleDelete}>
+                    ❌
+                  </button>
+                  <img value={index} src={image}></img>
+                </>
+              )
+          )}
         </div>
       </div>
     </>
   );
-}
+};
 
 export default ConsumerConfirm;

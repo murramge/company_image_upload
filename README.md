@@ -12,8 +12,10 @@ https://heytech.tistory.com/403
 https://bloodstrawberry.tistory.com/356
 https://zewtion.tistory.com/254
 
-popup ref
+popup ref 모달
 https://phrygia.github.io/react/2021-09-21-react-modal/
+https://curryyou.tistory.com/493
+https://dazzlynnnn.tistory.com/entry/React-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-%EC%97%86%EC%9D%B4-%EB%AA%A8%EB%8B%AC-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0
 
 image upload 참고
 https://dahanweb.tistory.com/58
@@ -35,3 +37,5 @@ cors
 https://velog.io/@yunsungyang-omc/React-React-App%EC%97%90%EC%84%9C-CORS-%EC%9D%B4%EC%8A%88-%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0
 
 https://woochan-dev.tistory.com/94
+
+https://biio-studying.tistory.com/96
