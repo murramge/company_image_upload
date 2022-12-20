@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Modal from "../modals/modal";
 
 const ConsumerConfirm = (props) => {
+  const [modalOpen, setModalOpen] = useState(false);
+
   const { datas, onUpdate } = props;
   const [promotion, setPromotion] = useState();
   const [messagesave, setmessagesave] = useState();
@@ -11,6 +14,18 @@ const ConsumerConfirm = (props) => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const handleExit = () => {
+    setModalOpen(false);
+  };
+  const openModal = (e) => {
+    e.preventDefault();
+    console.log(e.currentTarget.value);
+    setindex(e.currentTarget.value);
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+  };
   const messageClick = () => {
     let datad;
     Object.keys(datas).map((key) => {
@@ -47,9 +62,11 @@ const ConsumerConfirm = (props) => {
     });
     const { ide } = datad;
     const index = e.target.value;
-    setindex(index);
-    images.splice(index, 1);
+    setindex(idx);
+    images.splice(idx, 1);
     console.log(images);
+    console.log(index);
+    console.log(idx);
     setimage(images);
     onUpdate({ ide: ide, message: promotion, image: images || [] });
     return images;
@@ -121,9 +138,38 @@ const ConsumerConfirm = (props) => {
             (image, index) =>
               switchs == "image" && (
                 <>
-                  <button value={index} onClick={handleDelete}>
-                    ❌
+                  <button value={index} onClick={openModal}>
+                    x
                   </button>
+
+                  <Modal
+                    open={modalOpen}
+                    close={closeModal}
+                    header="해당 이미지를 삭제하시겠습니까?
+                    (삭제 시 복구 불가능)"
+                  >
+                    <button
+                      value={index}
+                      onClick={handleExit}
+                      className=" bg-blue-500 text-white p-2 text-center rounded-xl w-13 mx-auto text-sm
+                      hover:bg-blue-700 hover:text-white
+                      active:bg-blue-500
+                      focus:bg-blue-700"
+                    >
+                      취소
+                    </button>
+                    <button
+                      value={index}
+                      onClick={handleDelete}
+                      className=" bg-blue-500 text-white p-2 text-center rounded-xl w-13 mx-auto text-sm
+                      hover:bg-blue-700 hover:text-white
+                      active:bg-blue-500
+                      focus:bg-blue-700"
+                    >
+                      확인
+                    </button>
+                  </Modal>
+
                   <img value={index} src={image}></img>
                 </>
               )

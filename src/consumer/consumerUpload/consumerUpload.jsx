@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Modal from "../modals/modal";
+
 function ConsumerUpload(props) {
   const messageRef = useRef();
 
@@ -71,6 +73,28 @@ function ConsumerUpload(props) {
       reader.readAsDataURL(file);
     }
   };
+  const [submitmodalOpen, setsubmitModalOpen] = useState(false);
+
+  const [imagemodalOpen, setimageModalOpen] = useState(false);
+
+  const submitopenModal = (e) => {
+    e.preventDefault();
+    setsubmitModalOpen(true);
+  };
+  const submitcloseModal = () => {
+    setsubmitModalOpen(false);
+  };
+  const imageopenModal = (e) => {
+    e.preventDefault();
+    setimageModalOpen(true);
+  };
+  const imagecloseModal = () => {
+    setimageModalOpen(false);
+  };
+
+  const handleExit = () => {
+    setsubmitModalOpen(false);
+  };
 
   return (
     <>
@@ -82,20 +106,48 @@ function ConsumerUpload(props) {
         <form>
           <div className=" grid grid-rows-3 gap-10  lg:grid-cols-2 xl:grid-cols-3 xl:place-content-center py-5 px-5 ">
             <div className="bg-white sm:bg-white md:bg-white lg:bg-white xl:bg-white 2xl:bg-white p-4 rounded-3xl shadow-xl">
-              <label
-                for="image"
+              <button
                 className=" bg-blue-500 text-white p-2 text-center rounded-xl w-13 mx-auto text-sm
                 hover:bg-blue-700 hover:text-white
                 active:bg-blue-500
                 focus:bg-blue-700
                 "
+                onClick={imageopenModal}
               >
                 + 이미지
-              </label>
+              </button>
+
+              <Modal
+                open={imagemodalOpen}
+                close={imagecloseModal}
+                header="작업 선택"
+              >
+                <label
+                  for="captureimage"
+                  className=" bg-blue-500 text-white p-2 text-center rounded-xl w-13 mx-auto text-sm
+                hover:bg-blue-700 hover:text-white
+                active:bg-blue-500
+                focus:bg-blue-700
+                "
+                >
+                  카메라 촬영
+                </label>
+                <label
+                  for="galleryimage"
+                  className=" bg-blue-500 text-white p-2 text-center rounded-xl w-13 mx-auto text-sm
+                hover:bg-blue-700 hover:text-white
+                active:bg-blue-500
+                focus:bg-blue-700
+                "
+                >
+                  갤러리 선택
+                </label>
+              </Modal>
+
               <input
                 type="file"
-                name="image"
-                id="image"
+                name="captureimage"
+                id="captureimage"
                 multiple
                 accept="image/*"
                 capture="camera"
@@ -103,6 +155,15 @@ function ConsumerUpload(props) {
                 style={{ display: "none" }}
               />
 
+              <input
+                type="file"
+                name="galleryimage"
+                id="galleryimage"
+                multiple
+                accept="image/*"
+                onChange={handleImageChange}
+                style={{ display: "none" }}
+              />
               <div>
                 {images.map((image, index) => (
                   <>
@@ -152,14 +213,40 @@ function ConsumerUpload(props) {
           <div className=" m-5 h-max">
             <div className="flex justify-center">
               <button
-                className=" bg-blue-500 text-white p-3 text-center sm:text-center lg:text-center xl:text-center rounded-xl w-3/4 mx-auto 
+                className=" bg-blue-500 text-white p-2 text-center rounded-xl w-13 mx-auto text-sm
+                hover:bg-blue-700 hover:text-white
+                active:bg-blue-500
+                focus:bg-blue-700
+                "
+                onClick={submitopenModal}
+              >
+                등록하기
+              </button>
+
+              <Modal
+                open={submitmodalOpen}
+                close={submitcloseModal}
+                header="각 항목을 등록하시겠습니까?"
+              >
+                <button
+                  className=" bg-blue-500 text-white p-3 text-center sm:text-center lg:text-center xl:text-center rounded-xl w-3/4 mx-auto 
+            hover:bg-blue-700 hover:text-white
+            active:bg-blue-500
+            focus:bg-blue-700"
+                  onClick={handleExit}
+                >
+                  취소
+                </button>
+                <button
+                  className=" bg-blue-500 text-white p-3 text-center sm:text-center lg:text-center xl:text-center rounded-xl w-3/4 mx-auto 
                 hover:bg-blue-700 hover:text-white
                 active:bg-blue-500
                 focus:bg-blue-700"
-                onClick={handleSubmit}
-              >
-                등록 하기
-              </button>
+                  onClick={handleSubmit}
+                >
+                  확인
+                </button>
+              </Modal>
             </div>
           </div>
         </form>

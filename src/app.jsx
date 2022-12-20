@@ -3,8 +3,18 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ConsumerMain from "./consumer/consumerMain/consumerMain.jsx";
 import ConsumerUpload from "./consumer/consumerUpload/consumerUpload.jsx";
 import ConsumerConfirm from "./consumer/consumerConfirm/consumerConfirm.jsx";
+import Modal from "./consumer/modals/modal.jsx";
 
 function App(props) {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   let [datas, setDatas] = useState({
     1: {
       ide: 1,
