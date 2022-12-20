@@ -69,6 +69,7 @@ const ConsumerConfirm = (props) => {
     console.log(idx);
     setimage(images);
     onUpdate({ ide: ide, message: promotion, image: images || [] });
+    setModalOpen(false);
     return images;
   };
 

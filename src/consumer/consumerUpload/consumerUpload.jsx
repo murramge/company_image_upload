@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
@@ -13,7 +14,12 @@ function ConsumerUpload(props) {
   const [datas, setData] = useState();
   const [idx, setindex] = useState();
 
+  const [imgs, setimgs] = useState([]);
+
   const { id } = useParams();
+
+  var formData = new FormData();
+  formData.append("uuid", "A3200007");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -22,9 +28,31 @@ function ConsumerUpload(props) {
       ide: Date.now,
       message: messageRef.current.value || " ",
       image: images.map((image) => image) || " ",
+      docs: files.map((file) => file) || " ",
     };
     setData(data);
     onUpload(data);
+
+    formData.append("businessMemo", data.message);
+    formData.append("images", imgs[0]);
+    formData.append("docs", data.docs[0]);
+
+    for (let key of formData.keys()) {
+      console.log(key, ":", formData.get(key));
+    }
+
+    axios
+      .post("/api/bizContent/putContent", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) =>
+        console.log("response : ", JSON.stringify(response, null, 2))
+      )
+      .catch((error) => {
+        console.log("failed", error);
+      });
 
     navigate(`/${id}`);
   };
@@ -57,6 +85,8 @@ function ConsumerUpload(props) {
 
   const handleImageChange = (e) => {
     const imageFileArr = e.target.files;
+    console.log(imageFileArr);
+    setimgs(Array.from(e.target.files || []));
 
     let fileURLs = [];
     let file;
