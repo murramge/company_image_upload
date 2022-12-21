@@ -34,8 +34,14 @@ function ConsumerUpload(props) {
     onUpload(data);
 
     formData.append("businessMemo", data.message);
-    formData.append("images", imgs[0]);
-    formData.append("docs", data.docs[0]);
+
+    for (let i = 0; i < imgs.length; i++) {
+      formData.append("images", imgs[i]);
+    }
+
+    for (let i = 0; i < files.length; i++) {
+      formData.append("docs", data.docs[i]);
+    }
 
     for (let key of formData.keys()) {
       console.log(key, ":", formData.get(key));
@@ -47,9 +53,10 @@ function ConsumerUpload(props) {
           "Content-Type": "multipart/form-data",
         },
       })
-      .then((response) =>
-        console.log("response : ", JSON.stringify(response, null, 2))
-      )
+      .then((response) => {
+        console.log(JSON.stringify(response, null, 2));
+        console.log(response.data);
+      })
       .catch((error) => {
         console.log("failed", error);
       });
@@ -63,6 +70,8 @@ function ConsumerUpload(props) {
     const index = e.target.value;
     setindex(index);
     images.splice(index, 1);
+    imgs.splice(index, 1);
+    console.log(imgs);
     console.log(images);
     setimages(images);
     return images;

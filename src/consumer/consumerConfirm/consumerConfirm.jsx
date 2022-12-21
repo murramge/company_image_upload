@@ -1,25 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
+import axios from "axios";
 
 const ConsumerConfirm = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const { datas, onUpdate } = props;
   const [promotion, setPromotion] = useState();
-  const [messagesave, setmessagesave] = useState();
+  const [filestorageId, setfilestorageId] = useState();
   const [images, setimage] = useState([]);
   const [switchs, setswitchs] = useState("");
   const [idx, setindex] = useState();
   const { id } = useParams();
   const navigate = useNavigate();
+  const [station, setstation] = useState([]);
+  const [iimmgg, setiimmgg] = useState([]);
+
+  useEffect(() => {
+    axios
+      .post(
+        "/api/bizContent/contentDetail",
+        {
+          uuid: "A3200007",
+        },
+        {}
+      )
+      .then((response) => response.data)
+      .then((item) => setstation(item.data))
+      .catch((error) => console.log(error));
+  }, []);
+
+  // console.log(station);
 
   const handleExit = () => {
     setModalOpen(false);
   };
   const openModal = (e) => {
     e.preventDefault();
-    console.log(e.currentTarget.value);
+
     setindex(e.currentTarget.value);
     setModalOpen(true);
   };
@@ -44,14 +63,18 @@ const ConsumerConfirm = (props) => {
   };
 
   const imageClick = () => {
-    let datad;
-    Object.keys(datas).map((key) => {
-      datad = datas[key];
-    });
+    // let datad;
+    // Object.keys(datas).map((key) => {
+    //   datad = datas[key];
+    // });
 
-    const { image } = datad;
-    setimage(Array.from(image || []));
-    setswitchs("image");
+    // const { image } = datad;
+    // setimage(Array.from(image || []));
+    // setswitchs("image");
+
+    axios
+      .get(`/api/bizContent/preview/${50992}`)
+      .then((response) => setiimmgg(response.request.responseURL));
   };
 
   const handleDelete = (e) => {
@@ -64,16 +87,12 @@ const ConsumerConfirm = (props) => {
     const index = e.target.value;
     setindex(idx);
     images.splice(idx, 1);
-    console.log(images);
-    console.log(index);
-    console.log(idx);
+
     setimage(images);
     onUpdate({ ide: ide, message: promotion, image: images || [] });
     setModalOpen(false);
     return images;
   };
-
-  console.log(images);
 
   const handleModify = (e) => {
     let datad;
@@ -83,10 +102,10 @@ const ConsumerConfirm = (props) => {
     const { ide } = datad;
 
     e.preventDefault();
-    console.log(ide);
+
     onUpdate({ ide: ide, [e.target.name]: promotion, image: images || [] });
   };
-  console.log(datas);
+
   return (
     <>
       <div className="text-center p-3 bg-slate-500 ">
@@ -135,6 +154,8 @@ const ConsumerConfirm = (props) => {
               </button>
             </>
           )}
+
+          {<img src={iimmgg}></img>}
           {images.map(
             (image, index) =>
               switchs == "image" && (
@@ -171,7 +192,7 @@ const ConsumerConfirm = (props) => {
                     </button>
                   </Modal>
 
-                  <img value={index} src={image}></img>
+                  <img value={index} src={image} width={20} height={20}></img>
                 </>
               )
           )}
