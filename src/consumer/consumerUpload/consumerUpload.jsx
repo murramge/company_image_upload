@@ -4,47 +4,45 @@ import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
 
 function ConsumerUpload(props) {
+  const { data, onUpdate, onUpload, onDelete } = props;
+  //message 값 가져오려고 Ref 사용
   const messageRef = useRef();
 
   const navigate = useNavigate();
 
   const [files, setfile] = useState([]);
 
+  //upload 할 때 이미지 보여지게 할때
   const [images, setimages] = useState([]);
-  const [datas, setData] = useState();
-  const [idx, setindex] = useState();
 
+  //data 보관 용 이미지 state
   const [imgs, setimgs] = useState([]);
 
   const { id } = useParams();
 
-  var formData = new FormData();
+  const formData = new FormData();
   formData.append("uuid", "A3200007");
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const { onUpload } = props;
     const data = {
-      ide: Date.now,
-      message: messageRef.current.value || " ",
-      image: images.map((image) => image) || " ",
+      id: Date.now,
+      uuid: "A3200007",
+      businessMemo: messageRef.current.value || " ",
+      image: imgs.map((image) => image) || " ",
       docs: files.map((file) => file) || " ",
     };
-    setData(data);
     onUpload(data);
 
-    formData.append("businessMemo", data.message);
+    formData.append("businessMemo", data.businessMemo);
 
     for (let i = 0; i < imgs.length; i++) {
-      formData.append("images", imgs[i]);
+      formData.append("images", data.image[i]);
     }
 
     for (let i = 0; i < files.length; i++) {
       formData.append("docs", data.docs[i]);
-    }
-
-    for (let key of formData.keys()) {
-      console.log(key, ":", formData.get(key));
     }
 
     axios
@@ -68,7 +66,6 @@ function ConsumerUpload(props) {
     e.preventDefault();
 
     const index = e.target.value;
-    setindex(index);
     images.splice(index, 1);
     imgs.splice(index, 1);
     console.log(imgs);
@@ -93,10 +90,9 @@ function ConsumerUpload(props) {
   // };
 
   const handleImageChange = (e) => {
-    const imageFileArr = e.target.files;
-    console.log(imageFileArr);
     setimgs(Array.from(e.target.files || []));
 
+    const imageFileArr = e.target.files;
     let fileURLs = [];
     let file;
     let filesLength = imageFileArr.length > 10 ? 10 : imageFileArr.length;
@@ -112,8 +108,8 @@ function ConsumerUpload(props) {
       reader.readAsDataURL(file);
     }
   };
-  const [submitmodalOpen, setsubmitModalOpen] = useState(false);
 
+  const [submitmodalOpen, setsubmitModalOpen] = useState(false);
   const [imagemodalOpen, setimageModalOpen] = useState(false);
 
   const submitopenModal = (e) => {

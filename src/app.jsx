@@ -7,9 +7,12 @@ import ConsumerConfirm from "./consumer/consumerConfirm/consumerConfirm.jsx";
 function App(props) {
   let [datas, setDatas] = useState({
     1: {
-      ide: 1,
-      message: "gogo",
+      id: 1,
+      uuid: "A3200007",
+      businessMemo: "gogo",
       image: [],
+      docs: [],
+      imgfileId: "",
     },
   });
 
@@ -18,7 +21,7 @@ function App(props) {
     setDatas((datas) => {
       {
         const updated = { ...datas };
-        updated[data.ide] = data;
+        updated[data.id] = data;
         return updated;
       }
     });
@@ -26,7 +29,7 @@ function App(props) {
   const onDelete = (data) => {
     setDatas((datas) => {
       const updated = { ...datas };
-      delete updated[data.ide];
+      delete updated[data.id];
       return updated;
     });
   };
@@ -38,7 +41,14 @@ function App(props) {
           <Route path="/:id" element={<ConsumerMain />}></Route>
           <Route
             path="/upload/:id"
-            element={<ConsumerUpload onUpload={onUpload} onDelete={onDelete} />}
+            element={
+              <ConsumerUpload
+                onUpload={onUpload}
+                onUpdate={onUpload}
+                data={datas}
+                onDelete={onDelete}
+              />
+            }
           ></Route>
           <Route
             path="/confirm/:id"

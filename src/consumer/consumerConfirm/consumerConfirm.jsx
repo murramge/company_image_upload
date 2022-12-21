@@ -15,7 +15,7 @@ const ConsumerConfirm = (props) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [station, setstation] = useState([]);
-  const [iimmgg, setiimmgg] = useState([]);
+  const [imgs, setimgs] = useState([]);
 
   useEffect(() => {
     axios
@@ -27,11 +27,11 @@ const ConsumerConfirm = (props) => {
         {}
       )
       .then((response) => response.data)
-      .then((item) => setstation(item.data))
+      .then((item) => setstation(item.data.images))
       .catch((error) => console.log(error));
   }, []);
 
-  // console.log(station);
+  console.log(station);
 
   const handleExit = () => {
     setModalOpen(false);
@@ -62,6 +62,8 @@ const ConsumerConfirm = (props) => {
     setPromotion(value);
   };
 
+  let arr = [];
+
   const imageClick = () => {
     // let datad;
     // Object.keys(datas).map((key) => {
@@ -72,9 +74,10 @@ const ConsumerConfirm = (props) => {
     // setimage(Array.from(image || []));
     // setswitchs("image");
 
+    console.log(station[0].filestorageId);
     axios
-      .get(`/api/bizContent/preview/${50992}`)
-      .then((response) => setiimmgg(response.request.responseURL));
+      .get(`/api/bizContent/preview/${50240}`)
+      .then((response) => setimgs(response.request.responseURL));
   };
 
   const handleDelete = (e) => {
@@ -84,7 +87,7 @@ const ConsumerConfirm = (props) => {
       datad = datas[key];
     });
     const { ide } = datad;
-    const index = e.target.value;
+    const idx = e.target.value;
     setindex(idx);
     images.splice(idx, 1);
 
@@ -154,8 +157,7 @@ const ConsumerConfirm = (props) => {
               </button>
             </>
           )}
-
-          {<img src={iimmgg}></img>}
+          <img src={imgs}></img>
           {images.map(
             (image, index) =>
               switchs == "image" && (
