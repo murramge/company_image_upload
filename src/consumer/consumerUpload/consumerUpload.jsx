@@ -1,44 +1,54 @@
 import axios from "axios";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
 
 function ConsumerUpload(props) {
-  const { data, onUpdate, onUpload, onDelete } = props;
   //message 값 가져오려고 Ref 사용
   const messageRef = useRef();
-
   const navigate = useNavigate();
-
   const [files, setfile] = useState([]);
-
+  const [station, setstation] = useState([]);
   //upload 할 때 이미지 보여지게 할때
   const [images, setimages] = useState([]);
-
   //data 보관 용 이미지 state
   const [imgs, setimgs] = useState([]);
 
+  const [idx, setindex] = useState();
   const { id } = useParams();
+
+  useEffect(() => {
+    axios
+      .post(
+        "/api/bizContent/contentDetail",
+        {
+          uuid: "A3200007",
+        },
+        {}
+      )
+      .then((response) => response.data)
+      .then((item) => setstation(item.data))
+      .catch((error) => console.log(error));
+  }, []);
 
   const formData = new FormData();
   formData.append("uuid", "A3200007");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const { onUpload } = props;
+
     const data = {
       id: Date.now,
       uuid: "A3200007",
-      businessMemo: messageRef.current.value || " ",
+      businessMemo: messageRef.current.value || station.businessMemo,
       image: imgs.map((image) => image) || " ",
       docs: files.map((file) => file) || " ",
     };
-    onUpload(data);
 
     formData.append("businessMemo", data.businessMemo);
 
     for (let i = 0; i < imgs.length; i++) {
-      formData.append("images", data.image[i]);
+      formData.append("images", imgs[i]);
     }
 
     for (let i = 0; i < files.length; i++) {
@@ -64,30 +74,21 @@ function ConsumerUpload(props) {
 
   const handleDelete = (e) => {
     e.preventDefault();
-
     const index = e.target.value;
+    console.log(images);
+    console.log(imgs);
+    setindex(index);
     images.splice(index, 1);
     imgs.splice(index, 1);
-    console.log(imgs);
-    console.log(images);
     setimages(images);
+    console.log(images);
+    console.log(imgs);
     return images;
   };
 
   const handleFileChange = (e) => {
     setfile(Array.from(e.target.files || []));
   };
-
-  // const handleImageChange = (e) => {
-  //   const imagechange = e.target.files;
-  //   console.log(imagechange[0]);
-  //   setimgs(imagechange[0]);
-  //   const fileReader = new FileReader();
-  //   fileReader.readAsDataURL(e.target.files[0]);
-  //   fileReader.onload = function (e) {
-  //     setimages(e.target.result);
-  //   };
-  // };
 
   const handleImageChange = (e) => {
     setimgs(Array.from(e.target.files || []));
@@ -97,18 +98,27 @@ function ConsumerUpload(props) {
     let file;
     let filesLength = imageFileArr.length > 10 ? 10 : imageFileArr.length;
 
+    imgs.length === 0
+      ? setimgs(Array.from(e.target.files || []))
+      : setimgs(imgs.concat(e.target.files));
+
     for (let i = 0; i < filesLength; i++) {
       file = imageFileArr[i];
 
       let reader = new FileReader();
       reader.onload = () => {
         fileURLs[i] = reader.result;
-        setimages([...fileURLs]);
+        images.length === 0
+          ? setimages([...fileURLs])
+          : setimages(images.concat([...fileURLs]));
       };
       reader.readAsDataURL(file);
     }
   };
 
+  console.log(images);
+  console.log(imgs);
+  //modal 팝업 부분
   const [submitmodalOpen, setsubmitModalOpen] = useState(false);
   const [imagemodalOpen, setimageModalOpen] = useState(false);
 

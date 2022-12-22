@@ -48,3 +48,8 @@ https://britny-no.tistory.com/32
 https://doogle.link/axios-%EC%82%AC%EC%9A%A9%EC%8B%9C-%ED%8F%BC-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%84%EC%86%A1%ED%95%98%EA%B8%B0-%ED%8C%8C%EC%9D%BC-%EC%97%85%EB%A1%9C%EB%93%9C/
 
 https://forteleaf.tistory.com/entry/axiospost-%EC%97%90-form-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A5%BC-%EB%84%A3%EA%B8%B0
+
+axios 관련
+https://any-ting.tistory.com/16
+
+https://developer-talk.tistory.com/226
