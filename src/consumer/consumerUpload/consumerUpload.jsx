@@ -7,14 +7,18 @@ function ConsumerUpload(props) {
   //message 값 가져오려고 Ref 사용
   const messageRef = useRef();
   const navigate = useNavigate();
-  const [files, setfile] = useState([]);
+
   const [station, setstation] = useState([]);
+
   //upload 할 때 이미지 보여지게 할때
   const [images, setimages] = useState([]);
+
   //data 보관 용 이미지 state
   const [imgs, setimgs] = useState([]);
 
-  const [idx, setindex] = useState();
+  //data 보관 용 문서 stat
+  const [files, setfile] = useState([]);
+
   const { id } = useParams();
 
   useEffect(() => {
@@ -22,7 +26,7 @@ function ConsumerUpload(props) {
       .post(
         "/api/bizContent/contentDetail",
         {
-          uuid: "A3200007",
+          uuid: id,
         },
         {}
       )
@@ -32,27 +36,21 @@ function ConsumerUpload(props) {
   }, []);
 
   const formData = new FormData();
-  formData.append("uuid", "A3200007");
+  formData.append("uuid", id);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const data = {
-      id: Date.now,
-      uuid: "A3200007",
-      businessMemo: messageRef.current.value || station.businessMemo,
-      image: imgs.map((image) => image) || " ",
-      docs: files.map((file) => file) || " ",
-    };
-
-    formData.append("businessMemo", data.businessMemo);
+    formData.append(
+      "businessMemo",
+      messageRef.current.value || station.businessMemo
+    );
 
     for (let i = 0; i < imgs.length; i++) {
       formData.append("images", imgs[i]);
     }
-
     for (let i = 0; i < files.length; i++) {
-      formData.append("docs", data.docs[i]);
+      formData.append("docs", files[i]);
     }
 
     axios
@@ -69,42 +67,53 @@ function ConsumerUpload(props) {
         console.log("failed", error);
       });
 
-    navigate(`/${id}`);
+    navigate(`/confirm/${id}`);
   };
 
   const handleDelete = (e) => {
     e.preventDefault();
     const index = e.target.value;
-    console.log(images);
-    console.log(imgs);
-    setindex(index);
-    images.splice(index, 1);
+
+    const image = images.filter((item) => {
+      return item != images[index];
+    });
+
     imgs.splice(index, 1);
-    setimages(images);
-    console.log(images);
-    console.log(imgs);
+    console.log(image);
+    setimages(image);
+    console.log(index);
+
     return images;
   };
 
   const handleFileChange = (e) => {
-    setfile(Array.from(e.target.files || []));
+    const docsFileArr = e.target.files;
+    let docsfiles = [];
+    let file;
+    let filesLength = docsFileArr.length > 10 ? 10 : docsFileArr.length;
+    for (let i = 0; i < filesLength; i++) {
+      file = docsFileArr[i];
+      docsfiles[i] = file;
+      files.length === 0
+        ? setfile([...docsfiles])
+        : setfile(files.concat([...docsfiles]));
+    }
+    e.target.value = "";
   };
 
   const handleImageChange = (e) => {
-    setimgs(Array.from(e.target.files || []));
-
     const imageFileArr = e.target.files;
     let fileURLs = [];
+    let imgfiles = [];
     let file;
     let filesLength = imageFileArr.length > 10 ? 10 : imageFileArr.length;
-
-    imgs.length === 0
-      ? setimgs(Array.from(e.target.files || []))
-      : setimgs(imgs.concat(e.target.files));
-
     for (let i = 0; i < filesLength; i++) {
       file = imageFileArr[i];
+      imgfiles[i] = file;
 
+      imgs.length === 0
+        ? setimgs([...imgfiles] || [])
+        : setimgs(imgs.concat([...imgfiles]));
       let reader = new FileReader();
       reader.onload = () => {
         fileURLs[i] = reader.result;
@@ -114,10 +123,9 @@ function ConsumerUpload(props) {
       };
       reader.readAsDataURL(file);
     }
+    e.target.value = "";
   };
 
-  console.log(images);
-  console.log(imgs);
   //modal 팝업 부분
   const [submitmodalOpen, setsubmitModalOpen] = useState(false);
   const [imagemodalOpen, setimageModalOpen] = useState(false);
@@ -143,23 +151,27 @@ function ConsumerUpload(props) {
 
   return (
     <>
-      <div className="text-center p-3 bg-slate-500">
-        <span className="text-center text-white">업로드 하기</span>
+      <div className="text-center p-3 bg-slate-500 flex justify-between">
+        <i
+          className="xi-arrow-left text-white text-xl pl-2"
+          onClick={() => navigate(-1)}
+        ></i>
+        <span className=" text-white pt-px">업로드 하기</span>
+        <div> </div>
       </div>
-
       <div className="bg-slate-200 min-h-screen">
         <form>
-          <div className=" grid grid-rows-3 gap-10  lg:grid-cols-2 xl:grid-cols-3 xl:place-content-center py-5 px-5 ">
-            <div className="bg-white sm:bg-white md:bg-white lg:bg-white xl:bg-white 2xl:bg-white p-4 rounded-3xl shadow-xl">
+          <div className=" grid grid-rows-3 gap-10 lg:grid-cols-2 xl:grid-cols-2 lg:min-h-[100vh] xl:min-h-[120vh]  xl:place-content-center py-10 px-5 ">
+            <div className="bg-white p-4 rounded-3xl shadow-xl ">
               <button
-                className=" bg-blue-500 text-white p-2 text-center rounded-xl w-13 mx-auto text-sm
-                hover:bg-blue-700 hover:text-white
-                active:bg-blue-500
-                focus:bg-blue-700
+                className=" bg-slate-500 text-white p-2 text-center rounded-xl w-max mx-auto text-sm
+                hover:bg-slate-700 hover:text-white
+                active:bg-slate-500
+                focus:bg-slate-700
                 "
                 onClick={imageopenModal}
               >
-                + 이미지
+                <i className="xi-plus"> 이미지</i>
               </button>
 
               <Modal
@@ -167,26 +179,32 @@ function ConsumerUpload(props) {
                 close={imagecloseModal}
                 header="작업 선택"
               >
-                <label
-                  for="captureimage"
-                  className=" bg-blue-500 text-white p-2 text-center rounded-xl w-13 mx-auto text-sm
-                hover:bg-blue-700 hover:text-white
-                active:bg-blue-500
-                focus:bg-blue-700
+                <div className="py-2">
+                  <label
+                    for="captureimage"
+                    className=" bg-slate-500 text-white p-2 text-center rounded-xl w-13 mx-auto text-sm
+                hover:bg-slate-700 hover:text-white
+                active:bg-slate-500
+                focus:bg-slate-700
                 "
-                >
-                  카메라 촬영
-                </label>
-                <label
-                  for="galleryimage"
-                  className=" bg-blue-500 text-white p-2 text-center rounded-xl w-13 mx-auto text-sm
-                hover:bg-blue-700 hover:text-white
-                active:bg-blue-500
-                focus:bg-blue-700
+                  >
+                    <i className="xi-camera"></i>
+                    <span> 카메라 촬영</span>
+                  </label>
+                </div>
+                <div className="py-2">
+                  <label
+                    for="galleryimage"
+                    className=" bg-slate-500 text-white p-2 text-center rounded-xl w-13 mx-auto text-sm
+                hover:bg-slate-700 hover:text-white
+                active:bg-slate-500
+                focus:bg-slate-700
                 "
-                >
-                  갤러리 선택
-                </label>
+                  >
+                    <i className="xi-image"></i>
+                    <span> 이미지 선택</span>
+                  </label>
+                </div>
               </Modal>
 
               <input
@@ -209,27 +227,33 @@ function ConsumerUpload(props) {
                 onChange={handleImageChange}
                 style={{ display: "none" }}
               />
-              <div>
+              <div className="grid grid-cols-3">
                 {images.map((image, index) => (
-                  <>
-                    <button value={index} onClick={handleDelete}>
-                      ❌
-                    </button>
+                  <div className="grid">
+                    <button
+                      value={index}
+                      onClick={handleDelete}
+                      className="xi-close-square text-[30px] text-red-600 absolute"
+                    ></button>
 
-                    <img value={index} src={image}></img>
-                  </>
+                    <img
+                      value={index}
+                      src={image}
+                      className="rounded-xl p-1"
+                    ></img>
+                  </div>
                 ))}
               </div>
             </div>
-            <div className="bg-white sm:bg-white md:bg-white lg:bg-orange-400 xl:bg-purple-300 2xl:bg-amber-300 p-4 rounded-3xl shadow-xl ">
+            <div className="bg-white p-4 rounded-3xl shadow-xl ">
               <label
                 for="file"
-                className=" bg-blue-500 text-white p-2 text-center rounded-xl w-13 mx-auto text-sm
-                hover:bg-blue-700 hover:text-white
-                active:bg-blue-500
-                focus:bg-blue-700"
+                className=" bg-slate-500 text-white p-2 text-center rounded-xl w-max mx-auto text-sm
+                hover:bg-slate-700 hover:text-white
+                active:bg-slate-500
+                focus:bg-slate-700"
               >
-                + 문서
+                <i className="xi-plus"> 문서</i>
               </label>
               <input
                 type="file"
@@ -241,27 +265,33 @@ function ConsumerUpload(props) {
               />
               <div>
                 {files.map((file) => (
-                  <li key={file.name}> {file.name}</li>
+                  <li key={file.name} className="list-none pt-2 mt-1">
+                    {" "}
+                    {file.name}
+                  </li>
                 ))}
               </div>
             </div>
-            <div className="bg-white sm:bg-white md:bg-white lg:bg-orange-400 xl:bg-purple-300 2xl:bg-amber-300 p-4 rounded-3xl shadow-xl ">
-              <div className=" bg-blue-500 p-2 text-center rounded-xl  mx-auto text-sm">
-                <p className="text-white">홍보 문구</p>
+            <div className="bg-white  p-4 rounded-3xl shadow-xl ">
+              <p className="bg-slate-500 text-white p-2 mb-2 rounded-xl w-max text-sm">
+                <i className="xi-pen"> 홍보문구</i>
+              </p>
+              <div className="w-full h-4/5">
                 <textarea
-                  className="block border mt-5 w-full h-24 border-slate-400"
+                  className="block border pb-10 w-full h-4/5 border-neutral-300"
                   ref={messageRef}
                 ></textarea>
               </div>
             </div>
-          </div>
-          <div className=" m-5 h-max">
-            <div className="flex justify-center">
+            <div className=" place-self-center">
               <button
-                className=" bg-blue-500 text-white p-2 text-center rounded-xl w-13 mx-auto text-sm
-                hover:bg-blue-700 hover:text-white
-                active:bg-blue-500
-                focus:bg-blue-700
+                className=" bg-slate-500 text-white p-3 m-5 rounded-xl w-full
+                hover:bg-slate-700 hover:text-white
+                active:bg-slate-500
+                focus:bg-slate-700 col-span-3
+                w-[20vh]
+                lg:w-[30vh]
+                xl:w-[40vh]
                 "
                 onClick={submitopenModal}
               >
@@ -273,24 +303,30 @@ function ConsumerUpload(props) {
                 close={submitcloseModal}
                 header="각 항목을 등록하시겠습니까?"
               >
-                <button
-                  className=" bg-blue-500 text-white p-3 text-center sm:text-center lg:text-center xl:text-center rounded-xl w-3/4 mx-auto 
-            hover:bg-blue-700 hover:text-white
-            active:bg-blue-500
-            focus:bg-blue-700"
-                  onClick={handleExit}
-                >
-                  취소
-                </button>
-                <button
-                  className=" bg-blue-500 text-white p-3 text-center sm:text-center lg:text-center xl:text-center rounded-xl w-3/4 mx-auto 
-                hover:bg-blue-700 hover:text-white
-                active:bg-blue-500
-                focus:bg-blue-700"
-                  onClick={handleSubmit}
-                >
-                  확인
-                </button>
+                <div className="p-2 grid grid-rows-2 place-items-center">
+                  <div className="w-6/12">
+                    <button
+                      className=" bg-slate-500 text-white p-2 m-1 text-center rounded-xl w-full text-sm
+                  hover:bg-slate-700 hover:text-white
+                  active:bg-slate-500
+                  focus:bg-slate-700"
+                      onClick={handleExit}
+                    >
+                      취소
+                    </button>
+                  </div>
+                  <div className="w-6/12">
+                    <button
+                      className=" bg-slate-500 text-white p-2 m-1 text-center rounded-xl w-full  text-sm
+                  hover:bg-slate-700 hover:text-white
+                  active:bg-slate-500
+                  focus:bg-slate-700"
+                      onClick={handleSubmit}
+                    >
+                      확인
+                    </button>
+                  </div>
+                </div>
               </Modal>
             </div>
           </div>

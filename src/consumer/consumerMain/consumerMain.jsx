@@ -5,9 +5,10 @@ import axios from "axios";
 function ConsumerMain(props) {
   const [bizinfo, setbizinfo] = useState([]);
   const [errorcode, seterrorcode] = useState();
+  const { id } = useParams();
   const config = {
     method: "get",
-    url: "/api/bizContent/info/A3200007",
+    url: `/api/bizContent/info/${id}`,
     headers: {},
   };
 
@@ -17,8 +18,6 @@ function ConsumerMain(props) {
       .then((item) => `${setbizinfo(item.data)} ${seterrorcode(item.code)}`)
       .catch((error) => console.log(error));
   }, []);
-
-  const { id } = useParams();
 
   const [bizinfodata, setbizinfodata] = useState([]);
   const [expireddate, setexpireddate] = useState();
@@ -55,14 +54,16 @@ function ConsumerMain(props) {
   };
 
   return (
-    <div className="bg-slate-300 grid gap-10 lg:grid-cols-2 xl:grid-cols-3 xl:place-content-center py-20  min-h-screen ">
-      <div className="bg-white sm:bg-white md:bg-white lg:bg-orange-400 xl:bg-purple-300 2xl:bg-amber-300 p-6 rounded-3xl shadow-xl  h-max">
-        <div className="flex justify-between ">
+    <div className="bg-slate-300  grid grid-flow-row auto-rows-fr place-items-center min-h-screen">
+      <div className="bg-white rounded-3xl shadow-xl h-max pb-6 w-11/12 sm:w-4/5 md:w-3/6 xl:w-2/4 xl:h-3/5 2xl:w-2/5">
+        <div className="flex justify-center items-center pt-5 sm:pt-5 xl:pt-10">
           <div>
             {["업체명", "대표번호", "주 소", "업 종"].map((item, key) => {
               return (
-                <div key={key} className="flex justify-between my-2 w-max">
-                  <span className="font-semibold text-base">{item}</span>
+                <div key={key} className="w-max ">
+                  <span className="font-semibold  text-[12px] sm:text-[14px] xl:text-[16px] xl:pr-3">
+                    {item}
+                  </span>
                 </div>
               );
             })}
@@ -70,8 +71,10 @@ function ConsumerMain(props) {
           <div className="ml-4">
             {bizinfodata.map((item) => {
               return (
-                <div className="flex justify-between my-2 w-max">
-                  <span className="text-gray-500 ">{item}</span>
+                <div className="w-max">
+                  <span className="text-gray-500 text-[12px] sm:text-[14px]  xl:text-[16px]">
+                    {item}
+                  </span>
                 </div>
               );
             })}
@@ -79,25 +82,25 @@ function ConsumerMain(props) {
         </div>
       </div>
 
-      <div className=" h-40 m-5">
-        <div className="flex justify-center">
+      <div className="w-3/5 sm:w-2/4	md:w-2/5 lg:w-4/12 xl:w-3/12 2xl:w-1/5">
+        <div className="justify-center ">
           <button
-            className=" m-5 bg-blue-500 text-white p-3 text-center rounded-xl w-3/4 mx-auto
-            hover:bg-blue-700 hover:text-white
-            active:bg-blue-500
-            focus:bg-blue-700
+            className="bg-slate-500 text-white p-3 text-center rounded-xl w-full mx-auto
+            hover:bg-slate-700 hover:text-white
+            active:bg-slate-500
+            focus:bg-slate-700
             "
             onClick={ImageUpdate}
           >
             업로드 하기
           </button>
         </div>
-        <div className="flex justify-center">
+        <div className="justify-center">
           <button
-            className="m-5 bg-blue-500 text-white p-3 text-center rounded-xl w-3/4 mx-auto
-            hover:bg-blue-700 hover:text-white
-            active:bg-blue-500
-            focus:bg-blue-700
+            className="bg-slate-500 text-white p-3 text-center rounded-xl w-full mx-auto mt-5
+            hover:bg-slate-700 hover:text-white
+            active:bg-slate-500
+            focus:bg-slate-700
             "
             onClick={UpdateConfirm}
           >
@@ -105,10 +108,10 @@ function ConsumerMain(props) {
           </button>
         </div>
       </div>
-      <div className="text-center">
-        <span className="text-center">
-          해당 페이지는 {expireddate} 까지 접속이 가능합니다.
-        </span>
+      <div className="text-center pb-28">
+        <pre className="text-center text-sm">
+          해당 페이지는 {expireddate} 까지 <br></br>접속이 가능합니다.
+        </pre>
       </div>
     </div>
   );

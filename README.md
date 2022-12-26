@@ -53,3 +53,6 @@ axios 관련
 https://any-ting.tistory.com/16
 
 https://developer-talk.tistory.com/226
+
+동일값
+https://velog.io/@jjhstoday/JS-input-typefile-%EB%8F%99%EC%9D%BC-%EA%B0%92-%EC%97%85%EB%A1%9C%EB%93%9C%ED%95%98%EA%B8%B0
