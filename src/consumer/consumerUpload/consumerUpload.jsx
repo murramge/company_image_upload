@@ -62,12 +62,11 @@ function ConsumerUpload(props) {
       .then((response) => {
         console.log(JSON.stringify(response, null, 2));
         console.log(response.data);
+        navigate(`/confirm/${id}`);
       })
       .catch((error) => {
         console.log("failed", error);
       });
-
-    navigate(`/confirm/${id}`);
   };
 
   const handleDelete = (e) => {
@@ -156,7 +155,7 @@ function ConsumerUpload(props) {
   return (
     <>
       <div className="bg-[url(bg.png)] max-h-screen">
-        <div className="text-center p-3 border-y flex justify-between ">
+        <div className="text-center bg-neutral-600  p-2 flex justify-between w-full fixed ">
           <i
             className="xi-arrow-left text-white text-xl pl-2 cursor-pointer	"
             onClick={() => navigate(-1)}
@@ -181,31 +180,30 @@ function ConsumerUpload(props) {
               <Modal
                 open={imagemodalOpen}
                 close={imagecloseModal}
-                header="작업 선택"
+                header="작업을 선택하세요"
+                head="이미지 업로드"
               >
-                <div className="py-2">
+                <div className="flex justify-end">
                   <label
                     for="captureimage"
-                    className=" bg-neutral-500 text-white p-2 text-center rounded-xl w-13 mx-auto text-sm
+                    className=" bg-neutral-500 text-white p-2 text-center rounded-xl w-max mx-1 text-sm
                 hover:bg-neutral-700 hover:text-white
                 active:bg-neutral-500
                 focus:bg-neutral-700
+                cursor-pointer
                 "
                   >
-                    <i className="xi-camera"></i>
                     <span> 카메라 촬영</span>
                   </label>
-                </div>
-                <div className="py-2">
                   <label
                     for="galleryimage"
-                    className=" bg-neutral-500 text-white p-2 text-center rounded-xl w-13 mx-auto text-sm
+                    className=" bg-neutral-500 text-white p-2 text-center rounded-xl w-max text-sm
                 hover:bg-neutral-700 hover:text-white
                 active:bg-neutral-500
                 focus:bg-neutral-700
+                cursor-pointer
                 "
                   >
-                    <i className="xi-image"></i>
                     <span> 이미지 선택</span>
                   </label>
                 </div>
@@ -307,9 +305,10 @@ function ConsumerUpload(props) {
                 open={submitmodalOpen}
                 close={submitcloseModal}
                 header="각 항목을 등록하시겠습니까?"
+                head="업로드 하기"
               >
-                <div className="p-2 grid grid-rows-2 place-items-center">
-                  <div className="w-6/12">
+                <div className="flex justify-end">
+                  <div className="w-max px-1">
                     <button
                       className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-xl w-full text-sm
                   hover:bg-neutral-700 hover:text-white
@@ -320,7 +319,7 @@ function ConsumerUpload(props) {
                       취소
                     </button>
                   </div>
-                  <div className="w-6/12">
+                  <div className="w-max">
                     <button
                       className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-xl w-full  text-sm
                   hover:bg-neutral-700 hover:text-white

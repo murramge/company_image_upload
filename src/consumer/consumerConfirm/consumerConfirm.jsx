@@ -31,7 +31,7 @@ const ConsumerConfirm = (props) => {
           ${setdocs(Array.from(item.data.docs))}`
       )
       .catch((error) => console.log(error));
-  }, [imgs, docs, promotion]);
+  }, []);
 
   console.log(station);
   console.log(docs);
@@ -45,6 +45,7 @@ const ConsumerConfirm = (props) => {
     setindex(e.currentTarget.value);
     setModalOpen(true);
   };
+  console.log(idx);
   const closeModal = () => {
     setModalOpen(false);
   };
@@ -115,9 +116,9 @@ const ConsumerConfirm = (props) => {
 
   const handleDeletid = (e) => {
     e.preventDefault();
-    const fileid = e.currentTarget.value;
+
     axios
-      .delete(`/api/bizContent/deleteFile/A3200007/${fileid}`)
+      .delete(`/api/bizContent/deleteFile/A3200007/${idx}`)
       .then((response) => console.log(response));
 
     axios
@@ -172,15 +173,15 @@ const ConsumerConfirm = (props) => {
 
   return (
     <>
+      <div className="text-center bg-neutral-600  p-2 flex justify-between w-full">
+        <i
+          className="xi-arrow-left text-white text-xl pl-2 cursor-pointer"
+          onClick={() => navigate(-1)}
+        ></i>
+        <span className=" text-white pt-px">등록 내역 확인 및 관리</span>
+        <div> </div>
+      </div>
       <div className="bg-[url(bg.png)] max-h-screen">
-        <div className=" p-3 border-y flex justify-between">
-          <i
-            className="xi-arrow-left text-white text-xl pl-2 cursor-pointer"
-            onClick={() => navigate(-1)}
-          ></i>
-          <span className=" text-white pt-px">등록 내역 확인 및 관리</span>
-          <div> </div>
-        </div>
         <div></div>
         <div className="grid grid-cols-3 w-max pl-6 lg:pl-24">
           <div className="flex justify-center">
@@ -258,14 +259,20 @@ const ConsumerConfirm = (props) => {
                         <Modal
                           open={modalOpen}
                           close={closeModal}
-                          header="해당 이미지를 삭제하시겠습니까? (삭제 시 복구 불가능)"
+                          header={
+                            <p>
+                              해당 이미지를 삭제하시겠습니까? <br></br> (삭제 시
+                              복구 불가능)
+                            </p>
+                          }
+                          head="이미지 삭제"
                         >
-                          <div className="p-2 grid grid-rows-2 place-items-center">
-                            <div className="w-6/12">
+                          <div className="flex justify-end">
+                            <div className="w-max px-1">
                               <button
                                 value={image}
                                 onClick={handleExit}
-                                className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-xl w-full text-sm
+                                className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full text-sm
                               hover:bg-neutral-700 hover:text-white
                               active:bg-neutral-500
                               focus:bg-neutral-700"
@@ -273,11 +280,11 @@ const ConsumerConfirm = (props) => {
                                 취소
                               </button>
                             </div>
-                            <div className="w-6/12">
+                            <div className="w-max">
                               <button
                                 value={image}
                                 onClick={handleDelete}
-                                className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-xl w-full  text-sm
+                                className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full  text-sm
                               hover:bg-neutral-700 hover:text-white
                               active:bg-neutral-500
                               focus:bg-neutral-700"
@@ -313,14 +320,20 @@ const ConsumerConfirm = (props) => {
                         <Modal
                           open={modalOpen}
                           close={closeModal}
-                          header="해당 문서를 삭제하시겠습니까? (삭제 시 복구 불가능)"
+                          header={
+                            <p>
+                              해당 문서를 삭제하시겠습니까? <br></br> (삭제 시
+                              복구 불가능)
+                            </p>
+                          }
+                          head="문서 삭제"
                         >
-                          <div className="p-2 grid grid-rows-2 place-items-center">
-                            <div className="w-6/12">
+                          <div className="flex justify-end">
+                            <div className="w-max px-1">
                               <button
                                 value={item}
                                 onClick={handleExit}
-                                className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-xl w-full text-sm
+                                className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full text-sm
                               hover:bg-neutral-700 hover:text-white
                               active:bg-neutral-500
                               focus:bg-neutral-700"
@@ -328,11 +341,11 @@ const ConsumerConfirm = (props) => {
                                 취소
                               </button>
                             </div>
-                            <div className="w-6/12">
+                            <div className="w-max">
                               <button
                                 value={item}
                                 onClick={handleDeletid}
-                                className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-xl w-full  text-sm
+                                className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full  text-sm
                               hover:bg-neutral-700 hover:text-white
                               active:bg-neutral-500
                               focus:bg-neutral-700"
@@ -342,6 +355,7 @@ const ConsumerConfirm = (props) => {
                             </div>
                           </div>
                         </Modal>
+
                         <button
                           value={item}
                           onClick={dcClick}

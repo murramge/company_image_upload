@@ -33,10 +33,13 @@ function ConsumerMain(props) {
     bizInfo.map((item) => {
       if (bizinfo_uuid == id) {
         setbizinfodata([
-          item.company_name,
-          item.main_phonenumber,
-          item.biz_addr,
-          item.categorys,
+          {
+            name: "업체명",
+            item: item.company_name,
+          },
+          { name: "대표번호", item: item.main_phonenumber },
+          { name: "주 소", item: item.biz_addr },
+          { name: "업 종", item: item.categorys },
         ]);
 
         setexpireddate(item.expired_date);
@@ -70,25 +73,19 @@ function ConsumerMain(props) {
       </div>
       <div className="w-full flex justify-center pb-10">
         <div className="bg-white rounded-3xl shadow-xl h-max pb-6 w-11/12 sm:w-4/5 md:w-3/6 xl:w-2/4 xl:h-4/5 2xl:w-2/5">
-          <div className="flex justify-center items-center pt-5 xl:pt-8">
-            <div>
-              {["업체명", "대표번호", "주 소", "업 종"].map((item, key) => {
-                return (
-                  <div key={key} className="w-max ">
-                    <span className="font-semibold  text-[12px] sm:text-[14px] xl:text-[16px] xl:pr-3">
-                      {item}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
+          <div className="flex justify-center items-center pt-5 xl:pt-8 w-full">
             <div className="ml-4">
-              {bizinfodata.map((item) => {
+              {bizinfodata.map((item, key) => {
                 return (
-                  <div className="w-max">
-                    <span className="text-gray-500 text-[12px] sm:text-[14px]  xl:text-[16px]">
-                      {item}
-                    </span>
+                  <div key={key}>
+                    <div key={key} className="flex text-[16px]">
+                      <div className="w-[25%] p-1">
+                        <span className="font-bold">{item.name}</span>
+                      </div>
+                      <div className="w-[75%]">
+                        <span>{item.item}</span>
+                      </div>
+                    </div>
                   </div>
                 );
               })}
