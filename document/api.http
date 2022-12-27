@@ -64,3 +64,24 @@ Content-Type: application/json
     "uuid": {{uuid_quote}}
 }
 
+###
+# 관리자용API, 최근 요청된 건 가져오기
+GET {{baseUrl}}/api/bizContent/recentRequestHistory/10 HTTP/1.1
+Content-Type: application/json
+
+###
+# 관리자용API, 최근 업로드된 건 가져오기
+GET {{baseUrl}}/api/bizContent/recentUploadHistory/10 HTTP/1.1
+Content-Type: application/json
+
+
+###
+# 관리자용API, 업체 검색
+
+POST {{baseUrl}}/api/bizContent/searchCompany HTTP/1.1
+Content-Type: application/json
+
+{
+    "topQty": 20,
+    "searchText": "041-564-0001"
+}
