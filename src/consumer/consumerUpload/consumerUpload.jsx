@@ -85,8 +85,16 @@ function ConsumerUpload(props) {
     console.log(img);
     setimages(image);
     setimgs(img);
+  };
 
-    return images;
+  const handleDeletid = (e) => {
+    e.preventDefault();
+    const index = e.target.value;
+
+    const doc = files.filter((item, index2) => {
+      return index != index2;
+    });
+    setfile(doc);
   };
 
   const handleFileChange = (e) => {
@@ -103,30 +111,43 @@ function ConsumerUpload(props) {
     }
     e.target.value = "";
   };
+  const handleImage = (e) => {
+    e.preventDefault();
+    let input = document.createElement("input");
 
-  const handleImageChange = (e) => {
-    const imageFileArr = e.target.files;
-    let fileURLs = [];
-    let imgfiles = [];
-    let file;
-    let filesLength = imageFileArr.length > 10 ? 10 : imageFileArr.length;
-    for (let i = 0; i < filesLength; i++) {
-      file = imageFileArr[i];
-      imgfiles[i] = file;
+    input.type = "file";
+    input.accept = "image/*";
+    input.multiple = "multiple";
+    input.click();
+    input.onchange = function (e) {
+      console.log(e);
+      const imageFileArr = e.target.files;
+      console.log(imageFileArr);
+      let fileURLs = [];
+      let imgfiles = [];
+      let file;
+      let filesLength = imageFileArr.length > 10 ? 10 : imageFileArr.length;
+      for (let i = 0; i < filesLength; i++) {
+        file = imageFileArr[i];
+        imgfiles[i] = file;
 
-      imgs.length === 0
-        ? setimgs([...imgfiles] || [])
-        : setimgs(imgs.concat([...imgfiles]));
-      let reader = new FileReader();
-      reader.onload = () => {
-        fileURLs[i] = reader.result;
-        images.length === 0
-          ? setimages([...fileURLs])
-          : setimages(images.concat([...fileURLs]));
-      };
-      reader.readAsDataURL(file);
-    }
-    e.target.value = "";
+        imgs.length === 0
+          ? setimgs([...imgfiles] || [])
+          : setimgs(imgs.concat([...imgfiles]));
+        let reader = new FileReader();
+
+        reader.onload = () => {
+          fileURLs[i] = reader.result;
+          images.length === 0
+            ? setimages([...fileURLs])
+            : setimages(images.concat([...fileURLs]));
+        };
+
+        reader.readAsDataURL(file);
+      }
+      e.target.value = "";
+    };
+    setimageModalOpen(false);
   };
 
   //modal 팝업 부분
@@ -184,51 +205,29 @@ function ConsumerUpload(props) {
                 head="이미지 업로드"
               >
                 <div className="flex justify-end">
-                  <label
-                    for="captureimage"
-                    className=" bg-neutral-500 text-white p-2 text-center rounded-xl w-max mx-1 text-sm
+                  <button
+                    className="bg-neutral-500 text-white p-2 text-center rounded-xl w-max text-sm
                 hover:bg-neutral-700 hover:text-white
                 active:bg-neutral-500
                 focus:bg-neutral-700
-                cursor-pointer
-                "
+                cursor-pointer"
+                    onClick={handleImage}
                   >
-                    <span> 카메라 촬영</span>
-                  </label>
-                  <label
-                    for="galleryimage"
-                    className=" bg-neutral-500 text-white p-2 text-center rounded-xl w-max text-sm
+                    카메라 촬영
+                  </button>
+                  <button
+                    className="bg-neutral-500 text-white p-2 text-center rounded-xl w-max text-sm
                 hover:bg-neutral-700 hover:text-white
                 active:bg-neutral-500
                 focus:bg-neutral-700
-                cursor-pointer
-                "
+                cursor-pointer"
+                    onClick={handleImage}
                   >
-                    <span> 이미지 선택</span>
-                  </label>
+                    이미지 선택
+                  </button>
                 </div>
               </Modal>
 
-              <input
-                type="file"
-                name="captureimage"
-                id="captureimage"
-                multiple
-                accept="image/*"
-                capture="camera"
-                onChange={handleImageChange}
-                style={{ display: "none" }}
-              />
-
-              <input
-                type="file"
-                name="galleryimage"
-                id="galleryimage"
-                multiple
-                accept="image/*"
-                onChange={handleImageChange}
-                style={{ display: "none" }}
-              />
               <div className="grid grid-cols-3">
                 {images.map((image, index) => (
                   <div className="grid">
@@ -267,11 +266,19 @@ function ConsumerUpload(props) {
                 style={{ display: "none" }}
               />
               <div>
-                {files.map((file) => (
-                  <li key={file.name} className="list-none pt-2 mt-1">
-                    {" "}
-                    {file.name}
-                  </li>
+                {files.map((file, index) => (
+                  <>
+                    <div className="flex">
+                      <button
+                        className="xi-close-circle-o text-[20px] text-red-600 "
+                        value={index}
+                        onClick={handleDeletid}
+                      ></button>
+                      <li key={file.name} className="list-none pt-2 mt-1">
+                        {file.name}
+                      </li>
+                    </div>
+                  </>
                 ))}
               </div>
             </div>
