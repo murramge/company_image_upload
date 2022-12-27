@@ -28,7 +28,7 @@ function ConsumerMain(props) {
   }, []);
 
   const bizinfo_uuid = String(bizinfo.uuid);
-
+  const bizinfo_company = String(bizinfo.company_name);
   useEffect(() => {
     bizInfo.map((item) => {
       if (bizinfo_uuid == id) {
@@ -54,30 +54,45 @@ function ConsumerMain(props) {
   };
 
   return (
-    <div className="bg-slate-300  grid grid-flow-row auto-rows-fr place-items-center min-h-screen">
-      <div className="bg-white rounded-3xl shadow-xl h-max pb-6 w-11/12 sm:w-4/5 md:w-3/6 xl:w-2/4 xl:h-3/5 2xl:w-2/5">
-        <div className="flex justify-center items-center pt-5 sm:pt-5 xl:pt-10">
-          <div>
-            {["업체명", "대표번호", "주 소", "업 종"].map((item, key) => {
-              return (
-                <div key={key} className="w-max ">
-                  <span className="font-semibold  text-[12px] sm:text-[14px] xl:text-[16px] xl:pr-3">
-                    {item}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-          <div className="ml-4">
-            {bizinfodata.map((item) => {
-              return (
-                <div className="w-max">
-                  <span className="text-gray-500 text-[12px] sm:text-[14px]  xl:text-[16px]">
-                    {item}
-                  </span>
-                </div>
-              );
-            })}
+    <div className="bg-[url(bg.png)] bg-cover grid grid-flow-row auto-rows-fr place-items-center min-h-screen">
+      <div>
+        <div className="w-screen flex justify-center">
+          <img
+            src="head1m.png"
+            className="w-2/3 sm:w-2/4 md:w-5/12 lg:w-2/6 xl:w-1/4"
+          ></img>
+        </div>
+        <p className=" text-[15px] sm:text-[16px] xl:text-[18px] text-center pt-5 text-white font-light">
+          <span>현 페이지는 </span>
+          <span className="text-red-300 font-bold">{bizinfo_company}</span>
+          <span> 사업장 전용 페이지입니다.</span>
+        </p>
+      </div>
+      <div className="w-full flex justify-center pb-10">
+        <div className="bg-white rounded-3xl shadow-xl h-max pb-6 w-11/12 sm:w-4/5 md:w-3/6 xl:w-2/4 xl:h-4/5 2xl:w-2/5">
+          <div className="flex justify-center items-center pt-5 xl:pt-8">
+            <div>
+              {["업체명", "대표번호", "주 소", "업 종"].map((item, key) => {
+                return (
+                  <div key={key} className="w-max ">
+                    <span className="font-semibold  text-[12px] sm:text-[14px] xl:text-[16px] xl:pr-3">
+                      {item}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="ml-4">
+              {bizinfodata.map((item) => {
+                return (
+                  <div className="w-max">
+                    <span className="text-gray-500 text-[12px] sm:text-[14px]  xl:text-[16px]">
+                      {item}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
@@ -85,10 +100,10 @@ function ConsumerMain(props) {
       <div className="w-3/5 sm:w-2/4	md:w-2/5 lg:w-4/12 xl:w-3/12 2xl:w-1/5">
         <div className="justify-center ">
           <button
-            className="bg-slate-500 text-white p-3 text-center rounded-xl w-full mx-auto
-            hover:bg-slate-700 hover:text-white
-            active:bg-slate-500
-            focus:bg-slate-700
+            className="bg-neutral-500 text-white p-3 text-center rounded-xl w-full mx-auto
+            hover:bg-neutral-700 hover:text-white
+            active:bg-neutral-500
+            focus:bg-neutral-700
             "
             onClick={ImageUpdate}
           >
@@ -97,10 +112,10 @@ function ConsumerMain(props) {
         </div>
         <div className="justify-center">
           <button
-            className="bg-slate-500 text-white p-3 text-center rounded-xl w-full mx-auto mt-5
-            hover:bg-slate-700 hover:text-white
-            active:bg-slate-500
-            focus:bg-slate-700
+            className="bg-neutral-500 text-white p-3 text-center rounded-xl w-full mx-auto mt-5
+            hover:bg-neutral-700 hover:text-white
+            active:bg-neutral-500
+            focus:bg-neutral-700
             "
             onClick={UpdateConfirm}
           >
@@ -109,9 +124,9 @@ function ConsumerMain(props) {
         </div>
       </div>
       <div className="text-center pb-28">
-        <pre className="text-center text-sm">
+        <p className="text-center text-sm">
           해당 페이지는 {expireddate} 까지 <br></br>접속이 가능합니다.
-        </pre>
+        </p>
       </div>
     </div>
   );

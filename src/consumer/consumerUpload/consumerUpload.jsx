@@ -74,14 +74,18 @@ function ConsumerUpload(props) {
     e.preventDefault();
     const index = e.target.value;
 
-    const image = images.filter((item) => {
-      return item != images[index];
+    const image = images.filter((item, index2) => {
+      return index != index2;
     });
 
-    imgs.splice(index, 1);
+    const img = imgs.filter((item, index2) => {
+      return index != index2;
+    });
+
     console.log(image);
+    console.log(img);
     setimages(image);
-    console.log(index);
+    setimgs(img);
 
     return images;
   };
@@ -151,23 +155,23 @@ function ConsumerUpload(props) {
 
   return (
     <>
-      <div className="text-center p-3 bg-slate-500 flex justify-between">
-        <i
-          className="xi-arrow-left text-white text-xl pl-2"
-          onClick={() => navigate(-1)}
-        ></i>
-        <span className=" text-white pt-px">업로드 하기</span>
-        <div> </div>
-      </div>
-      <div className="bg-slate-200 min-h-screen">
+      <div className="bg-[url(bg.png)] max-h-screen">
+        <div className="text-center p-3 border-y flex justify-between ">
+          <i
+            className="xi-arrow-left text-white text-xl pl-2 cursor-pointer	"
+            onClick={() => navigate(-1)}
+          ></i>
+          <span className=" text-white pt-px">업로드 하기</span>
+          <div> </div>
+        </div>
         <form>
-          <div className=" grid grid-rows-3 gap-10 lg:grid-cols-2 xl:grid-cols-2 lg:min-h-[100vh] xl:min-h-[120vh]  xl:place-content-center py-10 px-5 ">
+          <div className=" grid grid-rows-3 gap-10 lg:grid-cols-2 xl:grid-cols-2 lg:min-h-[100vh] xl:min-h-[120vh]  xl:place-content-center py-16 px-5 ">
             <div className="bg-white p-4 rounded-3xl shadow-xl ">
               <button
-                className=" bg-slate-500 text-white p-2 text-center rounded-xl w-max mx-auto text-sm
-                hover:bg-slate-700 hover:text-white
-                active:bg-slate-500
-                focus:bg-slate-700
+                className=" bg-neutral-500 text-white p-2 text-center rounded-xl w-max mx-auto text-sm
+                hover:bg-neutral-700 hover:text-white
+                active:bg-neutral-500
+                focus:bg-neutral-700
                 "
                 onClick={imageopenModal}
               >
@@ -182,10 +186,10 @@ function ConsumerUpload(props) {
                 <div className="py-2">
                   <label
                     for="captureimage"
-                    className=" bg-slate-500 text-white p-2 text-center rounded-xl w-13 mx-auto text-sm
-                hover:bg-slate-700 hover:text-white
-                active:bg-slate-500
-                focus:bg-slate-700
+                    className=" bg-neutral-500 text-white p-2 text-center rounded-xl w-13 mx-auto text-sm
+                hover:bg-neutral-700 hover:text-white
+                active:bg-neutral-500
+                focus:bg-neutral-700
                 "
                   >
                     <i className="xi-camera"></i>
@@ -195,10 +199,10 @@ function ConsumerUpload(props) {
                 <div className="py-2">
                   <label
                     for="galleryimage"
-                    className=" bg-slate-500 text-white p-2 text-center rounded-xl w-13 mx-auto text-sm
-                hover:bg-slate-700 hover:text-white
-                active:bg-slate-500
-                focus:bg-slate-700
+                    className=" bg-neutral-500 text-white p-2 text-center rounded-xl w-13 mx-auto text-sm
+                hover:bg-neutral-700 hover:text-white
+                active:bg-neutral-500
+                focus:bg-neutral-700
                 "
                   >
                     <i className="xi-image"></i>
@@ -248,10 +252,11 @@ function ConsumerUpload(props) {
             <div className="bg-white p-4 rounded-3xl shadow-xl ">
               <label
                 for="file"
-                className=" bg-slate-500 text-white p-2 text-center rounded-xl w-max mx-auto text-sm
-                hover:bg-slate-700 hover:text-white
-                active:bg-slate-500
-                focus:bg-slate-700"
+                className=" bg-neutral-500 text-white p-2 text-center rounded-xl w-max mx-auto text-sm
+                hover:bg-neutral-700 hover:text-white
+                active:bg-neutral-500
+                focus:bg-neutral-700
+                cursor-pointer"
               >
                 <i className="xi-plus"> 문서</i>
               </label>
@@ -273,7 +278,7 @@ function ConsumerUpload(props) {
               </div>
             </div>
             <div className="bg-white  p-4 rounded-3xl shadow-xl ">
-              <p className="bg-slate-500 text-white p-2 mb-2 rounded-xl w-max text-sm">
+              <p className="bg-neutral-500 text-white p-2 mb-2 rounded-xl w-max text-sm">
                 <i className="xi-pen"> 홍보문구</i>
               </p>
               <div className="w-full h-4/5">
@@ -285,10 +290,10 @@ function ConsumerUpload(props) {
             </div>
             <div className=" place-self-center">
               <button
-                className=" bg-slate-500 text-white p-3 m-5 rounded-xl w-full
-                hover:bg-slate-700 hover:text-white
-                active:bg-slate-500
-                focus:bg-slate-700 col-span-3
+                className=" bg-neutral-500 text-white p-3 m-5 rounded-xl w-full
+                hover:bg-neutral-700 hover:text-white
+                active:bg-neutral-500
+                focus:bg-neutral-700 col-span-3
                 w-[20vh]
                 lg:w-[30vh]
                 xl:w-[40vh]
@@ -306,10 +311,10 @@ function ConsumerUpload(props) {
                 <div className="p-2 grid grid-rows-2 place-items-center">
                   <div className="w-6/12">
                     <button
-                      className=" bg-slate-500 text-white p-2 m-1 text-center rounded-xl w-full text-sm
-                  hover:bg-slate-700 hover:text-white
-                  active:bg-slate-500
-                  focus:bg-slate-700"
+                      className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-xl w-full text-sm
+                  hover:bg-neutral-700 hover:text-white
+                  active:bg-neutral-500
+                  focus:bg-neutral-700"
                       onClick={handleExit}
                     >
                       취소
@@ -317,10 +322,10 @@ function ConsumerUpload(props) {
                   </div>
                   <div className="w-6/12">
                     <button
-                      className=" bg-slate-500 text-white p-2 m-1 text-center rounded-xl w-full  text-sm
-                  hover:bg-slate-700 hover:text-white
-                  active:bg-slate-500
-                  focus:bg-slate-700"
+                      className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-xl w-full  text-sm
+                  hover:bg-neutral-700 hover:text-white
+                  active:bg-neutral-500
+                  focus:bg-neutral-700"
                       onClick={handleSubmit}
                     >
                       확인
