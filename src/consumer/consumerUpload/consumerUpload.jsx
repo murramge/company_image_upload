@@ -1,9 +1,8 @@
-import axios from "axios";
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
 
-function ConsumerUpload(props) {
+function ConsumerUpload({ Onbizdetail, Onstation, Onbizput }) {
   //message 값 가져오려고 Ref 사용
   const messageRef = useRef();
   const navigate = useNavigate();
@@ -22,51 +21,29 @@ function ConsumerUpload(props) {
   const { id } = useParams();
 
   useEffect(() => {
-    axios
-      .post(
-        "/api/bizContent/contentDetail",
-        {
-          uuid: id,
-        },
-        {}
-      )
-      .then((response) => response.data)
-      .then((item) => setstation(item.data))
-      .catch((error) => console.log(error));
+    Onbizdetail(id);
   }, []);
 
-  const formData = new FormData();
-  formData.append("uuid", id);
+  useEffect(() => {
+    setstation(Onstation);
+  }, [Onstation]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    const formData = new FormData();
+    formData.append("uuid", id);
 
     formData.append(
       "businessMemo",
       messageRef.current.value || station.businessMemo
     );
 
-    for (let i = 0; i < imgs.length; i++) {
-      formData.append("images", imgs[i]);
-    }
-    for (let i = 0; i < files.length; i++) {
-      formData.append("docs", files[i]);
-    }
+    imgs.forEach((item) => formData.append("images", item));
+    files.forEach((item) => formData.append("docs", item));
 
-    axios
-      .post("/api/bizContent/putContent", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        console.log(JSON.stringify(response, null, 2));
-        console.log(response.data);
-        navigate(`/confirm/${id}`);
-      })
-      .catch((error) => {
-        console.log("failed", error);
-      });
+    Onbizput(formData);
+    navigate(`/confirm/${id}`);
   };
 
   const handleDelete = (e) => {
@@ -74,11 +51,11 @@ function ConsumerUpload(props) {
     const index = e.target.value;
 
     const image = images.filter((item, index2) => {
-      return index != index2;
+      return index !== index2;
     });
 
     const img = imgs.filter((item, index2) => {
-      return index != index2;
+      return index !== index2;
     });
 
     console.log(image);
@@ -92,7 +69,7 @@ function ConsumerUpload(props) {
     const index = e.target.value;
 
     const doc = files.filter((item, index2) => {
-      return index != index2;
+      return index !== index2;
     });
     setfile(doc);
   };
@@ -111,6 +88,7 @@ function ConsumerUpload(props) {
     }
     e.target.value = "";
   };
+
   const handleImage = (e) => {
     e.preventDefault();
     let input = document.createElement("input");
@@ -132,15 +110,17 @@ function ConsumerUpload(props) {
         imgfiles[i] = file;
 
         imgs.length === 0
-          ? setimgs([...imgfiles] || [])
+          ? setimgs([...imgfiles])
           : setimgs(imgs.concat([...imgfiles]));
+        // setimgs((imgs) => imgs.concat(imgfiles));
         let reader = new FileReader();
-
         reader.onload = () => {
           fileURLs[i] = reader.result;
           images.length === 0
             ? setimages([...fileURLs])
             : setimages(images.concat([...fileURLs]));
+
+          // setimages((imgs) => imgs.concat(fileURLs));
         };
 
         reader.readAsDataURL(file);

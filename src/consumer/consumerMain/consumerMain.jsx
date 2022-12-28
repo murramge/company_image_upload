@@ -23,7 +23,7 @@ const ConsumerMain = memo(({ Onbizinfo, infolist }) => {
   const bizinfo_uuid = String(bizinfo.uuid);
   const bizinfo_company = String(bizinfo.company_name);
   useEffect(() => {
-    bizInfo.map((item) => {
+    bizInfo.forEach((item) => {
       if (bizinfo_uuid == id) {
         setbizinfodata([
           {

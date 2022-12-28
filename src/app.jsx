@@ -24,12 +24,21 @@ const App = memo(({ recentRequest, bizcontent }) => {
   }, []);
 
   const bizdetail = useCallback((uuid) => {
-    bizcontent.contentdetail(uuid).then(
-      (item) => `${setstation(item.data)}${setimgs(
-        Array.from(item.data.images)
-      )}
-       ${setdocs(Array.from(item.data.docs))}`
-    );
+    (async () => {
+      const result = await bizcontent
+        .contentdetail(uuid)
+        .catch((error) => console.log(error));
+      setstation(result.data);
+      setimgs(Array.from(result.data.images));
+      setdocs(Array.from(result.data.docs));
+    })();
+  }, []);
+
+  const bizput = useCallback((formdata) => {
+    (async () => {
+      const result = await bizcontent.contentput(formdata);
+      console.log(result);
+    })();
   }, []);
 
   return (
@@ -40,7 +49,16 @@ const App = memo(({ recentRequest, bizcontent }) => {
             path="/:id"
             element={<ConsumerMain Onbizinfo={bizinfo} infolist={infolist} />}
           ></Route>
-          <Route path="/upload/:id" element={<ConsumerUpload />}></Route>
+          <Route
+            path="/upload/:id"
+            element={
+              <ConsumerUpload
+                Onbizput={bizput}
+                Onbizdetail={bizdetail}
+                Onstation={station}
+              />
+            }
+          ></Route>
           <Route
             path="/confirm/:id"
             element={

@@ -11,7 +11,6 @@ const ConsumerConfirm = memo(({ Onbizdetail, Onstation, Onimgs, Ondocs }) => {
   const [promotion, setPromotion] = useState();
   const [switchs, setswitchs] = useState("");
   const [idx, setindex] = useState();
-
   const [imgs, setimgs] = useState([]);
   const [docs, setdocs] = useState([]);
   const { id } = useParams();
@@ -25,15 +24,9 @@ const ConsumerConfirm = memo(({ Onbizdetail, Onstation, Onimgs, Ondocs }) => {
 
   useEffect(() => {
     setstation(Onstation);
-  }, [Onstation]);
-
-  useEffect(() => {
     setimgs(Onimgs);
-  }, [Onimgs]);
-
-  useEffect(() => {
     setdocs(Ondocs);
-  }, [Ondocs]);
+  }, [Onstation || Onimgs || Ondocs]);
 
   //modal part (팝업)
   const handleExit = () => {

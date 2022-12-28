@@ -18,6 +18,15 @@ class Bizcontent {
     });
     return response.data;
   }
+
+  async contentput(formdata) {
+    const response = await this.Bizcontent.post(`/putContent`, formdata, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response;
+  }
 }
 
 export default Bizcontent;
