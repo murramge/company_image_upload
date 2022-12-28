@@ -1,5 +1,6 @@
 import React from "react";
 import BcmanagerBar from "../bcmanagerBar/bcmanagerBar";
+import BcmanagerList from "../bcmanagerList/bcmanagerList";
 import BcmanagerSearchBar from "./bcmanagerSearchBar";
 const BcmanagerSearch = (props) => {
   return (

@@ -56,3 +56,6 @@ https://developer-talk.tistory.com/226
 
 동일값
 https://velog.io/@jjhstoday/JS-input-typefile-%EB%8F%99%EC%9D%BC-%EA%B0%92-%EC%97%85%EB%A1%9C%EB%93%9C%ED%95%98%EA%B8%B0
+
+api 모듈화
+https://velog.io/@yiyb0603/React%EC%97%90%EC%84%9C-axios-%EC%BB%A4%EC%8A%A4%ED%85%80%ED%95%98%EA%B8%B0

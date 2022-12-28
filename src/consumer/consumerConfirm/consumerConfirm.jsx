@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, memo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
 import axios from "axios";
 
-const ConsumerConfirm = (props) => {
+const ConsumerConfirm = memo(({ Onbizdetail, Onstation, Onimgs, Ondocs }) => {
   //upload 에서 보낸 api 받음
   const [station, setstation] = useState([]);
 
@@ -15,26 +15,25 @@ const ConsumerConfirm = (props) => {
   const [imgs, setimgs] = useState([]);
   const [docs, setdocs] = useState([]);
   const { id } = useParams();
+
+  useEffect(() => {
+    Onbizdetail(id);
+  }, []);
+
   const navigate = useNavigate();
   const imageRef = useRef("");
 
   useEffect(() => {
-    axios
-      .post("/api/bizContent/contentDetail", {
-        uuid: id,
-      })
-      .then((response) => response.data)
-      .then(
-        (item) =>
-          `${setstation(item.data)} 
-          )} ${setimgs(Array.from(item.data.images))} 
-          ${setdocs(Array.from(item.data.docs))}`
-      )
-      .catch((error) => console.log(error));
-  }, []);
+    setstation(Onstation);
+  }, [Onstation]);
 
-  console.log(station);
-  console.log(docs);
+  useEffect(() => {
+    setimgs(Onimgs);
+  }, [Onimgs]);
+
+  useEffect(() => {
+    setdocs(Ondocs);
+  }, [Ondocs]);
 
   //modal part (팝업)
   const handleExit = () => {
@@ -45,7 +44,7 @@ const ConsumerConfirm = (props) => {
     setindex(e.currentTarget.value);
     setModalOpen(true);
   };
-  console.log(idx);
+
   const closeModal = () => {
     setModalOpen(false);
   };
@@ -100,17 +99,7 @@ const ConsumerConfirm = (props) => {
       .delete(`/api/bizContent/deleteFile/A3200007/${idx}`)
       .then((response) => console.log(response));
 
-    axios
-      .post("/api/bizContent/contentDetail", {
-        uuid: id,
-      })
-      .then((response) => response.data)
-      .then(
-        (item) =>
-          `${setstation(item.data)} ${setimgs(Array.from(item.data.images))} `
-      )
-      .catch((error) => console.log(error));
-
+    Onbizdetail(id);
     setModalOpen(false);
   };
 
@@ -121,18 +110,7 @@ const ConsumerConfirm = (props) => {
       .delete(`/api/bizContent/deleteFile/A3200007/${idx}`)
       .then((response) => console.log(response));
 
-    axios
-      .post("/api/bizContent/contentDetail", {
-        uuid: id,
-      })
-      .then((response) => response.data)
-      .then(
-        (item) =>
-          `${setstation(item.data)} 
-           ${setdocs(Array.from(item.data.docs))} `
-      )
-      .catch((error) => console.log(error));
-
+    Onbizdetail(id);
     setModalOpen(false);
   };
 
@@ -377,6 +355,6 @@ const ConsumerConfirm = (props) => {
       </div>
     </>
   );
-};
+});
 
 export default ConsumerConfirm;

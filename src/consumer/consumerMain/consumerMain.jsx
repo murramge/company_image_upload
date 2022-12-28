@@ -1,23 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 
-function ConsumerMain(props) {
+const ConsumerMain = memo(({ Onbizinfo, infolist }) => {
   const [bizinfo, setbizinfo] = useState([]);
-  const [errorcode, seterrorcode] = useState();
   const { id } = useParams();
-  const config = {
-    method: "get",
-    url: `/api/bizContent/info/${id}`,
-    headers: {},
-  };
+  useEffect(() => {
+    Onbizinfo(id);
+  }, []);
 
   useEffect(() => {
-    axios(config)
-      .then((response) => response.data)
-      .then((item) => `${setbizinfo(item.data)} ${seterrorcode(item.code)}`)
-      .catch((error) => console.log(error));
-  }, []);
+    setbizinfo(infolist);
+  }, [infolist]);
 
   const [bizinfodata, setbizinfodata] = useState([]);
   const [expireddate, setexpireddate] = useState();
@@ -127,6 +120,6 @@ function ConsumerMain(props) {
       </div>
     </div>
   );
-}
+});
 
 export default ConsumerMain;
