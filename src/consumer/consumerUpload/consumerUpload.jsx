@@ -1,13 +1,26 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
 
-function ConsumerUpload({ Onbizdetail, Onstation, Onbizput }) {
-  //message 값 가져오려고 Ref 사용
+function ConsumerUpload({
+  handlebizDataUpdate,
+  bizdata,
+  handlebizPutdataUpdate,
+}) {
+  //비즈니스 message 값 가져오려고 Ref 사용
   const messageRef = useRef();
   const navigate = useNavigate();
 
-  const [station, setstation] = useState([]);
+  //비즈니스 message 없이 등록해도, 예전의 message가 출력 될 수 있게 data 불러옴
+  const [data, setdata] = useState([]);
+
+  useEffect(() => {
+    setdata(bizdata);
+  }, [bizdata]);
+
+  useEffect(() => {
+    handlebizDataUpdate(id);
+  }, []);
 
   //upload 할 때 이미지 보여지게 할때
   const [images, setimages] = useState([]);
@@ -20,14 +33,6 @@ function ConsumerUpload({ Onbizdetail, Onstation, Onbizput }) {
 
   const { id } = useParams();
 
-  useEffect(() => {
-    Onbizdetail(id);
-  }, []);
-
-  useEffect(() => {
-    setstation(Onstation);
-  }, [Onstation]);
-
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -36,17 +41,18 @@ function ConsumerUpload({ Onbizdetail, Onstation, Onbizput }) {
 
     formData.append(
       "businessMemo",
-      messageRef.current.value || station.businessMemo
+      messageRef.current.value || data.businessMemo
     );
 
     imgs.forEach((item) => formData.append("images", item));
     files.forEach((item) => formData.append("docs", item));
 
-    Onbizput(formData);
-    navigate(`/confirm/${id}`);
+    handlebizPutdataUpdate(formData, () => {
+      navigate(`/confirm/${id}`);
+    });
   };
 
-  const handleDelete = (e) => {
+  const handleimageDelete = (e) => {
     e.preventDefault();
     const index = e.target.value;
 
@@ -58,13 +64,11 @@ function ConsumerUpload({ Onbizdetail, Onstation, Onbizput }) {
       return index !== index2;
     });
 
-    console.log(image);
-    console.log(img);
     setimages(image);
     setimgs(img);
   };
 
-  const handleDeletid = (e) => {
+  const handleDocsDelete = (e) => {
     e.preventDefault();
     const index = e.target.value;
 
@@ -74,7 +78,7 @@ function ConsumerUpload({ Onbizdetail, Onstation, Onbizput }) {
     setfile(doc);
   };
 
-  const handleFileChange = (e) => {
+  const handleFileUpload = (e) => {
     const docsFileArr = e.target.files;
     let docsfiles = [];
     let file;
@@ -89,7 +93,7 @@ function ConsumerUpload({ Onbizdetail, Onstation, Onbizput }) {
     e.target.value = "";
   };
 
-  const handleImage = (e) => {
+  const handleImageUpload = (e) => {
     e.preventDefault();
     let input = document.createElement("input");
 
@@ -122,7 +126,6 @@ function ConsumerUpload({ Onbizdetail, Onstation, Onbizput }) {
 
           // setimages((imgs) => imgs.concat(fileURLs));
         };
-
         reader.readAsDataURL(file);
       }
       e.target.value = "";
@@ -134,18 +137,18 @@ function ConsumerUpload({ Onbizdetail, Onstation, Onbizput }) {
   const [submitmodalOpen, setsubmitModalOpen] = useState(false);
   const [imagemodalOpen, setimageModalOpen] = useState(false);
 
-  const submitopenModal = (e) => {
+  const handleSubmitOpenModal = (e) => {
     e.preventDefault();
     setsubmitModalOpen(true);
   };
-  const submitcloseModal = () => {
+  const handleSubmitCloseModal = () => {
     setsubmitModalOpen(false);
   };
-  const imageopenModal = (e) => {
+  const handleImageOpenModal = (e) => {
     e.preventDefault();
     setimageModalOpen(true);
   };
-  const imagecloseModal = () => {
+  const handleImageCloseModal = () => {
     setimageModalOpen(false);
   };
 
@@ -159,7 +162,7 @@ function ConsumerUpload({ Onbizdetail, Onstation, Onbizput }) {
         <div className="text-center bg-neutral-600  p-2 flex justify-between w-full fixed ">
           <i
             className="xi-arrow-left text-white text-xl pl-2 cursor-pointer	"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate(`/${id}`)}
           ></i>
           <span className=" text-white pt-px">업로드 하기</span>
           <div> </div>
@@ -173,14 +176,13 @@ function ConsumerUpload({ Onbizdetail, Onstation, Onbizput }) {
                 active:bg-neutral-500
                 focus:bg-neutral-700
                 "
-                onClick={imageopenModal}
+                onClick={handleImageOpenModal}
               >
                 <i className="xi-plus"> 이미지</i>
               </button>
-
               <Modal
                 open={imagemodalOpen}
-                close={imagecloseModal}
+                close={handleImageCloseModal}
                 header="작업을 선택하세요"
                 head="이미지 업로드"
               >
@@ -191,7 +193,7 @@ function ConsumerUpload({ Onbizdetail, Onstation, Onbizput }) {
                 active:bg-neutral-500
                 focus:bg-neutral-700
                 cursor-pointer"
-                    onClick={handleImage}
+                    onClick={handleImageUpload}
                   >
                     카메라 촬영
                   </button>
@@ -201,19 +203,18 @@ function ConsumerUpload({ Onbizdetail, Onstation, Onbizput }) {
                 active:bg-neutral-500
                 focus:bg-neutral-700
                 cursor-pointer"
-                    onClick={handleImage}
+                    onClick={handleImageUpload}
                   >
                     이미지 선택
                   </button>
                 </div>
               </Modal>
-
               <div className="grid grid-cols-3">
                 {images.map((image, index) => (
                   <div className="grid">
                     <button
                       value={index}
-                      onClick={handleDelete}
+                      onClick={handleimageDelete}
                       className="xi-close-square text-[30px] text-red-600 absolute"
                     ></button>
 
@@ -242,7 +243,7 @@ function ConsumerUpload({ Onbizdetail, Onstation, Onbizput }) {
                 name="file"
                 id="file"
                 multiple
-                onChange={handleFileChange}
+                onChange={handleFileUpload}
                 style={{ display: "none" }}
               />
               <div>
@@ -252,7 +253,7 @@ function ConsumerUpload({ Onbizdetail, Onstation, Onbizput }) {
                       <button
                         className="xi-close-circle-o text-[20px] text-red-600 "
                         value={index}
-                        onClick={handleDeletid}
+                        onClick={handleDocsDelete}
                       ></button>
                       <li key={file.name} className="list-none pt-2 mt-1">
                         {file.name}
@@ -283,14 +284,14 @@ function ConsumerUpload({ Onbizdetail, Onstation, Onbizput }) {
                 lg:w-[30vh]
                 xl:w-[40vh]
                 "
-                onClick={submitopenModal}
+                onClick={handleSubmitOpenModal}
               >
                 등록하기
               </button>
 
               <Modal
                 open={submitmodalOpen}
-                close={submitcloseModal}
+                close={handleSubmitCloseModal}
                 header="각 항목을 등록하시겠습니까?"
                 head="업로드 하기"
               >

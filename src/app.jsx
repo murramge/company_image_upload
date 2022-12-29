@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useEffect, memo } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ConsumerMain from "./consumer/consumerMain/consumerMain.jsx";
+import Consumererror from "./consumer/consumerMain/consumererror.jsx";
 import ConsumerUpload from "./consumer/consumerUpload/consumerUpload.jsx";
 import ConsumerConfirm from "./consumer/consumerConfirm/consumerConfirm.jsx";
 import BcmanagerMain from "./bcmanager/bcmanagerMain/bcmanagerMain.jsx";
@@ -9,9 +10,11 @@ import BcmanagerSearch from "./bcmanager/bcmanagerSearch/bcmanagerSearch.jsx";
 const App = memo(({ recentRequest, bizcontent }) => {
   const [recentRequestlist, setRecentRequestlist] = useState([]);
   const [infolist, setinfolist] = useState([]);
-  const [station, setstation] = useState([]);
+  const [bizdata, setdata] = useState([]);
   const [imgs, setimgs] = useState([]);
   const [docs, setdocs] = useState([]);
+  const [errorcode, seterrorcode] = useState([]);
+  const [errormessage, seterrormessage] = useState([]);
 
   useEffect(() => {
     recentRequest
@@ -19,25 +22,39 @@ const App = memo(({ recentRequest, bizcontent }) => {
       .then((item) => setRecentRequestlist(item.data.result));
   }, []);
 
-  const bizinfo = useCallback((uuid) => {
-    bizcontent.contentinfo(uuid).then((items) => setinfolist(items.data));
+  const bizinfoApiUpdate = useCallback((uuid) => {
+    (async () => {
+      const result = await bizcontent
+        .contentinfo(uuid)
+        .catch((error) => console.log(error));
+      setinfolist(result.data);
+      seterrorcode(result.code);
+      seterrormessage(result.message);
+    })();
   }, []);
 
-  const bizdetail = useCallback((uuid) => {
+  const bizdataApiUpdate = useCallback((uuid) => {
     (async () => {
       const result = await bizcontent
         .contentdetail(uuid)
         .catch((error) => console.log(error));
-      setstation(result.data);
+      setdata(result.data);
       setimgs(Array.from(result.data.images));
       setdocs(Array.from(result.data.docs));
     })();
   }, []);
 
-  const bizput = useCallback((formdata) => {
+  const bizputdataApiUpdate = useCallback((formdata, callback, switchs) => {
     (async () => {
       const result = await bizcontent.contentput(formdata);
-      console.log(result);
+      if (callback) {
+        callback();
+      }
+      if (switchs == "modify") {
+        alert("수정 되었습니다");
+      } else {
+        alert("업로드 되었습니다");
+      }
     })();
   }, []);
 
@@ -47,15 +64,29 @@ const App = memo(({ recentRequest, bizcontent }) => {
         <Routes>
           <Route
             path="/:id"
-            element={<ConsumerMain Onbizinfo={bizinfo} infolist={infolist} />}
+            element={
+              <ConsumerMain
+                handlebizInfoUpdate={bizinfoApiUpdate}
+                handlebizDataUpdate={bizdataApiUpdate}
+                infolist={infolist}
+                bizdata={bizdata}
+                errorcode={errorcode}
+              />
+            }
+          ></Route>
+          <Route
+            path="/error"
+            element={
+              <Consumererror errormessage={errormessage}></Consumererror>
+            }
           ></Route>
           <Route
             path="/upload/:id"
             element={
               <ConsumerUpload
-                Onbizput={bizput}
-                Onbizdetail={bizdetail}
-                Onstation={station}
+                handlebizPutdataUpdate={bizputdataApiUpdate}
+                handlebizDataUpdate={bizdataApiUpdate}
+                bizdata={bizdata}
               />
             }
           ></Route>
@@ -63,10 +94,11 @@ const App = memo(({ recentRequest, bizcontent }) => {
             path="/confirm/:id"
             element={
               <ConsumerConfirm
-                Onbizdetail={bizdetail}
-                Onstation={station}
-                Onimgs={imgs}
-                Ondocs={docs}
+                handlebizDataUpdate={bizdataApiUpdate}
+                bizdata={bizdata}
+                dataimgs={imgs}
+                datadocs={docs}
+                handlebizPutdataUpdate={bizputdataApiUpdate}
               />
             }
           ></Route>

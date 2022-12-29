@@ -9,6 +9,7 @@ class Bizcontent {
 
   async contentinfo(uuid) {
     const response = await this.Bizcontent.get(`/info/${uuid}`);
+
     return response.data;
   }
 
