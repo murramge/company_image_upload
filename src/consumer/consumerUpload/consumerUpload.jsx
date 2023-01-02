@@ -231,8 +231,8 @@ function ConsumerUpload({
           <div> </div>
         </div>
         <form>
-          <div className=" grid grid-rows-3 gap-10 lg:grid-cols-2 xl:grid-cols-2 lg:min-h-[100vh] xl:min-h-[120vh]  xl:place-content-center py-16 px-5 ">
-            <div className="bg-white p-4 rounded-md shadow-md ">
+          <div className="lg:grid-cols-2 xl:grid-cols-2 lg:min-h-[100vh] xl:min-h-[120vh]  xl:place-content-center py-16 px-5 ">
+            <div className="bg-white p-4 rounded-md shadow-md my-5 min-h-[30vh]">
               <button
                 className=" bg-neutral-500 text-white p-2 text-center rounded-md w-max  text-sm
                 hover:bg-neutral-700 hover:text-white
@@ -291,7 +291,7 @@ function ConsumerUpload({
                 ))}
               </div>
             </div>
-            <div className="bg-white p-4 rounded-md shadow-md">
+            <div className="bg-white p-4 rounded-md shadow-md my-5 min-h-[30vh]">
               <label
                 for="file"
                 className=" bg-neutral-500 text-white p-2 text-center rounded-md  text-sm
@@ -338,7 +338,7 @@ function ConsumerUpload({
                 ></textarea>
               </div>
             </div>
-            <div className=" place-self-center">
+            <div className=" place-self-center flex justify-center">
               <button
                 className=" bg-neutral-500 text-white p-3 m-5 rounded-md w-full
                 hover:bg-neutral-700 hover:text-white

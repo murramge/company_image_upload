@@ -17,8 +17,8 @@ const BcmanagerMain = ({ recentRequestList, recentUploadList }) => {
           </div>
         </div>
         <div className="w-full">
-          <div className="h-16">ddd</div>
-          <div className="h-8">ddd</div>
+          <div className="h-16 bg-sky-700"> </div>
+          <div className="h-8 bg-slate-700">ddd</div>
           <p className="text-[20px] my-3 py-2 bg-blue-500 text-white w-max px-3 rounded-md">
             1. 최근 요청 전송 리스트
           </p>
