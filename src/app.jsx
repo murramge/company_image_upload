@@ -172,7 +172,7 @@ function ManagerRouter(props) {
           />
         }
       ></Route>
-      <Route path="/view/:id" element={BcmanagerView}></Route>
+      <Route path="/view/:id" element={<BcmanagerView></BcmanagerView>}></Route>
     </Routes>
   );
 }

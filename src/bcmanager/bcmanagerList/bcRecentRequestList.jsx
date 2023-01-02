@@ -6,9 +6,12 @@ function BcRecentRequestList({ recentRequestList }) {
       <div>
         <ul>
           {recentRequestList.map((item, index) => (
-            <li>
+            <li className="p-3 ">
               {`${index + 1}. ${item.company_name}, ${item.categorys}`}
-              <br></br>-
+              <a className="px-6" href={`http://localhost:3000/manager`}>
+                {" "}
+                {`- http://localhost:3000/manager`}
+              </a>
             </li>
           ))}
         </ul>

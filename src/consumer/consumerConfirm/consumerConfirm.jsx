@@ -3,6 +3,25 @@ import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
 import axios from "axios";
 
+function DeleteButton(props) {
+  return (
+    <button
+      style={{
+        backgroundColor: "red",
+        display: "inline-block",
+        position: "absolute",
+        textAlign: "center",
+        width: 25,
+        height: 25,
+        cursor: "pointer",
+      }}
+      {...props}
+    >
+      <i style={{ color: "white", fontSize: "0.8rem" }} className="xi-close" />
+    </button>
+  );
+}
+
 const ConsumerConfirm = memo(
   ({
     handlebizDataUpdate,
@@ -291,12 +310,15 @@ const ConsumerConfirm = memo(
                         .map((image) => image.fileStorageId)
                         .map((image) => (
                           <div className="grid">
-                            <button
+                            {/* <button
                               value={image}
                               onClick={handleOpenModal}
                               className="xi-close-square object-cover text-[30px] bg-white text-red-600 absolute mt-[-10px] ml-[-10px]  p-0 border-0"
-                            ></button>
-
+                            ></button> */}
+                            <DeleteButton
+                              value={image}
+                              onClick={handleOpenModal}
+                            />
                             <Modal
                               open={modalOpen}
                               close={handleCloseModal}
