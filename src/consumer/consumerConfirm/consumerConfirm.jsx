@@ -473,7 +473,7 @@ const ConsumerConfirm = memo(
                       focus:text-violet-700
                     "
                             >
-                              <li className="list-none  p-1">
+                              <li className="list-none  p-1 text-left">
                                 {docs[index].originalFilename}
                               </li>
                             </button>

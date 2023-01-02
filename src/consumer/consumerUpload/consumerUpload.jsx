@@ -2,11 +2,23 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
 
-
 function DeleteButton(props) {
-  return <button style={{ backgroundColor: "red" ,display:"inline-block", position:"absolute", textAlign:"center", width:25,height:25, cursor:"pointer"}} {...props}>
-      <i style={{ color: "white", fontSize:"0.8rem", }} className="xi-close"/>
-  </button>
+  return (
+    <button
+      style={{
+        backgroundColor: "red",
+        display: "inline-block",
+        position: "absolute",
+        textAlign: "center",
+        width: 25,
+        height: 25,
+        cursor: "pointer",
+      }}
+      {...props}
+    >
+      <i style={{ color: "white", fontSize: "0.8rem" }} className="xi-close" />
+    </button>
+  );
 }
 
 function ConsumerUpload({
@@ -81,7 +93,7 @@ function ConsumerUpload({
   const handleDocsDelete = (e) => {
     e.preventDefault();
     const index = e.target.value;
-    
+
     const doc = files.filter((item, index2) => {
       return index != index2;
     });
@@ -103,13 +115,54 @@ function ConsumerUpload({
     e.target.value = "";
   };
 
-  const handleImageUpload = (e) => {
+  const handleCaptureImageUpload = (e) => {
     e.preventDefault();
     let input = document.createElement("input");
 
     input.type = "file";
     input.accept = "image/*";
     input.multiple = "multiple";
+    input.capture = "capture";
+    input.click();
+    input.onchange = function (e) {
+      console.log(e);
+      const imageFileArr = e.target.files;
+      console.log(imageFileArr);
+      let fileURLs = [];
+      let imgfiles = [];
+      let file;
+      let filesLength = imageFileArr.length > 10 ? 10 : imageFileArr.length;
+      for (let i = 0; i < filesLength; i++) {
+        file = imageFileArr[i];
+        imgfiles[i] = file;
+
+        imgs.length === 0
+          ? setimgs([...imgfiles])
+          : setimgs(imgs.concat([...imgfiles]));
+        // setimgs((imgs) => imgs.concat(imgfiles));
+        let reader = new FileReader();
+        reader.onload = () => {
+          fileURLs[i] = reader.result;
+          images.length === 0
+            ? setimages([...fileURLs])
+            : setimages(images.concat([...fileURLs]));
+
+          // setimages((imgs) => imgs.concat(fileURLs));
+        };
+        reader.readAsDataURL(file);
+      }
+      e.target.value = "";
+    };
+    setimageModalOpen(false);
+  };
+  const handleGalleryImageUpload = (e) => {
+    e.preventDefault();
+    let input = document.createElement("input");
+
+    input.type = "file";
+    input.accept = "image/*";
+    input.multiple = "multiple";
+
     input.click();
     input.onchange = function (e) {
       console.log(e);
@@ -169,7 +222,7 @@ function ConsumerUpload({
   return (
     <>
       <div className="bg-[url(bg.png)] max-h-screen">
-        <div className="text-center bg-neutral-600  z-10 p-3  flex justify-between w-full fixed ">
+        <div className="text-center bg-neutral-600  z-10 p-3  flex justify-between w-screen fixed ">
           <i
             className="xi-arrow-left text-white text-xl pl-2 cursor-pointer	"
             onClick={() => navigate(`/${id}`)}
@@ -181,7 +234,7 @@ function ConsumerUpload({
           <div className=" grid grid-rows-3 gap-10 lg:grid-cols-2 xl:grid-cols-2 lg:min-h-[100vh] xl:min-h-[120vh]  xl:place-content-center py-16 px-5 ">
             <div className="bg-white p-4 rounded-md shadow-md ">
               <button
-                className=" bg-neutral-500 text-white p-2 text-center rounded-md w-max mx-auto text-sm
+                className=" bg-neutral-500 text-white p-2 text-center rounded-md w-max  text-sm
                 hover:bg-neutral-700 hover:text-white
                 active:bg-neutral-500
                 focus:bg-neutral-700
@@ -204,7 +257,7 @@ function ConsumerUpload({
                 active:bg-neutral-500
                 focus:bg-neutral-700
                 cursor-pointer "
-                    onClick={handleImageUpload}
+                    onClick={handleCaptureImageUpload}
                   >
                     카메라 촬영
                   </button>
@@ -214,13 +267,13 @@ function ConsumerUpload({
                 active:bg-neutral-500
                 focus:bg-neutral-700
                 cursor-pointer"
-                    onClick={handleImageUpload}
+                    onClick={handleGalleryImageUpload}
                   >
                     이미지 선택
                   </button>
                 </div>
               </Modal>
-              <div className="grid grid-cols-3 mt-[20px]">
+              <div className="grid grid-cols-3 mt-[20px] w-full">
                 {images.map((image, index) => (
                   <div className="grid ">
                     {/* <button
@@ -228,7 +281,7 @@ function ConsumerUpload({
                       onClick={handleimageDelete}
                       className="xi-close-square object-cover text-[30px] bg-white text-red-600 absolute mt-[-10px] ml-[-10px]  p-0 border-0"
                     ></button> */}
-                        <DeleteButton value={index} onClick={handleimageDelete}/>
+                    <DeleteButton value={index} onClick={handleimageDelete} />
                     <img
                       value={index}
                       src={image}
@@ -238,10 +291,10 @@ function ConsumerUpload({
                 ))}
               </div>
             </div>
-            <div className="bg-white p-4 rounded-md shadow-md ">
+            <div className="bg-white p-4 rounded-md shadow-md">
               <label
                 for="file"
-                className=" bg-neutral-500 text-white p-2 text-center rounded-md w-max mx-auto text-sm
+                className=" bg-neutral-500 text-white p-2 text-center rounded-md  text-sm
                 hover:bg-neutral-700 hover:text-white
                 active:bg-neutral-500
                 focus:bg-neutral-700
@@ -257,22 +310,22 @@ function ConsumerUpload({
                 onChange={handleFileUpload}
                 style={{ display: "none" }}
               />
-              <div className="mt-3">
-                {files.map((file, index) => (
-                  <>
-                    <div className="flex">
-                      <button
-                        className="xi-close-circle-o text-[20px] pt-3 text-red-600 "
-                        value={index}
-                        onClick={handleDocsDelete}
-                      ></button>
-                      <li key={file.name} className="list-none pt-2 pl-2 mt-1">
-                        {file.name}
-                      </li>
-                    </div>
-                  </>
-                ))}
-              </div>
+
+              {files.map((file, index) => (
+                <>
+                  <div className="flex ">
+                    <button
+                      className="xi-close-circle-o text-[20px] text-red-600 pt-3 "
+                      value={index}
+                      onClick={handleDocsDelete}
+                    ></button>
+
+                    <li key={file.name} className="list-none pt-2 pl-2 mt-1">
+                      {file.name}
+                    </li>
+                  </div>
+                </>
+              ))}
             </div>
             <div className="bg-white  p-4 rounded-md shadow-md ">
               <p className=" bg-neutral-500  text-white p-2 mb-2 rounded-md text-center text-sm">
