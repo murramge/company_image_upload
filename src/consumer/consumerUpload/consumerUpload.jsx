@@ -21,6 +21,10 @@ function DeleteButton(props) {
   );
 }
 
+function Spinner(props) {
+  return <i className="xi-spinner-1 xi-spin"></i>;
+}
+
 function ConsumerUpload({
   handlebizDataUpdate,
   bizdata,
@@ -66,6 +70,7 @@ function ConsumerUpload({
     imgs.forEach((item) => formData.append("images", item));
     files.forEach((item) => formData.append("docs", item));
 
+    console.log(handlebizPutdataUpdate);
     handlebizPutdataUpdate(formData, () => {
       navigate(`/${id}/confirm`);
     });
@@ -171,11 +176,10 @@ function ConsumerUpload({
       let fileURLs = [];
       let imgfiles = [];
       let file;
-      let filesLength = imageFileArr.length > 10 ? 10 : imageFileArr.length;
+      let filesLength = imageFileArr.length;
       for (let i = 0; i < filesLength; i++) {
         file = imageFileArr[i];
         imgfiles[i] = file;
-
         imgs.length === 0
           ? setimgs([...imgfiles])
           : setimgs(imgs.concat([...imgfiles]));
@@ -186,7 +190,6 @@ function ConsumerUpload({
           images.length === 0
             ? setimages([...fileURLs])
             : setimages(images.concat([...fileURLs]));
-
           // setimages((imgs) => imgs.concat(fileURLs));
         };
         reader.readAsDataURL(file);

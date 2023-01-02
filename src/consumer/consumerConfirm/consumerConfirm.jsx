@@ -164,8 +164,6 @@ const ConsumerConfirm = memo(
     };
 
     const handleDocsDownload = (e) => {
-      console.log(e);
-      console.log(docs);
       // const filename = e.currentTarget.innerText;
       const fileid = e.currentTarget.value;
       const filter = docs.filter((item, index) => item.fileStorageId == fileid);

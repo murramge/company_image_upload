@@ -8,7 +8,7 @@ function BcmanagerHeader(props) {
 
   return (
     <>
-      <div className="h-14 w-full bg-sky-800 text-white text-[26px] p-1 ">
+      <div className="h-14 w-full bg-sky-800 text-white text-[26px] p-2">
         ADMIN
       </div>
       <div className="h-8 w-full bg-slate-900 text-white p-1">

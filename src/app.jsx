@@ -131,6 +131,7 @@ function ManagerRouter(props) {
   const [recentRequestlist, setRecentRequestlist] = useState([]);
   const [recentUploadlist, setRecentUploadlist] = useState([]);
   const [searchlist, setSearchlist] = useState([]);
+
   useEffect(() => {
     recentRequest
       .recentrequest()
