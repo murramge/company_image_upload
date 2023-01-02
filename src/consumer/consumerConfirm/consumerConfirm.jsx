@@ -15,7 +15,7 @@ const ConsumerConfirm = memo(
     const [data, setdata] = useState([]);
 
     const [promotion, setPromotion] = useState();
-    const [switchs, setswitchs] = useState("");
+    const [switchs, setswitchs] = useState("image");
     const [fileid, setfileid] = useState();
     const [imgs, setimgs] = useState([]);
     const [docs, setdocs] = useState([]);
@@ -210,14 +210,18 @@ const ConsumerConfirm = memo(
           <span className=" text-white pt-px">등록 내역 확인 및 관리</span>
           <div> </div>
         </div>
-        <div className="bg-[url(bg.png)] max-h-screen">
+        <div className="bg-[url(bg.png)] h-screen">
           <div></div>
-          <div className="grid grid-cols-3 w-max pl-6 lg:pl-24">
+          <div className="grid grid-cols-3 gap-1 w-max pt-6 px-3 xl:px-20">
             <div className="flex justify-center">
               <button
-                className=" m-5 text-white p-3 text-center rounded-xl w-24 mx-auto border-neutral-200 border
-            hover:bg-neutral-600 hover:text-white
-            focus:bg-neutral-700 focus:text-white"
+                className={`${
+                  switchs == "image"
+                    ? " bg-white text-black  "
+                    : "bg-neutral-600"
+                } 	text-white p-3 text-center w-24 mx-auto 
+                hover:bg-neutral-600 hover:text-white
+            focus:bg-white focus:text-black focus:border focus:border-white`}
                 onClick={handleImageMenuClick}
                 id="imgclick"
               >
@@ -226,10 +230,13 @@ const ConsumerConfirm = memo(
             </div>
             <div className="flex justify-center">
               <button
-                className="m-5  text-white p-3 text-center rounded-xl w-24 mx-auto border-neutral-200 border
-              hover:bg-neutral-600 hover:text-white
-              focus:bg-neutral-700 focus:text-white
-            "
+                className={`${
+                  switchs == "docs"
+                    ? " bg-white text-black "
+                    : "bg-neutral-600 "
+                } bg-netural-600 text-white p-3 text-center w-24 mx-auto 
+                hover:bg-neutral-600 hover:text-white
+              focus:bg-white focus:text-black focus:border focus:border-white`}
                 onClick={handleDocsMenuClick}
               >
                 문서
@@ -237,24 +244,27 @@ const ConsumerConfirm = memo(
             </div>
             <div className="flex justify-center">
               <button
-                className="m-5 text-white text-center rounded-xl w-24 mx-auto  border-neutral-200 border
-              hover:bg-neutral-600 hover:text-white
-              focus:bg-neutral-700 focus:text-white
-            "
+                className={`${
+                  switchs == "promotion"
+                    ? "bg-white text-black"
+                    : "bg-neutral-600 "
+                }text-white p-3 text-center  w-24 mx-auto 
+            hover:bg-neutral-600 hover:text-white
+            focus:bg-white focus:text-black focus:border focus:border-white`}
                 onClick={handleMessageMenuClick}
               >
                 홍보 문구
               </button>
             </div>
           </div>
-          <div className="p-5 xl:px-20 xl:py-5">
-            <div className="bg-white sm:bg-whit p-6 rounded-3xl shadow-xl min-h-[50vh]">
+          <div className="  h-screen px-3 xl:px-20">
+            <div className="bg-white  p-6 rounded-b-lg shadow-md min-h-[50vh]">
               {switchs == "promotion" && (
                 <>
                   <textarea
                     value={promotion}
                     onChange={handleMessageonChange}
-                    className="block border pb-10 w-full min-h-[30vh] border-neutral-300"
+                    className="block border pb-10 w-full min-h-[30vh] border-neutral-300 p-2"
                   ></textarea>
                   <div className=" flex justify-center  ">
                     <button
@@ -275,63 +285,65 @@ const ConsumerConfirm = memo(
               )}
               {switchs == "image" && (
                 <>
-                  <div className="grid grid-cols-3 lg:grid-cols-6">
-                    {imgs
-                      .map((image) => image.fileStorageId)
-                      .map((image) => (
-                        <div className="grid">
-                          <button
-                            value={image}
-                            onClick={handleOpenModal}
-                            className="xi-close-square text-[30px] text-red-600 absolute"
-                          ></button>
+                  <div className="min-h-[30vh]">
+                    <div className="grid grid-cols-3 lg:grid-cols-6">
+                      {imgs
+                        .map((image) => image.fileStorageId)
+                        .map((image) => (
+                          <div className="grid">
+                            <button
+                              value={image}
+                              onClick={handleOpenModal}
+                              className="xi-close-square object-cover text-[30px] bg-white text-red-600 absolute mt-[-10px] ml-[-10px]  p-0 border-0"
+                            ></button>
 
-                          <Modal
-                            open={modalOpen}
-                            close={handleCloseModal}
-                            header={
-                              <p>
-                                해당 이미지를 삭제하시겠습니까? <br></br> (삭제
-                                시 복구 불가능)
-                              </p>
-                            }
-                            head="이미지 삭제"
-                          >
-                            <div className="flex justify-end">
-                              <div className="w-max px-1">
-                                <button
-                                  value={image}
-                                  onClick={handleExit}
-                                  className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full text-sm
+                            <Modal
+                              open={modalOpen}
+                              close={handleCloseModal}
+                              header={
+                                <p>
+                                  해당 이미지를 삭제하시겠습니까? <br></br>{" "}
+                                  (삭제 시 복구 불가능)
+                                </p>
+                              }
+                              head="이미지 삭제"
+                            >
+                              <div className="flex justify-end">
+                                <div className="w-max px-1">
+                                  <button
+                                    value={image}
+                                    onClick={handleExit}
+                                    className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full text-sm
                               hover:bg-neutral-700 hover:text-white
                               active:bg-neutral-500
                               focus:bg-neutral-700"
-                                >
-                                  취소
-                                </button>
-                              </div>
-                              <div className="w-max">
-                                <button
-                                  value={image}
-                                  onClick={handleDataDelete}
-                                  className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full  text-sm
+                                  >
+                                    취소
+                                  </button>
+                                </div>
+                                <div className="w-max">
+                                  <button
+                                    value={image}
+                                    onClick={handleDataDelete}
+                                    className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full  text-sm
                               hover:bg-neutral-700 hover:text-white
                               active:bg-neutral-500
                               focus:bg-neutral-700"
-                                >
-                                  확인
-                                </button>
+                                  >
+                                    확인
+                                  </button>
+                                </div>
                               </div>
-                            </div>
-                          </Modal>
+                            </Modal>
 
-                          <img
-                            value={image}
-                            src={`/api/bizContent/preview/${image}`}
-                            className="rounded-xl p-1 "
-                          ></img>
-                        </div>
-                      ))}
+                            <img
+                              value={image}
+                              src={`/api/bizContent/preview/${image}`}
+                              className=" p-1 object-cover h-[100%] w-[100%] "
+                            ></img>
+                          </div>
+                        ))}
+                    </div>
                   </div>
                   <div className="flex justify-center">
                     <button
@@ -350,26 +362,26 @@ const ConsumerConfirm = memo(
                     <Modal
                       open={imagemodalOpen}
                       close={handleImageCloseModal}
-                      header="작업을 선택하세요"
+                      notmain="notmain"
                       head="이미지 업로드"
                     >
                       <div className="flex justify-end">
                         <button
-                          className="bg-neutral-500 text-white p-2 text-center rounded-xl w-max text-sm
-                hover:bg-neutral-700 hover:text-white
-                active:bg-neutral-500
-                focus:bg-neutral-700
-                cursor-pointer"
+                          className="bg-neutral-500 text-white p-3 m-1 text-center rounded-md w-max text-sm
+                           hover:bg-neutral-700 hover:text-white
+                           active:bg-neutral-500
+                           focus:bg-neutral-700
+                           cursor-pointer "
                           onClick={handlePutImage}
                         >
                           카메라 촬영
                         </button>
                         <button
-                          className="bg-neutral-500 text-white p-2 text-center rounded-xl w-max text-sm
-                hover:bg-neutral-700 hover:text-white
-                active:bg-neutral-500
-                focus:bg-neutral-700
-                cursor-pointer"
+                          className="bg-neutral-500 text-white p-2 m-1 text-center rounded-md w-max text-sm
+                      hover:bg-neutral-700 hover:text-white
+                      active:bg-neutral-500
+                      focus:bg-neutral-700
+                      cursor-pointer"
                           onClick={handlePutImage}
                         >
                           이미지 선택
@@ -381,69 +393,71 @@ const ConsumerConfirm = memo(
               )}
               {switchs == "docs" && (
                 <>
-                  <div className="grid lg:grid-cols-3">
-                    {docs
-                      .map((doc) => doc.fileStorageId)
-                      .map((item, index) => (
-                        <div className="flex">
-                          <button
-                            value={item}
-                            onClick={handleOpenModal}
-                            className="xi-close-circle-o text-[20px] text-red-600 "
-                          ></button>
-                          <Modal
-                            open={modalOpen}
-                            close={handleCloseModal}
-                            header={
-                              <p>
-                                해당 문서를 삭제하시겠습니까? <br></br> (삭제 시
-                                복구 불가능)
-                              </p>
-                            }
-                            head="문서 삭제"
-                          >
-                            <div className="flex justify-end">
-                              <div className="w-max px-1">
-                                <button
-                                  value={item}
-                                  onClick={handleExit}
-                                  className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full text-sm
+                  <div className="min-h-[30vh]">
+                    <div className="grid lg:grid-cols-3">
+                      {docs
+                        .map((doc) => doc.fileStorageId)
+                        .map((item, index) => (
+                          <div className="flex">
+                            <button
+                              value={item}
+                              onClick={handleOpenModal}
+                              className="xi-close-circle-o text-[20px] text-red-600 "
+                            ></button>
+                            <Modal
+                              open={modalOpen}
+                              close={handleCloseModal}
+                              header={
+                                <p>
+                                  해당 문서를 삭제하시겠습니까? <br></br> (삭제
+                                  시 복구 불가능)
+                                </p>
+                              }
+                              head="문서 삭제"
+                            >
+                              <div className="flex justify-end">
+                                <div className="w-max px-1">
+                                  <button
+                                    value={item}
+                                    onClick={handleExit}
+                                    className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full text-sm
                               hover:bg-neutral-700 hover:text-white
                               active:bg-neutral-500
                               focus:bg-neutral-700"
-                                >
-                                  취소
-                                </button>
-                              </div>
-                              <div className="w-max">
-                                <button
-                                  value={item}
-                                  onClick={handleDataDelete}
-                                  className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full  text-sm
+                                  >
+                                    취소
+                                  </button>
+                                </div>
+                                <div className="w-max">
+                                  <button
+                                    value={item}
+                                    onClick={handleDataDelete}
+                                    className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full  text-sm
                               hover:bg-neutral-700 hover:text-white
                               active:bg-neutral-500
                               focus:bg-neutral-700"
-                                >
-                                  확인
-                                </button>
+                                  >
+                                    확인
+                                  </button>
+                                </div>
                               </div>
-                            </div>
-                          </Modal>
+                            </Modal>
 
-                          <button
-                            value={item}
-                            onClick={handleDocsDownload}
-                            className="text-blue-500
+                            <button
+                              value={item}
+                              onClick={handleDocsDownload}
+                              className="text-blue-500
                       active:text-violet-700
                       focus:text-violet-700
                     "
-                          >
-                            <li className="list-none  p-1">
-                              {docs[index].originalFilename}
-                            </li>
-                          </button>
-                        </div>
-                      ))}
+                            >
+                              <li className="list-none  p-1">
+                                {docs[index].originalFilename}
+                              </li>
+                            </button>
+                          </div>
+                        ))}
+                    </div>
                   </div>
                   <div className="flex justify-center">
                     <button

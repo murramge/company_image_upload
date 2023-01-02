@@ -8,7 +8,11 @@
   z-index: 99;
   background-color: rgba(0, 0, 0, 0.6);
 }
-
+.modal button {
+  outline: none;
+  cursor: pointer;
+  border: 0;
+}
 .modal > section {
   width: 90%;
   max-width: 450px;
@@ -23,19 +27,27 @@
   position: relative;
   padding: 16px 64px 16px 16px;
   background-color: #f1f1f1;
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: 700;
+}
+.modal > section > header > div {
+  display: flex;
+  justify-content: space-between;
 }
 .modal > section > header button {
   position: absolute;
   top: 15px;
   right: 15px;
-  width: 30px;
+  width: 40px;
+  height: 40px;
   font-size: 21px;
   font-weight: 700;
   text-align: center;
   color: #999;
   background-color: transparent;
+  bottom: px;
+}
+.xi-close {
+  padding-bottom: 15px;
 }
 .modal > section > main {
   padding: 16px;

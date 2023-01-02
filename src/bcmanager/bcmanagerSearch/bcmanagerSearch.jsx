@@ -10,8 +10,12 @@ const BcmanagerSearch = ({ bizdataSearchCompont, searchlist }) => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
     bizdataSearchCompont(searchvalue);
+  };
+  const handleOnKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
   };
 
   return (
@@ -24,7 +28,13 @@ const BcmanagerSearch = ({ bizdataSearchCompont, searchlist }) => {
           </div>
           <div className="flex justify-center">
             <p>검색어</p>
-            <input ref={searchRef} onChange={handleSearchValue}></input>
+            <input
+              type="text"
+              placeholder="검색어를 입력하세요"
+              ref={searchRef}
+              onChange={handleSearchValue}
+              onKeyDown={handleOnKeyPress}
+            ></input>
             <button onClick={handleSubmit}>검색하기</button>
           </div>
           <ul>

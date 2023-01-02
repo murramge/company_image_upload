@@ -2,7 +2,7 @@ import React from "react";
 import "./modal.css";
 
 function Modal(props) {
-  const { open, close, header, head } = props;
+  const { open, close, header, head, notmain } = props;
 
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
@@ -10,12 +10,14 @@ function Modal(props) {
       {open ? (
         <section>
           <header>
-            {head}
-            <button className="close" onClick={close}>
-              &times;
-            </button>
+            <div>
+              <div>{head}</div>
+              <button className="close" onClick={close}>
+                <i className="xi-close"></i>
+              </button>
+            </div>
           </header>
-          <main>{header}</main>
+          {notmain !== "notmain" && <main>{header}</main>}
           <footer>{props.children}</footer>
         </section>
       ) : null}

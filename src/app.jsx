@@ -1,155 +1,208 @@
-import React, { useCallback, useState, useEffect, memo } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, {
+  useCallback,
+  useState,
+  useEffect,
+  memo,
+  useContext,
+} from "react";
+import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
 import ConsumerMain from "./consumer/consumerMain/consumerMain.jsx";
 import Consumererror from "./consumer/consumerMain/consumererror.jsx";
 import ConsumerUpload from "./consumer/consumerUpload/consumerUpload.jsx";
 import ConsumerConfirm from "./consumer/consumerConfirm/consumerConfirm.jsx";
 import BcmanagerMain from "./bcmanager/bcmanagerMain/bcmanagerMain.jsx";
 import BcmanagerSearch from "./bcmanager/bcmanagerSearch/bcmanagerSearch.jsx";
+import BcmanagerView from "./bcmanager/bcmanagerView/bcmanagerView.jsx";
 
-const App = memo(
-  ({ recentRequest, bizcontent, recentUpload, searchCompany }) => {
-    const [recentRequestlist, setRecentRequestlist] = useState([]);
-    const [recentUploadlist, setRecentUploadlist] = useState([]);
-    const [searchlist, setSearchlist] = useState([]);
+const App = memo(({ bizcontent, infoList }) => {
+  const [infolist, setinfolist] = useState(infoList);
+  const [bizdata, setdata] = useState([]);
+  const [imgs, setimgs] = useState([]);
+  const [docs, setdocs] = useState([]);
+  const [errorcode, seterrorcode] = useState([]);
+  const { setErrorMessage } = useContext(ErrorContext);
 
-    const [infolist, setinfolist] = useState([]);
-    const [bizdata, setdata] = useState([]);
-    const [imgs, setimgs] = useState([]);
-    const [docs, setdocs] = useState([]);
-    const [errorcode, seterrorcode] = useState([]);
-    const [errormessage, seterrormessage] = useState([]);
+  const bizinfoApiUpdate = useCallback((uuid) => {
+    (async () => {
+      const result = await bizcontent
+        .contentinfo(uuid)
+        .catch((error) => console.log(error));
+      setinfolist(result.data);
+      seterrorcode(result.code);
+      setErrorMessage(result.message);
+    })();
+  }, []);
 
-    //consumer 페이지
+  const bizdataApiUpdate = useCallback((uuid) => {
+    (async () => {
+      const result = await bizcontent
+        .contentdetail(uuid)
+        .catch((error) => console.log(error));
+      setdata(result.data);
+      setimgs(Array.from(result.data.images));
+      setdocs(Array.from(result.data.docs));
+    })();
+  }, []);
 
-    const bizinfoApiUpdate = useCallback((uuid) => {
-      (async () => {
-        const result = await bizcontent
-          .contentinfo(uuid)
-          .catch((error) => console.log(error));
-        setinfolist(result.data);
-        seterrorcode(result.code);
-        seterrormessage(result.message);
-      })();
-    }, []);
+  const bizputdataApiUpdate = useCallback((formdata, callback, switchs) => {
+    (async () => {
+      const result = await bizcontent.contentput(formdata);
+      if (callback) {
+        callback();
+      }
+      if (switchs == "modify") {
+        alert("수정 되었습니다");
+      } else {
+        alert("업로드 되었습니다");
+      }
+    })();
+  }, []);
 
-    const bizdataApiUpdate = useCallback((uuid) => {
-      (async () => {
-        const result = await bizcontent
-          .contentdetail(uuid)
-          .catch((error) => console.log(error));
-        setdata(result.data);
-        setimgs(Array.from(result.data.images));
-        setdocs(Array.from(result.data.docs));
-      })();
-    }, []);
+  return (
+    <>
+      <Routes>
+        <Route
+          path=""
+          element={
+            <ConsumerMain
+              handlebizInfoUpdate={bizinfoApiUpdate}
+              handlebizDataUpdate={bizdataApiUpdate}
+              infolist={infolist}
+              bizdata={bizdata}
+              errorcode={errorcode}
+            ></ConsumerMain>
+          }
+        />
 
-    const bizdataSearchCompony = useCallback((searchvalue) => {
-      (async () => {
-        const result = await searchCompany
-          .searchcompony(searchvalue)
-          .catch((error) => console.log(error));
-        setSearchlist(result.data.result);
-        console.log(result.data.result);
-      })();
-    }, []);
+        <Route
+          path="/upload"
+          element={
+            <ConsumerUpload
+              handlebizPutdataUpdate={bizputdataApiUpdate}
+              handlebizDataUpdate={bizdataApiUpdate}
+              bizdata={bizdata}
+            />
+          }
+        ></Route>
+        <Route
+          path="/confirm"
+          element={
+            <ConsumerConfirm
+              handlebizDataUpdate={bizdataApiUpdate}
+              bizdata={bizdata}
+              dataimgs={imgs}
+              datadocs={docs}
+              handlebizPutdataUpdate={bizputdataApiUpdate}
+            />
+          }
+        ></Route>
+      </Routes>
+    </>
+  );
+});
 
-    const bizputdataApiUpdate = useCallback((formdata, callback, switchs) => {
-      (async () => {
-        const result = await bizcontent.contentput(formdata);
-        if (callback) {
-          callback();
+const UploadAppLoader = (props) => {
+  const [infoList, setInfoList] = useState();
+  const { id } = useParams();
+  const { setErrorMessage } = useContext(ErrorContext);
+
+  useEffect(() => {
+    (async () => {
+      const result = await props.bizcontent
+        .contentinfo(id)
+        .catch((error) => console.log(error));
+
+      if (result.message) {
+        setErrorMessage(result.message);
+        return;
+      }
+      setInfoList(result.data);
+    })();
+  }, []);
+
+  return <>{infoList && <App {...props} infoList={infoList} />}</>;
+};
+
+const ErrorContext = React.createContext();
+
+function ManagerRouter(props) {
+  const { recentRequest, recentUpload, searchCompany } = props;
+
+  const [recentRequestlist, setRecentRequestlist] = useState([]);
+  const [recentUploadlist, setRecentUploadlist] = useState([]);
+  const [searchlist, setSearchlist] = useState([]);
+  useEffect(() => {
+    recentRequest
+      .recentrequest()
+      .then((item) => setRecentRequestlist(item.data.result));
+  }, []);
+
+  useEffect(() => {
+    recentUpload
+      .recentupload()
+      .then((item) => setRecentUploadlist(item.data.result));
+  });
+  const bizdataSearchCompony = useCallback((searchvalue) => {
+    (async () => {
+      const result = await searchCompany
+        .searchcompony(searchvalue)
+        .catch((error) => console.log(error));
+      setSearchlist(result.data.result);
+      console.log(result.data.result);
+    })();
+  }, []);
+
+  return (
+    <Routes>
+      <Route
+        path=""
+        element={
+          <BcmanagerMain
+            recentRequestList={recentRequestlist}
+            recentUploadList={recentUploadlist}
+          />
         }
-        if (switchs == "modify") {
-          alert("수정 되었습니다");
-        } else {
-          alert("업로드 되었습니다");
+      ></Route>
+      <Route
+        path="/search"
+        element={
+          <BcmanagerSearch
+            bizdataSearchCompont={bizdataSearchCompony}
+            searchlist={searchlist}
+          />
         }
-      })();
-    }, []);
+      ></Route>
+      <Route path="/view/:id" element={BcmanagerView}></Route>
+    </Routes>
+  );
+}
 
-    //관리자 page
-    useEffect(() => {
-      recentRequest
-        .recentrequest()
-        .then((item) => setRecentRequestlist(item.data.result));
-    }, []);
+function MainRouter(props) {
+  const [errormessage, setErrorMessage] = useState();
 
-    useEffect(() => {
-      recentUpload
-        .recentupload()
-        .then((item) => setRecentUploadlist(item.data.result));
-    });
-
-    return (
-      <>
+  return (
+    <>
+      {errormessage && (
+        <Consumererror errormessage={errormessage}></Consumererror>
+      )}
+      {!errormessage && (
         <BrowserRouter>
-          <Routes>
-            <Route
-              path="/:id"
-              element={
-                <ConsumerMain
-                  handlebizInfoUpdate={bizinfoApiUpdate}
-                  handlebizDataUpdate={bizdataApiUpdate}
-                  infolist={infolist}
-                  bizdata={bizdata}
-                  errorcode={errorcode}
-                />
-              }
-            ></Route>
-            <Route
-              path="/error"
-              element={
-                <Consumererror errormessage={errormessage}></Consumererror>
-              }
-            ></Route>
-            <Route
-              path="/upload/:id"
-              element={
-                <ConsumerUpload
-                  handlebizPutdataUpdate={bizputdataApiUpdate}
-                  handlebizDataUpdate={bizdataApiUpdate}
-                  bizdata={bizdata}
-                />
-              }
-            ></Route>
-            <Route
-              path="/confirm/:id"
-              element={
-                <ConsumerConfirm
-                  handlebizDataUpdate={bizdataApiUpdate}
-                  bizdata={bizdata}
-                  dataimgs={imgs}
-                  datadocs={docs}
-                  handlebizPutdataUpdate={bizputdataApiUpdate}
-                />
-              }
-            ></Route>
-
-            <Route
-              path="/manager/:id"
-              element={
-                <BcmanagerMain
-                  recentRequestList={recentRequestlist}
-                  recentUploadList={recentUploadlist}
-                />
-              }
-            ></Route>
-            <Route
-              path="/manager/search/:id"
-              element={
-                <BcmanagerSearch
-                  bizdataSearchCompont={bizdataSearchCompony}
-                  searchlist={searchlist}
-                />
-              }
-            ></Route>
-            <Route path="/view/:id"></Route>
-          </Routes>
+          <ErrorContext.Provider value={{ setErrorMessage }}>
+            <Routes>
+              <Route
+                path="/manager/*"
+                element={<ManagerRouter {...props} />}
+              ></Route>
+              <Route
+                path="/:id/*"
+                element={<UploadAppLoader {...props} />}
+              ></Route>
+            </Routes>
+          </ErrorContext.Provider>
         </BrowserRouter>
-      </>
-    );
-  }
-);
+      )}
+    </>
+  );
+}
 
-export default App;
+export default MainRouter;

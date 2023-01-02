@@ -48,7 +48,7 @@ function ConsumerUpload({
     files.forEach((item) => formData.append("docs", item));
 
     handlebizPutdataUpdate(formData, () => {
-      navigate(`/confirm/${id}`);
+      navigate(`/${id}/confirm`);
     });
   };
 
@@ -57,12 +57,14 @@ function ConsumerUpload({
     const index = e.target.value;
 
     const image = images.filter((item, index2) => {
-      return index !== index2;
+      return index != index2;
     });
 
     const img = imgs.filter((item, index2) => {
-      return index !== index2;
+      return index != index2;
     });
+
+    console.log(img);
 
     setimages(image);
     setimgs(img);
@@ -73,7 +75,7 @@ function ConsumerUpload({
     const index = e.target.value;
 
     const doc = files.filter((item, index2) => {
-      return index !== index2;
+      return index != index2;
     });
     setfile(doc);
   };
@@ -159,19 +161,19 @@ function ConsumerUpload({
   return (
     <>
       <div className="bg-[url(bg.png)] max-h-screen">
-        <div className="text-center bg-neutral-600  p-2 flex justify-between w-full fixed ">
+        <div className="text-center bg-neutral-600  z-10 p-3  flex justify-between w-full fixed ">
           <i
             className="xi-arrow-left text-white text-xl pl-2 cursor-pointer	"
             onClick={() => navigate(`/${id}`)}
           ></i>
-          <span className=" text-white pt-px">업로드 하기</span>
+          <span className=" text-white pt-px pr-6">업로드 하기</span>
           <div> </div>
         </div>
         <form>
           <div className=" grid grid-rows-3 gap-10 lg:grid-cols-2 xl:grid-cols-2 lg:min-h-[100vh] xl:min-h-[120vh]  xl:place-content-center py-16 px-5 ">
-            <div className="bg-white p-4 rounded-3xl shadow-xl ">
+            <div className="bg-white p-4 rounded-md shadow-md ">
               <button
-                className=" bg-neutral-500 text-white p-2 text-center rounded-xl w-max mx-auto text-sm
+                className=" bg-neutral-500 text-white p-2 text-center rounded-md w-max mx-auto text-sm
                 hover:bg-neutral-700 hover:text-white
                 active:bg-neutral-500
                 focus:bg-neutral-700
@@ -180,25 +182,26 @@ function ConsumerUpload({
               >
                 <i className="xi-plus"> 이미지</i>
               </button>
+
               <Modal
                 open={imagemodalOpen}
                 close={handleImageCloseModal}
-                header="작업을 선택하세요"
                 head="이미지 업로드"
+                notmain="notmain"
               >
-                <div className="flex justify-end">
+                <div className="flex justify-end ">
                   <button
-                    className="bg-neutral-500 text-white p-2 text-center rounded-xl w-max text-sm
+                    className="bg-neutral-500 text-white p-3 m-1 text-center rounded-md w-max text-sm
                 hover:bg-neutral-700 hover:text-white
                 active:bg-neutral-500
                 focus:bg-neutral-700
-                cursor-pointer"
+                cursor-pointer "
                     onClick={handleImageUpload}
                   >
                     카메라 촬영
                   </button>
                   <button
-                    className="bg-neutral-500 text-white p-2 text-center rounded-xl w-max text-sm
+                    className="bg-neutral-500 text-white p-2 m-1 text-center rounded-md w-max text-sm
                 hover:bg-neutral-700 hover:text-white
                 active:bg-neutral-500
                 focus:bg-neutral-700
@@ -209,28 +212,28 @@ function ConsumerUpload({
                   </button>
                 </div>
               </Modal>
-              <div className="grid grid-cols-3">
+              <div className="grid grid-cols-3 mt-[20px]">
                 {images.map((image, index) => (
-                  <div className="grid">
+                  <div className="grid ">
                     <button
                       value={index}
                       onClick={handleimageDelete}
-                      className="xi-close-square text-[30px] text-red-600 absolute"
+                      className="xi-close-square object-cover text-[30px] bg-white text-red-600 absolute mt-[-10px] ml-[-10px]  p-0 border-0"
                     ></button>
 
                     <img
                       value={index}
                       src={image}
-                      className="rounded-xl p-1"
+                      className=" p-1 object-cover h-[100%] w-[100%]"
                     ></img>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="bg-white p-4 rounded-3xl shadow-xl ">
+            <div className="bg-white p-4 rounded-md shadow-md ">
               <label
                 for="file"
-                className=" bg-neutral-500 text-white p-2 text-center rounded-xl w-max mx-auto text-sm
+                className=" bg-neutral-500 text-white p-2 text-center rounded-md w-max mx-auto text-sm
                 hover:bg-neutral-700 hover:text-white
                 active:bg-neutral-500
                 focus:bg-neutral-700
@@ -246,16 +249,16 @@ function ConsumerUpload({
                 onChange={handleFileUpload}
                 style={{ display: "none" }}
               />
-              <div>
+              <div className="mt-3">
                 {files.map((file, index) => (
                   <>
                     <div className="flex">
                       <button
-                        className="xi-close-circle-o text-[20px] text-red-600 "
+                        className="xi-close-circle-o text-[20px] pt-3 text-red-600 "
                         value={index}
                         onClick={handleDocsDelete}
                       ></button>
-                      <li key={file.name} className="list-none pt-2 mt-1">
+                      <li key={file.name} className="list-none pt-2 pl-2 mt-1">
                         {file.name}
                       </li>
                     </div>
@@ -263,20 +266,20 @@ function ConsumerUpload({
                 ))}
               </div>
             </div>
-            <div className="bg-white  p-4 rounded-3xl shadow-xl ">
-              <p className="bg-neutral-500 text-white p-2 mb-2 rounded-xl w-max text-sm">
+            <div className="bg-white  p-4 rounded-md shadow-md ">
+              <p className=" bg-neutral-500  text-white p-2 mb-2 rounded-md text-center text-sm">
                 <i className="xi-pen"> 홍보문구</i>
               </p>
               <div className="w-full h-4/5">
                 <textarea
-                  className="block border pb-10 w-full h-4/5 border-neutral-300"
+                  className="block border pb-28 w-full h-full border-neutral-300 p-2"
                   ref={messageRef}
                 ></textarea>
               </div>
             </div>
             <div className=" place-self-center">
               <button
-                className=" bg-neutral-500 text-white p-3 m-5 rounded-xl w-full
+                className=" bg-neutral-500 text-white p-3 m-5 rounded-md w-full
                 hover:bg-neutral-700 hover:text-white
                 active:bg-neutral-500
                 focus:bg-neutral-700 col-span-3
@@ -298,7 +301,7 @@ function ConsumerUpload({
                 <div className="flex justify-end">
                   <div className="w-max px-1">
                     <button
-                      className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-xl w-full text-sm
+                      className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-md w-full text-sm
                   hover:bg-neutral-700 hover:text-white
                   active:bg-neutral-500
                   focus:bg-neutral-700"
@@ -309,7 +312,7 @@ function ConsumerUpload({
                   </div>
                   <div className="w-max">
                     <button
-                      className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-xl w-full  text-sm
+                      className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-md w-full  text-sm
                   hover:bg-neutral-700 hover:text-white
                   active:bg-neutral-500
                   focus:bg-neutral-700"
