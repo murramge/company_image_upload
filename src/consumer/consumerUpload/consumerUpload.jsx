@@ -2,6 +2,13 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
 
+
+function DeleteButton(props) {
+  return <button style={{ backgroundColor: "red" ,display:"inline-block", position:"absolute", textAlign:"center", width:25,height:25, cursor:"pointer"}} {...props}>
+      <i style={{ color: "white", fontSize:"0.8rem", }} className="xi-close"/>
+  </button>
+}
+
 function ConsumerUpload({
   handlebizDataUpdate,
   bizdata,
@@ -54,7 +61,8 @@ function ConsumerUpload({
 
   const handleimageDelete = (e) => {
     e.preventDefault();
-    const index = e.target.value;
+
+    const index = e.currentTarget.value;
 
     const image = images.filter((item, index2) => {
       return index != index2;
@@ -73,7 +81,7 @@ function ConsumerUpload({
   const handleDocsDelete = (e) => {
     e.preventDefault();
     const index = e.target.value;
-
+    
     const doc = files.filter((item, index2) => {
       return index != index2;
     });
@@ -215,12 +223,12 @@ function ConsumerUpload({
               <div className="grid grid-cols-3 mt-[20px]">
                 {images.map((image, index) => (
                   <div className="grid ">
-                    <button
+                    {/* <button
                       value={index}
                       onClick={handleimageDelete}
                       className="xi-close-square object-cover text-[30px] bg-white text-red-600 absolute mt-[-10px] ml-[-10px]  p-0 border-0"
-                    ></button>
-
+                    ></button> */}
+                        <DeleteButton value={index} onClick={handleimageDelete}/>
                     <img
                       value={index}
                       src={image}
