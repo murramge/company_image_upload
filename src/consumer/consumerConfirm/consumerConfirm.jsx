@@ -164,8 +164,12 @@ const ConsumerConfirm = memo(
     };
 
     const handleDocsDownload = (e) => {
-      const filename = e.currentTarget.innerText;
+      console.log(e);
+      console.log(docs);
+      // const filename = e.currentTarget.innerText;
       const fileid = e.currentTarget.value;
+      const filter = docs.filter((item, index) => item.fileStorageId == fileid);
+      const filename = filter[0].originalFilename;
       axios({
         url: `/api/bizContent/download/${fileid}`,
         method: "GET",

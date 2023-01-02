@@ -320,7 +320,10 @@ function ConsumerUpload({
                       onClick={handleDocsDelete}
                     ></button>
 
-                    <li key={file.name} className="list-none pt-2 pl-2 mt-1">
+                    <li
+                      key={file.name}
+                      className="list-none pt-2 pl-2 mt-1 text-left"
+                    >
                       {file.name}
                     </li>
                   </div>
