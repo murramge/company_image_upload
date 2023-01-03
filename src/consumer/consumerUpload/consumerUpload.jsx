@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
+import ExifOrientationImg from "react-exif-orientation-img";
 
 function DeleteButton(props) {
   return (
@@ -122,8 +123,10 @@ function ConsumerUpload({
 
     input.type = "file";
     input.accept = "image/*";
+    input.capture = "camera";
     input.multiple = "multiple";
-    input.capture = "capture";
+    document.body.appendChild(input);
+
     input.click();
     input.onchange = function (e) {
       console.log(e);
@@ -149,6 +152,7 @@ function ConsumerUpload({
             : setimages(images.concat([...fileURLs]));
 
           // setimages((imgs) => imgs.concat(fileURLs));
+          document.body.removeChild(input);
         };
         reader.readAsDataURL(file);
       }
@@ -163,8 +167,6 @@ function ConsumerUpload({
     input.type = "file";
     input.accept = "image/*";
     input.multiple = "multiple";
-
-    input.click();
     input.onchange = function (e) {
       console.log(e);
       const imageFileArr = e.target.files;
@@ -181,6 +183,7 @@ function ConsumerUpload({
           : setimgs(imgs.concat([...imgfiles]));
         // setimgs((imgs) => imgs.concat(imgfiles));
         let reader = new FileReader();
+
         reader.onload = () => {
           fileURLs[i] = reader.result;
           images.length === 0
@@ -188,10 +191,14 @@ function ConsumerUpload({
             : setimages(images.concat([...fileURLs]));
           // setimages((imgs) => imgs.concat(fileURLs));
         };
+        reader.onerror = function (e) {
+          alert(e);
+        };
         reader.readAsDataURL(file);
       }
       e.target.value = "";
     };
+    input.click();
     setimageModalOpen(false);
   };
 
@@ -230,7 +237,7 @@ function ConsumerUpload({
           <div> </div>
         </div>
         <form>
-          <div className="lg:grid-cols-2 xl:grid-cols-2 lg:min-h-[100vh] xl:min-h-[120vh]  xl:place-content-center py-16 px-5 ">
+          <div className="lg:grid xl:grid lg:grid-cols-2 xl:grid-cols-2 lg:gap-5 xl:gap-5  xl:place-content-center py-16 px-5 ">
             <div className="bg-white p-4 rounded-md shadow-md my-5 min-h-[30vh]">
               <button
                 className=" bg-neutral-500 text-white p-2 text-center rounded-md w-max  text-sm

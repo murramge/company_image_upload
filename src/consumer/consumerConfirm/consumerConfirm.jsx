@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, memo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
 import axios from "axios";
+import ExifOrientationImg from "react-exif-orientation-img";
 
 function DeleteButton(props) {
   return (
@@ -111,6 +112,7 @@ const ConsumerConfirm = memo(
       input.accept = "image/*";
       input.multiple = "multiple";
       input.capture = "capture";
+      document.body.appendChild(input);
       input.click();
       input.onchange = function (e) {
         console.log(e);
@@ -125,6 +127,7 @@ const ConsumerConfirm = memo(
           imgfiles[i] = file;
 
           formData.append("images", file);
+          document.body.removeChild(input);
         }
 
         handlebizPutdataUpdate(formData, () => {
