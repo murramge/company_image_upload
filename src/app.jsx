@@ -154,7 +154,6 @@ function ManagerRouter(props) {
         .searchcompony(searchvalue)
         .catch((error) => console.log(error));
       setSearchlist(result.data.result);
-      console.log(result.data.result);
     })();
   }, []);
 

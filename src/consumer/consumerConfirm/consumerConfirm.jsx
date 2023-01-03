@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, memo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
 import axios from "axios";
-import ExifOrientationImg from "react-exif-orientation-img";
 
 function DeleteButton(props) {
   return (

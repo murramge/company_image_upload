@@ -1,8 +1,28 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import "./modal.css";
+
+function ScrollLock() {
+  const lockScroll = useCallback(() => {
+    document.body.style.overflow = "hidden";
+  }, []);
+
+  const openScroll = useCallback(() => {
+    document.body.style.overflow = "scroll";
+  }, []);
+  return { lockScroll, openScroll };
+}
 
 function Modal(props) {
   const { open, close, header, head, notmain } = props;
+
+  const { lockScroll, openScroll } = ScrollLock();
+
+  console.log(open);
+
+  useEffect(() => {
+    open == true && lockScroll();
+    open == false && openScroll();
+  }, [open]);
 
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.

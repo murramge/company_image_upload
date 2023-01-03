@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "async-await": "^0.1.40",
     "axios": "^1.2.1",
+    "blueimp-load-image": "^5.16.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-exif-orientation-img": "^0.1.5",

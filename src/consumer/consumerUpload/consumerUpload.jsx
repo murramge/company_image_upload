@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
-import ExifOrientationImg from "react-exif-orientation-img";
+import loadImage from "blueimp-load-image";
+import { logDOM } from "@testing-library/react";
 
 function DeleteButton(props) {
   return (
@@ -140,21 +141,46 @@ function ConsumerUpload({
         file = imageFileArr[i];
         imgfiles[i] = file;
 
-        imgs.length === 0
-          ? setimgs([...imgfiles])
-          : setimgs(imgs.concat([...imgfiles]));
+        // imgs.length === 0
+        //   ? setimgs([...imgfiles])
+        //   : setimgs(imgs.concat([...imgfiles]));
         // setimgs((imgs) => imgs.concat(imgfiles));
         let reader = new FileReader();
-        reader.onload = () => {
-          fileURLs[i] = reader.result;
-          images.length === 0
-            ? setimages([...fileURLs])
-            : setimages(images.concat([...fileURLs]));
+        // reader.onload = () => {
+        //   fileURLs[i] = reader.result;
+        //   images.length === 0
+        //     ? setimages([...fileURLs])
+        //     : setimages(images.concat([...fileURLs]));
 
-          // setimages((imgs) => imgs.concat(fileURLs));
-          document.body.removeChild(input);
-        };
-        reader.readAsDataURL(file);
+        //   // setimages((imgs) => imgs.concat(fileURLs));
+        //   document.body.removeChild(input);
+        // };
+
+        // reader.readAsDataURL(file);
+        if (file) {
+          loadImage(file, { meta: true, canvas: true, orientation: true }).then(
+            (img) => {
+              img.image.toBlob((blob) => {
+                const rotateFile = new File([blob], file.name, {
+                  type: file.type,
+                });
+                reader.onloadend = (rd) => {
+                  fileURLs[i] = rd.currentTarget.result;
+                  images.length === 0
+                    ? setimages([...fileURLs])
+                    : setimages(images.concat([...fileURLs]));
+                  imgs.length === 0
+                    ? setimgs([...fileURLs])
+                    : setimgs(imgs.concat([...imgfiles]));
+                  // setimages((imgs) => imgs.concat(fileURLs));
+                  document.body.removeChild(input);
+                };
+                reader.readAsDataURL(rotateFile);
+              }, file.type);
+            }
+          );
+          reader.readAsDataURL(file);
+        }
       }
       e.target.value = "";
     };
