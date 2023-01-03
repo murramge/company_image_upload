@@ -21,10 +21,6 @@ function DeleteButton(props) {
   );
 }
 
-function Spinner(props) {
-  return <i className="xi-spinner-1 xi-spin"></i>;
-}
-
 function ConsumerUpload({
   handlebizDataUpdate,
   bizdata,
@@ -58,7 +54,7 @@ function ConsumerUpload({
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    setsubmitModalOpen(false);
     const formData = new FormData();
     formData.append("uuid", id);
 
@@ -288,6 +284,7 @@ function ConsumerUpload({
                     <img
                       value={index}
                       src={image}
+                      alt="이미지"
                       className=" p-1 object-cover h-[100%] w-[100%]"
                     ></img>
                   </div>

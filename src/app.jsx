@@ -13,6 +13,7 @@ import ConsumerConfirm from "./consumer/consumerConfirm/consumerConfirm.jsx";
 import BcmanagerMain from "./bcmanager/bcmanagerMain/bcmanagerMain.jsx";
 import BcmanagerSearch from "./bcmanager/bcmanagerSearch/bcmanagerSearch.jsx";
 import BcmanagerView from "./bcmanager/bcmanagerView/bcmanagerView.jsx";
+import Loding from "./consumer/loding/loding.jsx";
 
 const App = memo(({ bizcontent, infoList }) => {
   const [infolist, setinfolist] = useState(infoList);
@@ -20,6 +21,7 @@ const App = memo(({ bizcontent, infoList }) => {
   const [imgs, setimgs] = useState([]);
   const [docs, setdocs] = useState([]);
   const [errorcode, seterrorcode] = useState([]);
+  const [lode, setlode] = useState(false);
   const { setErrorMessage } = useContext(ErrorContext);
 
   const bizinfoApiUpdate = useCallback((uuid) => {
@@ -46,7 +48,9 @@ const App = memo(({ bizcontent, infoList }) => {
 
   const bizputdataApiUpdate = useCallback((formdata, callback, switchs) => {
     (async () => {
+      setlode(true);
       const result = await bizcontent.contentput(formdata);
+      setlode(false);
       if (callback) {
         callback();
       }
@@ -60,6 +64,7 @@ const App = memo(({ bizcontent, infoList }) => {
 
   return (
     <>
+      {lode ? <Loding /> : null}
       <Routes>
         <Route
           path=""

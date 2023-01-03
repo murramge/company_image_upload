@@ -103,8 +103,39 @@ const ConsumerConfirm = memo(
       handlebizDataUpdate(id);
       setModalOpen(false);
     };
+    const handleCaptureImageUpload = (e) => {
+      e.preventDefault();
+      let input = document.createElement("input");
 
-    const handlePutImage = (e) => {
+      input.type = "file";
+      input.accept = "image/*";
+      input.multiple = "multiple";
+      input.capture = "capture";
+      input.click();
+      input.onchange = function (e) {
+        console.log(e);
+        const imageFileArr = e.target.files;
+        let imgfiles = [];
+        let file;
+        let filesLength = imageFileArr.length > 10 ? 10 : imageFileArr.length;
+        const formData = new FormData();
+        formData.append("uuid", id);
+        for (let i = 0; i < filesLength; i++) {
+          file = imageFileArr[i];
+          imgfiles[i] = file;
+
+          formData.append("images", file);
+        }
+
+        handlebizPutdataUpdate(formData, () => {
+          handlebizDataUpdate(id);
+        });
+      };
+
+      e.target.value = "";
+      setimageModalOpen(false);
+    };
+    const handleGalleryImageUpload = (e) => {
       e.preventDefault();
       let input = document.createElement("input");
 
@@ -396,7 +427,7 @@ const ConsumerConfirm = memo(
                            active:bg-neutral-500
                            focus:bg-neutral-700
                            cursor-pointer "
-                          onClick={handlePutImage}
+                          onClick={handleCaptureImageUpload}
                         >
                           카메라 촬영
                         </button>
@@ -406,7 +437,7 @@ const ConsumerConfirm = memo(
                       active:bg-neutral-500
                       focus:bg-neutral-700
                       cursor-pointer"
-                          onClick={handlePutImage}
+                          onClick={handleGalleryImageUpload}
                         >
                           이미지 선택
                         </button>
