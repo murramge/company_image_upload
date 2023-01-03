@@ -5,7 +5,6 @@ import BcRecentUploadList from "../bcmanagerList/bcRecentUploadList";
 import BcmanagerHeader from "../bcmanagerHeader/bcmanagerHeader";
 
 const BcmanagerMain = ({ recentRequestList, recentUploadList }) => {
-  console.log(recentRequestList);
   return (
     <>
       <div className="flex">

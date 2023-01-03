@@ -1,10 +1,12 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import BcmanagerInfoBar from "../bcmanagerBar/bcmanagerInfoBar";
 import BcmanagerHeader from "../bcmanagerHeader/bcmanagerHeader";
-import BcRecentRequestList from "../bcmanagerList/bcRecentRequestList";
-import BcRecentUploadList from "../bcmanagerList/bcRecentUploadList";
 
-function BcmanagerView(props) {
+function BcmanagerView({ recentRequestList }) {
+  const { id } = useParams();
+  const data = recentRequestList.filter((item) => item.uuid == id);
+
   return (
     <>
       <div className="flex">
@@ -13,7 +15,10 @@ function BcmanagerView(props) {
             <BcmanagerHeader></BcmanagerHeader>
           </div>
           <div>
-            <BcmanagerInfoBar />
+            <BcmanagerInfoBar
+              companyData={data}
+              companyAll={recentRequestList}
+            />
           </div>
         </div>
         <div className="w-full">

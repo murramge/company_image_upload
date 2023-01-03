@@ -136,6 +136,7 @@ function ManagerRouter(props) {
   const [recentRequestlist, setRecentRequestlist] = useState([]);
   const [recentUploadlist, setRecentUploadlist] = useState([]);
   const [searchlist, setSearchlist] = useState([]);
+  const [nonexistcompany, setNonExistCompany] = useState();
 
   useEffect(() => {
     recentRequest
@@ -153,7 +154,10 @@ function ManagerRouter(props) {
       const result = await searchCompany
         .searchcompony(searchvalue)
         .catch((error) => console.log(error));
-      setSearchlist(result.data.result);
+      const data = result.data.result;
+      setSearchlist(data);
+      const nonexistdata = data.length == 0 && "존재하지 않는 업체입니다.";
+      setNonExistCompany(nonexistdata);
     })();
   }, []);
 
@@ -174,10 +178,16 @@ function ManagerRouter(props) {
           <BcmanagerSearch
             bizdataSearchCompont={bizdataSearchCompony}
             searchlist={searchlist}
+            nonexistcompany={nonexistcompany}
           />
         }
       ></Route>
-      <Route path="/view/:id" element={<BcmanagerView></BcmanagerView>}></Route>
+      <Route
+        path="/view/:id"
+        element={
+          <BcmanagerView recentRequestList={recentRequestlist}></BcmanagerView>
+        }
+      ></Route>
     </Routes>
   );
 }

@@ -7,7 +7,7 @@ function ScrollLock() {
   }, []);
 
   const openScroll = useCallback(() => {
-    document.body.style.overflow = "scroll";
+    document.body.style.removeProperty("overflow");
   }, []);
   return { lockScroll, openScroll };
 }
@@ -17,11 +17,9 @@ function Modal(props) {
 
   const { lockScroll, openScroll } = ScrollLock();
 
-  console.log(open);
-
   useEffect(() => {
-    open == true && lockScroll();
-    open == false && openScroll();
+    open && lockScroll();
+    !open && openScroll();
   }, [open]);
 
   return (

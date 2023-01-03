@@ -2,19 +2,24 @@ import React, { useRef, useState } from "react";
 import BcmanagerBar from "../bcmanagerBar/bcmanagerBar";
 import BcmanagerHeader from "../bcmanagerHeader/bcmanagerHeader";
 
-const BcmanagerSearch = ({ bizdataSearchCompont, searchlist }) => {
+const BcmanagerSearch = ({
+  bizdataSearchCompont,
+  searchlist,
+  nonexistcompany,
+}) => {
   const searchRef = useRef();
   const [searchvalue, setsearchvalue] = useState();
-  const [searchload, setsearchload] = useState();
 
   const handleSearchValue = (e) => {
     setsearchvalue(searchRef.current.value);
   };
 
   const handleSubmit = (e) => {
-    bizdataSearchCompont(searchvalue);
-    searchlist.length == 0 && setsearchload("submit");
+    if (searchvalue) {
+      bizdataSearchCompont(searchvalue);
+    }
   };
+
   const handleOnKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSubmit();
@@ -77,7 +82,9 @@ const BcmanagerSearch = ({ bizdataSearchCompont, searchlist }) => {
                 ))}
               </ul>
             )}
-            {searchvalue == undefined && <div> 검색어를 입력하세요</div>}
+            {nonexistcompany && (
+              <div className="text-center p-10">{nonexistcompany}</div>
+            )}
           </div>
         </div>
       </div>
