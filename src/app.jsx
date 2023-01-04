@@ -137,6 +137,19 @@ function ManagerRouter(props) {
   const [recentUploadlist, setRecentUploadlist] = useState([]);
   const [searchlist, setSearchlist] = useState([]);
   const [nonexistcompany, setNonExistCompany] = useState();
+  const [bizdata, setdata] = useState([]);
+  const [imgs, setimgs] = useState([]);
+  const [docs, setdocs] = useState([]);
+  const bizdatadetail = useCallback((id) => {
+    (async () => {
+      const result = await props.bizcontent
+        .contentdetail(id)
+        .catch((error) => console.log(error));
+      setdata(result.data);
+      setimgs(Array.from(result.data.images));
+      setdocs(Array.from(result.data.docs));
+    })();
+  }, []);
 
   useEffect(() => {
     recentRequest
@@ -185,7 +198,13 @@ function ManagerRouter(props) {
       <Route
         path="/view/:id"
         element={
-          <BcmanagerView recentRequestList={recentRequestlist}></BcmanagerView>
+          <BcmanagerView
+            recentRequestList={recentRequestlist}
+            bizdatadetail={bizdatadetail}
+            bizdata={bizdata}
+            dataimgs={imgs}
+            datadocs={docs}
+          ></BcmanagerView>
         }
       ></Route>
     </Routes>

@@ -30,25 +30,33 @@ const BcmanagerInfoBar = ({ companyData, companyAll }) => {
   };
 
   return (
-    <div className="max-h-screen bg-slate-200">
-      <div className="w-56 h-screen border-r-2 border-slate-300">
+    <div className="min-h-screen ">
+      <div className=" h-screen w-64  bg-slate-200">
         <div className="py-7 px-2">
-          <div className="w-full h-40  bg-slate-50 border border-slate-300 rounded-md shadow-md">
-            <p>{companyName}</p>
-            <p>{companyPhoneNumber}</p>
-            <p>{companyAddress}</p>
-            <p>{companyCategorys}</p>
+          <div className="w-full h-40  bg-slate-50 border border-slate-300 rounded-md shadow-md pt-6">
+            <p className="text-center text-[20px] ">{companyName}</p>
+            <p className="text-center text-[17px]">{companyPhoneNumber}</p>
+            <p className="text-center text-[15px]">{companyAddress}</p>
+            <p className="text-center text-[15px]">{companyCategorys}</p>
           </div>
         </div>
         <div>
-          <button onClick={handleOpen}>전체 보기</button>
+          <button
+            onClick={handleOpen}
+            className="w-full bg-gradient-to-t from-slate-200 to-slate-100 p-1 shadow-sm border-2 border-slate-300 mb-px text-left pl-5"
+          >
+            <div className="flex justify-between">
+              <p>전체 보기</p>
+              <i className="xi-angle-down pr-4 pt-1"></i>
+            </div>
+          </button>
           {isOpen && (
-            <ul>
+            <ul className="w-full break-all">
               {companyURL.map((item) => (
-                <li>
-                  <a
-                    href={`http://localhost:3000/manager/view/${item.uuid}`}
-                  >{`-http://localhost:3000/manager/view/${item.uuid}`}</a>
+                <li className="  break-all p-4 bg-slate-100  border-2 border-slate-300 mb-px">
+                  <a href={`http://localhost:3000/manager/view/${item.uuid}`}>
+                    <p className=" break-all">{`http://localhost:3000/manager/view/${item.uuid}`}</p>
+                  </a>
                 </li>
               ))}
             </ul>

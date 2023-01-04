@@ -5,13 +5,13 @@ import RecentRequestHistory from "./API/bcmanager/resentRequestHistory";
 import RecentUploadHistory from "./API/bcmanager/recentUploadHistory";
 import Bizcontent from "./API/consumer/bizcontent";
 import Searchcompany from "./API/bcmanager/searchcompany";
+
 import { createRoot } from "react-dom/client";
 
 const recentRequest = new RecentRequestHistory(10);
 const recentUpload = new RecentUploadHistory(10);
 const bizcontent = new Bizcontent();
 const searchCompany = new Searchcompany();
-
 const root = createRoot(document.getElementById("root"));
 
 root.render(
