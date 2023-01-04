@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, memo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
+import ModalPortal from "../modals/modalPotal.tsx";
 import axios from "axios";
 
 function DeleteButton(props) {
@@ -339,6 +340,45 @@ const ConsumerConfirm = memo(
               )}
               {switchs == "image" && (
                 <>
+                  <ModalPortal>
+                    <Modal
+                      open={modalOpen}
+                      close={handleCloseModal}
+                      header={
+                        <p>
+                          해당 이미지를 삭제하시겠습니까? <br></br> (삭제 시
+                          복구 불가능)
+                        </p>
+                      }
+                      head="이미지 삭제"
+                    >
+                      <div className="flex justify-end">
+                        <div className="w-max px-1">
+                          <button
+                            onClick={handleExit}
+                            className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full text-sm
+                              hover:bg-neutral-700 hover:text-white
+                              active:bg-neutral-500
+                              focus:bg-neutral-700"
+                          >
+                            취소
+                          </button>
+                        </div>
+                        <div className="w-max">
+                          <button
+                            onClick={handleDataDelete}
+                            className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full  text-sm
+                              hover:bg-neutral-700 hover:text-white
+                              active:bg-neutral-500
+                              focus:bg-neutral-700"
+                          >
+                            확인
+                          </button>
+                        </div>
+                      </div>
+                    </Modal>
+                  </ModalPortal>
+
                   <div className="min-h-[30vh]">
                     <div className="grid grid-cols-3 lg:grid-cols-6">
                       {imgs
@@ -354,44 +394,6 @@ const ConsumerConfirm = memo(
                               value={image}
                               onClick={handleOpenModal}
                             />
-                            <Modal
-                              open={modalOpen}
-                              close={handleCloseModal}
-                              header={
-                                <p>
-                                  해당 이미지를 삭제하시겠습니까? <br></br>{" "}
-                                  (삭제 시 복구 불가능)
-                                </p>
-                              }
-                              head="이미지 삭제"
-                            >
-                              <div className="flex justify-end">
-                                <div className="w-max px-1">
-                                  <button
-                                    value={image}
-                                    onClick={handleExit}
-                                    className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full text-sm
-                              hover:bg-neutral-700 hover:text-white
-                              active:bg-neutral-500
-                              focus:bg-neutral-700"
-                                  >
-                                    취소
-                                  </button>
-                                </div>
-                                <div className="w-max">
-                                  <button
-                                    value={image}
-                                    onClick={handleDataDelete}
-                                    className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full  text-sm
-                              hover:bg-neutral-700 hover:text-white
-                              active:bg-neutral-500
-                              focus:bg-neutral-700"
-                                  >
-                                    확인
-                                  </button>
-                                </div>
-                              </div>
-                            </Modal>
 
                             <img
                               value={image}
@@ -450,6 +452,42 @@ const ConsumerConfirm = memo(
               )}
               {switchs == "docs" && (
                 <>
+                  <Modal
+                    open={modalOpen}
+                    close={handleCloseModal}
+                    header={
+                      <p>
+                        해당 문서를 삭제하시겠습니까? <br></br> (삭제 시 복구
+                        불가능)
+                      </p>
+                    }
+                    head="문서 삭제"
+                  >
+                    <div className="flex justify-end">
+                      <div className="w-max px-1">
+                        <button
+                          onClick={handleExit}
+                          className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full text-sm
+                              hover:bg-neutral-700 hover:text-white
+                              active:bg-neutral-500
+                              focus:bg-neutral-700"
+                        >
+                          취소
+                        </button>
+                      </div>
+                      <div className="w-max">
+                        <button
+                          onClick={handleDataDelete}
+                          className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full  text-sm
+                              hover:bg-neutral-700 hover:text-white
+                              active:bg-neutral-500
+                              focus:bg-neutral-700"
+                        >
+                          확인
+                        </button>
+                      </div>
+                    </div>
+                  </Modal>
                   <div className="min-h-[30vh]">
                     <div className="grid lg:grid-cols-3">
                       {docs
@@ -461,44 +499,6 @@ const ConsumerConfirm = memo(
                               onClick={handleOpenModal}
                               className="xi-close-circle-o text-[20px] text-red-600 "
                             ></button>
-                            <Modal
-                              open={modalOpen}
-                              close={handleCloseModal}
-                              header={
-                                <p>
-                                  해당 문서를 삭제하시겠습니까? <br></br> (삭제
-                                  시 복구 불가능)
-                                </p>
-                              }
-                              head="문서 삭제"
-                            >
-                              <div className="flex justify-end">
-                                <div className="w-max px-1">
-                                  <button
-                                    value={item}
-                                    onClick={handleExit}
-                                    className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full text-sm
-                              hover:bg-neutral-700 hover:text-white
-                              active:bg-neutral-500
-                              focus:bg-neutral-700"
-                                  >
-                                    취소
-                                  </button>
-                                </div>
-                                <div className="w-max">
-                                  <button
-                                    value={item}
-                                    onClick={handleDataDelete}
-                                    className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full  text-sm
-                              hover:bg-neutral-700 hover:text-white
-                              active:bg-neutral-500
-                              focus:bg-neutral-700"
-                                  >
-                                    확인
-                                  </button>
-                                </div>
-                              </div>
-                            </Modal>
 
                             <button
                               value={item}

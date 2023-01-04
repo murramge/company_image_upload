@@ -55,7 +55,12 @@ const BcmanagerInfoBar = ({ companyData, companyAll }) => {
               {companyURL.map((item) => (
                 <li className="  break-all p-4 bg-slate-100  border-2 border-slate-300 mb-px">
                   <a href={`http://localhost:3000/manager/view/${item.uuid}`}>
-                    <p className=" break-all">{`http://localhost:3000/manager/view/${item.uuid}`}</p>
+                    <p
+                      className=" break-all text-blue-500
+                      active:text-violet-700
+                      focus:text-violet-700
+                    "
+                    >{`http://localhost:3000/manager/view/${item.uuid}`}</p>
                   </a>
                 </li>
               ))}

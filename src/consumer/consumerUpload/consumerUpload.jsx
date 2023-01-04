@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
+import ModalPotal from "../modals/modalPotal.tsx";
 import loadImage from "blueimp-load-image";
 import { logDOM } from "@testing-library/react";
 
