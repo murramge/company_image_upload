@@ -1,12 +1,12 @@
 import axios from "axios";
-import MOCK_DATA from '../MOCK_DATA.json';
+import MOCK_DATA from "../MOCK_DATA.json";
 
 class RecentRequestHistory {
   constructor(topQty) {
     this.RecentRequestHistory = axios.create({
       baseURL: `/api/bizContent/recentRequestHistory/${topQty}`,
     });
-    this.topQty = topQty
+    this.topQty = topQty;
   }
 
   // async recentrequest() {
@@ -15,18 +15,20 @@ class RecentRequestHistory {
   // }
 
   async recentrequest() {
-    let mockData = [...MOCK_DATA]
-    mockData = mockData.sort((a,b)=>new Date(b.expired_date) - new Date(a.expired_date));
-    const mockList = mockData.slice(0,this.topQty);
-    
+    let mockData = [...MOCK_DATA];
+    mockData = mockData.sort(
+      (a, b) => new Date(b.expired_date) - new Date(a.expired_date)
+    );
+    const mockList = mockData.slice(0, this.topQty);
+
     return {
-      "code": 0,
-      "message": null,
-      "data": {
-        "total": mockList.length,
-        "result": mockList
-      }
-    }
+      code: 0,
+      message: null,
+      data: {
+        total: mockList.length,
+        result: mockList,
+      },
+    };
   }
 }
 
