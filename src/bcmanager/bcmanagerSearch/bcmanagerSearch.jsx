@@ -41,16 +41,15 @@ const BcmanagerSearch = ({
           <div className="h-14 bg-sky-700"> </div>
           <div className="h-8 bg-slate-700 text-white px-2 py-1">업체 검색</div>
           <div className="w-full">
-            <div className="py-7 bg-slate-100 shadow-sm border-y border-slate-300 w-full">
+            <div className="py-10 bg-slate-100 shadow-sm border-y border-slate-300 w-full">
               <div className="flex justify-center ">
-                <p className="mx-2 my-1">검색어</p>
                 <input
                   type="text"
                   placeholder="검색어를 입력하세요"
                   ref={searchRef}
                   onChange={handleSearchValue}
                   onKeyDown={handleOnKeyPress}
-                  className="border border-slate-300 border-2 w-2/4 px-2"
+                  className="border border-slate-300 border-2 w-2/4 p-2"
                 ></input>
                 <button
                   onClick={handleSubmit}

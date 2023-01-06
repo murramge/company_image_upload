@@ -17,6 +17,11 @@ function BcmanagerView({
   const [datas, setdata] = useState([]);
   const [imgs, setimgs] = useState([]);
   const [docs, setdocs] = useState([]);
+  const [days, setdays] = useState();
+
+  useEffect(() => {
+    setdays(data[0]);
+  }, [data]);
 
   useEffect(() => {
     bizdatadetail(id);
@@ -89,15 +94,17 @@ function BcmanagerView({
         <div className="w-full bg-slate-200">
           <div className="h-14 bg-sky-700"> </div>
           <div className="h-8 bg-slate-700 text-white px-2 pt-1">
-            업체 상세페이지
+            {days
+              ? `[${days.action_dtime.substr(0, 10)}] 업로드 된 파일/영업문구`
+              : null}
           </div>
           <div>
-            <p className="text-[18px] py-3 bg-slate-100 shadow-md border-y border-slate-400 px-5 font-bold">
+            <p className="text-[18px] py-3 bg-slate-100 shadow-md px-5 font-bold">
               이미지
             </p>
             <div className="min-h-[15vh]">
               {imgs.length !== 0 ? (
-                <div className="overflow-x-scroll">
+                <div className="overflow-x-auto">
                   <div className="flex">
                     {imgs
                       .map((image) => image.fileStorageId)
@@ -116,7 +123,7 @@ function BcmanagerView({
                 </div>
               )}
             </div>
-            <p className="text-[18px] py-3 bg-slate-100 shadow-md border-y border-slate-400 px-5 font-bold">
+            <p className="text-[18px] py-3 bg-slate-100 shadow-md border-y border-slate-200 px-5 font-bold">
               문서
             </p>
             <div className="min-h-[15vh]">
@@ -153,7 +160,7 @@ function BcmanagerView({
                 </div>
               )}
             </div>
-            <p className="text-[18px] py-3 bg-slate-100 shadow-md border-y border-slate-400 px-5 font-bold">
+            <p className="text-[18px] py-3 bg-slate-100 shadow-md  px-5 font-bold">
               홍보문구
             </p>
             <div className="min-h-[15vh] ">

@@ -8,8 +8,9 @@ function BcmanagerHeader(props) {
 
   return (
     <>
-      <div className="h-14 w-64 bg-sky-800 text-white text-[26px] p-2">
+      <div className="h-14 w-64 bg-sky-800 text-white text-[26px] py-2 p-1 ">
         ADMIN
+        <span className="text-[10px]"> 업체 이미지 / 영업 문구 등록 관리</span>
       </div>
       <div className="h-8 bg-slate-900 text-white p-1">
         {today} {dayOfweek}요일

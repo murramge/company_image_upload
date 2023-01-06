@@ -6,7 +6,6 @@ const BcmanagerInfoBar = ({ companyData, companyAll, companyParamsId }) => {
   const [companyAddress, setcompanyAddress] = useState();
   const [companyCategorys, setcompanyCategorys] = useState();
   const [companyURL, setcompanyURL] = useState([]);
-  const [company_date, setcompany_date] = useState();
 
   useEffect(() => {
     companyData.map((item) => {
@@ -36,16 +35,16 @@ const BcmanagerInfoBar = ({ companyData, companyAll, companyParamsId }) => {
           </div>
         </div>
         <div>
-          <p className="w-full bg-gradient-to-t from-slate-200 to-slate-100 p-1 shadow-sm border-2 border-slate-300 mb-px text-center text-[15px]">
-            페이지 목록
+          <p className="w-full bg-gradient-to-t from-slate-200 to-slate-100 py-2 shadow-sm border-2 border-slate-300 mb-px  text-center text-[15px]">
+            업로드 목록
           </p>
           <ul className="w-full break-all ">
             {companyURL.map((item) => (
               <li
                 className={
                   companyParamsId == item.uuid
-                    ? "  bg-gradient-to-t from-sky-900 to-sky-800 text-white break-all shadow-sm  p-4 border-2 border-sky-900  "
-                    : "bg-gradient-to-t from-sky-700 to-sky-600  break-all text-white p-4 shadow-sm border-2 border-sky-700  "
+                    ? "  bg-gradient-to-t from-sky-700 to-sky-600 text-white break-all shadow-sm  p-4 border-2 border-sky-700  "
+                    : "bg-gradient-to-t from-slate-200 to-slate-100  break-all text-slate-600 p-4 shadow-sm border-2 border-slate-300  "
                 }
               >
                 <a href={`http://localhost:3000/manager/view/${item.uuid}`}>

@@ -162,18 +162,17 @@ const ConsumerConfirm = memo(
         Array.from(imageFileArr).forEach((file) => {
           loadImage(file, { meta: true, canvas: true, orientation: true }).then(
             (img, data) => {
-              img.image.toBlob(
-                async (blob) => {
-                  const files = new File([blob], file.name);
-                  await formData.append("images", files);
-
+              img.image.toBlob((blob) => {
+                try {
+                  const files = new File([blob], `${file.name}.jpg`);
+                  formData.append("images", files);
                   handlebizPutdataUpdate(formData, () => {
                     handlebizDataUpdate(id);
                   });
-                },
-                "image/jpeg",
-                0.8
-              );
+                } catch (error) {
+                  alert(error);
+                }
+              }, "image/jpeg");
             }
           );
         });

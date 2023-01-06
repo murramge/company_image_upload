@@ -65,7 +65,7 @@ const ConsumerMain = memo(
     };
 
     return (
-      <div className="bg-[url(bg.png)] bg-cover grid grid-flow-row auto-rows-fr place-items-center min-h-screen">
+      <div className="bg-[url(bg.png)] bg-cover grid grid-rows-3 place-items-center w-screen min-h-screen">
         <div>
           <div className="w-screen flex justify-center">
             <img
