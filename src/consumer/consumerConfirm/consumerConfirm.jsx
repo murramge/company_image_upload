@@ -106,6 +106,18 @@ const ConsumerConfirm = memo(
       setModalOpen(false);
     };
 
+    function rotateImageFile(file) {
+      return new Promise((resolve, reject) => {
+        loadImage(file, { meta: true, canvas: true, orientation: true }).then(
+          (img) => {
+            img.image.toBlob((blob) => {
+              resolve(new File([blob], `${file.name}.jpg`));
+            }, "image/jpeg");
+          }
+        );
+      });
+    }
+
     const handleCaptureImageUpload = (e) => {
       e.preventDefault();
       let input = document.createElement("input");
@@ -121,24 +133,22 @@ const ConsumerConfirm = memo(
         const formData = new FormData();
         formData.append("uuid", id);
         console.log(formData.get("uuid"));
-        Array.from(imageFileArr).forEach((file) => {
-          loadImage(file, { meta: true, canvas: true, orientation: true }).then(
-            (img, data) => {
-              img.image.toBlob((blob) => {
-                try {
-                  const files = new File([blob], `${file.name}.jpg`);
-                  formData.append("images", files);
-                  handlebizPutdataUpdate(formData, () => {
-                    handlebizDataUpdate(id);
-                  });
-                } catch (error) {
-                  alert(error);
-                }
-              }, "image/jpeg");
-            }
-          );
+
+        const loadedImages = Array.from(imageFileArr).map((file) =>
+          rotateImageFile(file)
+        );
+
+        Promise.all(loadedImages).then((result) => {
+          console.log(result);
+          Array.from(result).forEach((file) => {
+            formData.append("images", file);
+            console.log(formData.get("images"));
+          });
+          handlebizPutdataUpdate(formData, () => {
+            handlebizDataUpdate(id);
+          });
+          document.body.removeChild(input);
         });
-        document.body.removeChild(input);
       };
 
       e.target.value = "";
@@ -152,29 +162,27 @@ const ConsumerConfirm = memo(
       input.type = "file";
       input.accept = "image/*";
       input.multiple = "multiple";
+
       input.click();
       input.onchange = function (e) {
         const imageFileArr = e.target.files;
-
         const formData = new FormData();
         formData.append("uuid", id);
         console.log(formData.get("uuid"));
-        Array.from(imageFileArr).forEach((file) => {
-          loadImage(file, { meta: true, canvas: true, orientation: true }).then(
-            (img, data) => {
-              img.image.toBlob((blob) => {
-                try {
-                  const files = new File([blob], `${file.name}.jpg`);
-                  formData.append("images", files);
-                  handlebizPutdataUpdate(formData, () => {
-                    handlebizDataUpdate(id);
-                  });
-                } catch (error) {
-                  alert(error);
-                }
-              }, "image/jpeg");
-            }
-          );
+
+        const loadedImages = Array.from(imageFileArr).map((file) =>
+          rotateImageFile(file)
+        );
+
+        Promise.all(loadedImages).then((result) => {
+          console.log(result);
+          Array.from(result).forEach((file) => {
+            formData.append("images", file);
+            console.log(formData.get("images"));
+          });
+          handlebizPutdataUpdate(formData, () => {
+            handlebizDataUpdate(id);
+          });
         });
       };
 
@@ -287,8 +295,7 @@ const ConsumerConfirm = memo(
                     ? " bg-white text-black  "
                     : "bg-neutral-600"
                 } 	text-white p-3 text-center w-24 mx-auto 
-                hover:bg-neutral-600 hover:text-white
-            focus:bg-white focus:text-black focus:border focus:border-white`}
+               `}
                 onClick={handleImageMenuClick}
                 id="imgclick"
               >
@@ -302,8 +309,7 @@ const ConsumerConfirm = memo(
                     ? " bg-white text-black "
                     : "bg-neutral-600 "
                 } bg-netural-600 text-white p-3 text-center w-24 mx-auto 
-                hover:bg-neutral-600 hover:text-white
-              focus:bg-white focus:text-black focus:border focus:border-white`}
+               `}
                 onClick={handleDocsMenuClick}
               >
                 문서
@@ -316,8 +322,7 @@ const ConsumerConfirm = memo(
                     ? "bg-white text-black"
                     : "bg-neutral-600 "
                 }text-white p-3 text-center  w-24 mx-auto 
-            hover:bg-neutral-600 hover:text-white
-            focus:bg-white focus:text-black focus:border focus:border-white`}
+            `}
                 onClick={handleMessageMenuClick}
               >
                 홍보 문구

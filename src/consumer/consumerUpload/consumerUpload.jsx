@@ -104,6 +104,18 @@ function ConsumerUpload({
     e.target.value = "";
   };
 
+  function rotateImageFile(file) {
+    return new Promise((resolve, reject) => {
+      loadImage(file, { meta: true, canvas: true, orientation: true }).then(
+        (img) => {
+          img.image.toBlob((blob) => {
+            resolve(new File([blob], `${file.name}.jpg`));
+          }, "image/jpeg");
+        }
+      );
+    });
+  }
+
   const handleCaptureImageUpload = (e) => {
     e.preventDefault();
     let input = document.createElement("input");
@@ -119,24 +131,22 @@ function ConsumerUpload({
       const formData = new FormData();
       formData.append("uuid", id);
       console.log(formData.get("uuid"));
-      Array.from(imageFileArr).forEach((file) => {
-        loadImage(file, { meta: true, canvas: true, orientation: true }).then(
-          (img, data) => {
-            img.image.toBlob((blob) => {
-              try {
-                const files = new File([blob], `${file.name}.jpg`);
-                formData.append("images", files);
-              } catch (error) {
-                alert(error);
-              }
-            }, "image/jpeg");
-          }
-        );
+
+      const loadedImages = Array.from(imageFileArr).map((file) =>
+        rotateImageFile(file)
+      );
+
+      Promise.all(loadedImages).then((result) => {
+        console.log(result);
+        Array.from(result).forEach((file) => {
+          formData.append("images", file);
+          console.log(formData.get("images"));
+        });
+        handlebizPutdataUpdate(formData, () => {
+          handlebizDataUpdate(id);
+        });
+        document.body.removeChild(input);
       });
-      handlebizPutdataUpdate(formData, () => {
-        handlebizDataUpdate(id);
-      });
-      document.body.removeChild(input);
     };
 
     e.target.value = "";
@@ -150,32 +160,27 @@ function ConsumerUpload({
     input.type = "file";
     input.accept = "image/*";
     input.multiple = "multiple";
+
     input.click();
     input.onchange = function (e) {
       const imageFileArr = e.target.files;
       const formData = new FormData();
       formData.append("uuid", id);
       console.log(formData.get("uuid"));
-      Array.from(imageFileArr).forEach((file) => {
-        loadImage(file, { meta: true, canvas: true, orientation: true }).then(
-          (img, data) => {
-            img.image.toBlob((blob) => {
-              try {
-                const files = new File([blob], `${file.name}.jpg`);
-                formData.append("images", files);
-                console.log(formData.get("images"));
-              } catch (error) {
-                alert(error);
-              }
-            }, "image/jpeg");
-            console.log(formData.get("images"));
-          }
-        );
 
-        console.log(formData.get("images"));
-      });
-      handlebizPutdataUpdate(formData, () => {
-        handlebizDataUpdate(id);
+      const loadedImages = Array.from(imageFileArr).map((file) =>
+        rotateImageFile(file)
+      );
+
+      Promise.all(loadedImages).then((result) => {
+        console.log(result);
+        Array.from(result).forEach((file) => {
+          formData.append("images", file);
+          console.log(formData.get("images"));
+        });
+        handlebizPutdataUpdate(formData, () => {
+          handlebizDataUpdate(id);
+        });
       });
     };
 

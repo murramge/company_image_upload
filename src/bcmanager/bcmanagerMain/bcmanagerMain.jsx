@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BcmanagerBar from "../bcmanagerBar/bcmanagerBar";
 import BcRecentRequestList from "../bcmanagerList/bcRecentRequestList";
 import BcRecentUploadList from "../bcmanagerList/bcRecentUploadList";
 import BcmanagerHeader from "../bcmanagerHeader/bcmanagerHeader";
 
 const BcmanagerMain = ({ recentRequestList, recentUploadList }) => {
+  const [switchs, setswitchs] = useState();
+  useEffect(() => {
+    setswitchs("main");
+  }, []);
+
   return (
     <>
       <div className="flex">
@@ -13,7 +18,7 @@ const BcmanagerMain = ({ recentRequestList, recentUploadList }) => {
             <BcmanagerHeader></BcmanagerHeader>
           </div>
           <div>
-            <BcmanagerBar />
+            <BcmanagerBar switchs={switchs} />
           </div>
         </div>
         <div className="w-full bg-slate-200">

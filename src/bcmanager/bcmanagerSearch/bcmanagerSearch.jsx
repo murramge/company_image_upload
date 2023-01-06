@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import BcmanagerBar from "../bcmanagerBar/bcmanagerBar";
 import BcmanagerHeader from "../bcmanagerHeader/bcmanagerHeader";
 
@@ -9,6 +9,10 @@ const BcmanagerSearch = ({
 }) => {
   const searchRef = useRef();
   const [searchvalue, setsearchvalue] = useState();
+  const [switchs, setswitchs] = useState();
+  useEffect(() => {
+    setswitchs("search");
+  }, []);
 
   const handleSearchValue = (e) => {
     setsearchvalue(searchRef.current.value);
@@ -34,7 +38,7 @@ const BcmanagerSearch = ({
             <BcmanagerHeader></BcmanagerHeader>
           </div>
           <div>
-            <BcmanagerBar />
+            <BcmanagerBar switchs={switchs} />
           </div>
         </div>
         <div className="w-full bg-slate-200 ">

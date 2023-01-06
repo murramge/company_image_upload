@@ -782,21 +782,29 @@ video {
 .bg-\[url\(bg\.png\)\] {
   background-image: url(bg.png);
 }
-.from-slate-200 {
-  --tw-gradient-from: #e2e8f0;
-  --tw-gradient-to: rgb(226 232 240 / 0);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
 .from-sky-700 {
   --tw-gradient-from: #0369a1;
   --tw-gradient-to: rgb(3 105 161 / 0);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
-.to-slate-100 {
-  --tw-gradient-to: #f1f5f9;
+.from-slate-100 {
+  --tw-gradient-from: #f1f5f9;
+  --tw-gradient-to: rgb(241 245 249 / 0);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-slate-200 {
+  --tw-gradient-from: #e2e8f0;
+  --tw-gradient-to: rgb(226 232 240 / 0);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 .to-sky-600 {
   --tw-gradient-to: #0284c7;
+}
+.to-slate-50 {
+  --tw-gradient-to: #f8fafc;
+}
+.to-slate-100 {
+  --tw-gradient-to: #f1f5f9;
 }
 .bg-cover {
   background-size: cover;
@@ -824,6 +832,10 @@ video {
 }
 .p-6 {
   padding: 1.5rem;
+}
+.py-px {
+  padding-top: 1px;
+  padding-bottom: 1px;
 }
 .py-7 {
   padding-top: 1.75rem;
@@ -1008,28 +1020,9 @@ video {
   font-family: "NanumSquare", sans-serif;
 }
 
-.hover\:bg-neutral-600:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(82 82 82 / var(--tw-bg-opacity));
-}
-
 .hover\:bg-neutral-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(64 64 64 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-gradient-to-t:hover {
-  background-image: linear-gradient(to top, var(--tw-gradient-stops));
-}
-
-.hover\:from-sky-700:hover {
-  --tw-gradient-from: #0369a1;
-  --tw-gradient-to: rgb(3 105 161 / 0);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-
-.hover\:to-sky-600:hover {
-  --tw-gradient-to: #0284c7;
 }
 
 .hover\:text-white:hover {
@@ -1037,33 +1030,14 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.focus\:border:focus {
-  border-width: 1px;
-}
-
-.focus\:border-white:focus {
-  --tw-border-opacity: 1;
-  border-color: rgb(255 255 255 / var(--tw-border-opacity));
-}
-
 .focus\:bg-neutral-700:focus {
   --tw-bg-opacity: 1;
   background-color: rgb(64 64 64 / var(--tw-bg-opacity));
 }
 
-.focus\:bg-white:focus {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
 .focus\:text-violet-700:focus {
   --tw-text-opacity: 1;
   color: rgb(109 40 217 / var(--tw-text-opacity));
-}
-
-.focus\:text-black:focus {
-  --tw-text-opacity: 1;
-  color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 
 .active\:bg-neutral-500:active {
