@@ -632,12 +632,6 @@ video {
 .list-none {
   list-style-type: none;
 }
-.grid-flow-row {
-  grid-auto-flow: row;
-}
-.auto-rows-fr {
-  grid-auto-rows: minmax(0, 1fr);
-}
 .grid-cols-3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }

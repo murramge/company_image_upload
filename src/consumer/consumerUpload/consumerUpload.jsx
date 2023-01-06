@@ -126,15 +126,15 @@ function ConsumerUpload({
               try {
                 const files = new File([blob], `${file.name}.jpg`);
                 formData.append("images", files);
-                handlebizPutdataUpdate(formData, () => {
-                  handlebizDataUpdate(id);
-                });
               } catch (error) {
                 alert(error);
               }
             }, "image/jpeg");
           }
         );
+      });
+      handlebizPutdataUpdate(formData, () => {
+        handlebizDataUpdate(id);
       });
       document.body.removeChild(input);
     };
@@ -153,27 +153,29 @@ function ConsumerUpload({
     input.click();
     input.onchange = function (e) {
       const imageFileArr = e.target.files;
-
       const formData = new FormData();
       formData.append("uuid", id);
       console.log(formData.get("uuid"));
       Array.from(imageFileArr).forEach((file) => {
         loadImage(file, { meta: true, canvas: true, orientation: true }).then(
           (img, data) => {
-            img.image.toBlob(
-              async (blob) => {
-                const files = new File([blob], file.name);
-                await formData.append("images", files);
-
-                handlebizPutdataUpdate(formData, () => {
-                  handlebizDataUpdate(id);
-                });
-              },
-              "image/jpeg",
-              0.8
-            );
+            img.image.toBlob((blob) => {
+              try {
+                const files = new File([blob], `${file.name}.jpg`);
+                formData.append("images", files);
+                console.log(formData.get("images"));
+              } catch (error) {
+                alert(error);
+              }
+            }, "image/jpeg");
+            console.log(formData.get("images"));
           }
         );
+
+        console.log(formData.get("images"));
+      });
+      handlebizPutdataUpdate(formData, () => {
+        handlebizDataUpdate(id);
       });
     };
 
