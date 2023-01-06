@@ -6,6 +6,7 @@ const BcmanagerInfoBar = ({ companyData, companyAll, companyParamsId }) => {
   const [companyAddress, setcompanyAddress] = useState();
   const [companyCategorys, setcompanyCategorys] = useState();
   const [companyURL, setcompanyURL] = useState([]);
+  const [company_date, setcompany_date] = useState();
 
   useEffect(() => {
     companyData.map((item) => {
@@ -20,7 +21,6 @@ const BcmanagerInfoBar = ({ companyData, companyAll, companyParamsId }) => {
     const company = companyAll.filter(
       (item) => item.company_name == companyName
     );
-
     setcompanyURL(company);
   }, [companyAll]);
 
@@ -30,29 +30,35 @@ const BcmanagerInfoBar = ({ companyData, companyAll, companyParamsId }) => {
         <div className="py-7 px-2">
           <div className="w-full h-40  bg-slate-50 border border-slate-300 rounded-md shadow-md pt-6">
             <p className="text-center text-[20px] ">{companyName}</p>
-            <p className="text-center text-[17px]">{companyPhoneNumber}</p>
-            <p className="text-center text-[15px]">{companyAddress}</p>
-            <p className="text-center text-[15px]">{companyCategorys}</p>
+            <p className="text-center text-[16px]">{companyPhoneNumber}</p>
+            <p className="text-center text-[13px]">{companyAddress}</p>
+            <p className="text-center text-[14px]">{companyCategorys}</p>
           </div>
         </div>
         <div>
-          <ul className="w-full break-all">
+          <p className="w-full bg-gradient-to-t from-slate-200 to-slate-100 p-1 shadow-sm border-2 border-slate-300 mb-px text-center text-[15px]">
+            페이지 목록
+          </p>
+          <ul className="w-full break-all ">
             {companyURL.map((item) => (
               <li
                 className={
                   companyParamsId == item.uuid
-                    ? "  bg-slate-300 text-violet-800 border border-slate-400 break-all p-4 border-2 border-slate-300 mb-px"
-                    : "bg-slate-100 break-all text-blue-500 p-4 border-2 border-slate-300 mb-px"
+                    ? "  bg-gradient-to-t from-sky-900 to-sky-800 text-white break-all shadow-sm  p-4 border-2 border-sky-900  "
+                    : "bg-gradient-to-t from-sky-700 to-sky-600  break-all text-white p-4 shadow-sm border-2 border-sky-700  "
                 }
               >
                 <a href={`http://localhost:3000/manager/view/${item.uuid}`}>
                   <div>
-                    <p
-                      className=" break-all
-                      active:text-violet-700
-                      focus:text-violet-700
-                    "
-                    >{`http://localhost:3000/manager/view/${item.uuid}`}</p>
+                    <div className=" break-all">
+                      <span className="text-md font-bold px-1">{`${item.uuid}`}</span>
+                      <span className="text-sm  px-2">
+                        {item.action_dtime.substr(0, 10)}
+                        <span className="px-1">
+                          {item.action_dtime.substr(11, 5)}
+                        </span>
+                      </span>
+                    </div>
                   </div>
                 </a>
               </li>

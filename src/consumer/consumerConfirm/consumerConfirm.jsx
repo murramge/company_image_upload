@@ -127,7 +127,6 @@ const ConsumerConfirm = memo(
               img.image.toBlob((blob) => {
                 try {
                   const files = new File([blob], `${file.name}.jpg`);
-
                   formData.append("images", files);
                   handlebizPutdataUpdate(formData, () => {
                     handlebizDataUpdate(id);
@@ -145,6 +144,7 @@ const ConsumerConfirm = memo(
       e.target.value = "";
       setimageModalOpen(false);
     };
+
     const handleGalleryImageUpload = (e) => {
       e.preventDefault();
       let input = document.createElement("input");
@@ -164,8 +164,8 @@ const ConsumerConfirm = memo(
             (img, data) => {
               img.image.toBlob(
                 async (blob) => {
-                  const file = new File([blob], file.name);
-                  await formData.append("images", file);
+                  const files = new File([blob], file.name);
+                  await formData.append("images", files);
 
                   handlebizPutdataUpdate(formData, () => {
                     handlebizDataUpdate(id);

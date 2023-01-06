@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
-
+import axios from "axios";
 import loadImage from "blueimp-load-image";
 
 function DeleteButton(props) {
@@ -27,6 +27,7 @@ function ConsumerUpload({
   handlebizDataUpdate,
   bizdata,
   handlebizPutdataUpdate,
+  dataimgs,
 }) {
   //비즈니스 message 값 가져오려고 Ref 사용
   const messageRef = useRef();
@@ -34,22 +35,18 @@ function ConsumerUpload({
 
   //비즈니스 message 없이 등록해도, 예전의 message가 출력 될 수 있게 data 불러옴
   const [data, setdata] = useState([]);
-
-  useEffect(() => {
-    setdata(bizdata);
-  }, [bizdata]);
+  const [imgs, setimgs] = useState([]);
 
   useEffect(() => {
     handlebizDataUpdate(id);
   }, []);
 
-  //upload 할 때 이미지 보여지게 할때
-  const [images, setimages] = useState([]);
+  useEffect(() => {
+    setdata(bizdata);
+    setimgs(dataimgs);
+  }, [bizdata || dataimgs]);
 
-  //data 보관 용 이미지 state
-  const [imgs, setimgs] = useState([]);
-
-  //data 보관 용 문서 stat
+  //data 보관 용 문서 state
   const [files, setfile] = useState([]);
 
   const { id } = useParams();
@@ -65,7 +62,6 @@ function ConsumerUpload({
       messageRef.current.value || data.businessMemo
     );
 
-    imgs.forEach((item) => formData.append("images", item));
     files.forEach((item) => formData.append("docs", item));
 
     console.log(handlebizPutdataUpdate);
@@ -77,18 +73,10 @@ function ConsumerUpload({
   const handleimageDelete = (e) => {
     e.preventDefault();
 
-    const index = e.currentTarget.value;
-
-    const image = images.filter((item, index2) => {
-      return index != index2;
-    });
-
-    const img = imgs.filter((item, index2) => {
-      return index != index2;
-    });
-
-    setimages(image);
-    setimgs(img);
+    axios
+      .delete(`/api/bizContent/deleteFile/${id}/${e.currentTarget.value}`)
+      .then((response) => console.log(response));
+    handlebizDataUpdate(id);
   };
 
   const handleDocsDelete = (e) => {
@@ -122,33 +110,36 @@ function ConsumerUpload({
 
     input.type = "file";
     input.accept = "image/*";
-    input.capture = "camera";
     input.multiple = "multiple";
+    input.capture = "camera";
     document.body.appendChild(input);
     input.click();
     input.onchange = function (e) {
       const imageFileArr = e.target.files;
       const formData = new FormData();
       formData.append("uuid", id);
+      console.log(formData.get("uuid"));
       Array.from(imageFileArr).forEach((file) => {
         loadImage(file, { meta: true, canvas: true, orientation: true }).then(
           (img, data) => {
-            img.image.toBlob(
-              (blob) => {
-                const files = new File([blob], file.name);
-                setimgs((prev) => prev.concat([files]));
-              },
-              "image/jpeg",
-              0.8
-            );
-            setimages((prev) => prev.concat(img.image.toDataURL()));
+            img.image.toBlob((blob) => {
+              try {
+                const files = new File([blob], `${file.name}.jpg`);
+                formData.append("images", files);
+                handlebizPutdataUpdate(formData, () => {
+                  handlebizDataUpdate(id);
+                });
+              } catch (error) {
+                alert(error);
+              }
+            }, "image/jpeg");
           }
         );
       });
-      setimageModalOpen(false);
       document.body.removeChild(input);
     };
 
+    e.target.value = "";
     setimageModalOpen(false);
   };
 
@@ -159,25 +150,35 @@ function ConsumerUpload({
     input.type = "file";
     input.accept = "image/*";
     input.multiple = "multiple";
+    input.click();
     input.onchange = function (e) {
       const imageFileArr = e.target.files;
 
+      const formData = new FormData();
+      formData.append("uuid", id);
+      console.log(formData.get("uuid"));
       Array.from(imageFileArr).forEach((file) => {
         loadImage(file, { meta: true, canvas: true, orientation: true }).then(
           (img, data) => {
-            img.image.toBlob((blob) => {
-              const files = new File([blob], file.name);
-              setimgs((prev) => prev.concat([files]));
-            }, "image/jpeg");
-            setimages((prev) => prev.concat(img.image.toDataURL()));
+            img.image.toBlob(
+              async (blob) => {
+                const files = new File([blob], file.name);
+                await formData.append("images", files);
+
+                handlebizPutdataUpdate(formData, () => {
+                  handlebizDataUpdate(id);
+                });
+              },
+              "image/jpeg",
+              0.8
+            );
           }
         );
       });
-
-      setimageModalOpen(false);
     };
 
-    input.click();
+    e.target.value = "";
+    setimageModalOpen(false);
   };
 
   //modal 팝업 부분
@@ -258,17 +259,19 @@ function ConsumerUpload({
                 </div>
               </Modal>
               <div className="grid grid-cols-3 mt-[20px] w-full">
-                {images.map((image, index) => (
-                  <div className="grid ">
-                    <DeleteButton value={index} onClick={handleimageDelete} />
-                    <img
-                      value={index}
-                      src={image}
-                      alt="이미지"
-                      className=" p-1 object-cover h-[100%] w-[100%]"
-                    ></img>
-                  </div>
-                ))}
+                {imgs
+                  .map((image) => image.fileStorageId)
+                  .map((image) => (
+                    <div className="grid">
+                      <DeleteButton value={image} onClick={handleimageDelete} />
+
+                      <img
+                        value={image}
+                        src={`/api/bizContent/preview/${image}`}
+                        className=" p-1 object-cover h-[100%] w-[100%] "
+                      ></img>
+                    </div>
+                  ))}
               </div>
             </div>
             <div className="bg-white p-4 rounded-md shadow-md my-5 min-h-[30vh]">

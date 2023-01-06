@@ -87,6 +87,7 @@ const App = memo(({ bizcontent, infoList }) => {
               handlebizPutdataUpdate={bizputdataApiUpdate}
               handlebizDataUpdate={bizdataApiUpdate}
               bizdata={bizdata}
+              dataimgs={imgs}
             />
           }
         ></Route>
