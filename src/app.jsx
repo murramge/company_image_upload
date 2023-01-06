@@ -51,6 +51,7 @@ const App = memo(({ bizcontent, infoList }) => {
       setlode(true);
       const result = await bizcontent.contentput(formdata);
       setlode(false);
+      console.log(result);
       if (callback) {
         callback();
       }
@@ -161,7 +162,7 @@ function ManagerRouter(props) {
     recentUpload
       .recentupload()
       .then((item) => setRecentUploadlist(item.data.result));
-  });
+  }, []);
   const bizdataSearchCompony = useCallback((searchvalue) => {
     (async () => {
       const result = await searchCompany

@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef, memo } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
 import ModalPortal from "../modals/modalPotal.tsx";
 import axios from "axios";
+import loadImage from "blueimp-load-image";
 
 function DeleteButton(props) {
   return (
@@ -104,6 +105,7 @@ const ConsumerConfirm = memo(
       handlebizDataUpdate(id);
       setModalOpen(false);
     };
+
     const handleCaptureImageUpload = (e) => {
       e.preventDefault();
       let input = document.createElement("input");
@@ -111,28 +113,33 @@ const ConsumerConfirm = memo(
       input.type = "file";
       input.accept = "image/*";
       input.multiple = "multiple";
-      input.capture = "capture";
+      input.capture = "camera";
       document.body.appendChild(input);
       input.click();
       input.onchange = function (e) {
-        console.log(e);
         const imageFileArr = e.target.files;
-        let imgfiles = [];
-        let file;
-        let filesLength = imageFileArr.length > 10 ? 10 : imageFileArr.length;
         const formData = new FormData();
         formData.append("uuid", id);
-        for (let i = 0; i < filesLength; i++) {
-          file = imageFileArr[i];
-          imgfiles[i] = file;
+        console.log(formData.get("uuid"));
+        Array.from(imageFileArr).forEach((file) => {
+          loadImage(file, { meta: true, canvas: true, orientation: true }).then(
+            (img, data) => {
+              img.image.toBlob((blob) => {
+                try {
+                  const files = new File([blob], `${file.name}.jpg`);
 
-          formData.append("images", file);
-          document.body.removeChild(input);
-        }
-
-        handlebizPutdataUpdate(formData, () => {
-          handlebizDataUpdate(id);
+                  formData.append("images", files);
+                  handlebizPutdataUpdate(formData, () => {
+                    handlebizDataUpdate(id);
+                  });
+                } catch (error) {
+                  alert(error);
+                }
+              }, "image/jpeg");
+            }
+          );
         });
+        document.body.removeChild(input);
       };
 
       e.target.value = "";
@@ -147,22 +154,28 @@ const ConsumerConfirm = memo(
       input.multiple = "multiple";
       input.click();
       input.onchange = function (e) {
-        console.log(e);
         const imageFileArr = e.target.files;
-        let imgfiles = [];
-        let file;
-        let filesLength = imageFileArr.length > 10 ? 10 : imageFileArr.length;
+
         const formData = new FormData();
         formData.append("uuid", id);
-        for (let i = 0; i < filesLength; i++) {
-          file = imageFileArr[i];
-          imgfiles[i] = file;
+        console.log(formData.get("uuid"));
+        Array.from(imageFileArr).forEach((file) => {
+          loadImage(file, { meta: true, canvas: true, orientation: true }).then(
+            (img, data) => {
+              img.image.toBlob(
+                async (blob) => {
+                  const file = new File([blob], file.name);
+                  await formData.append("images", file);
 
-          formData.append("images", file);
-        }
-
-        handlebizPutdataUpdate(formData, () => {
-          handlebizDataUpdate(id);
+                  handlebizPutdataUpdate(formData, () => {
+                    handlebizDataUpdate(id);
+                  });
+                },
+                "image/jpeg",
+                0.8
+              );
+            }
+          );
         });
       };
 
@@ -385,11 +398,6 @@ const ConsumerConfirm = memo(
                         .map((image) => image.fileStorageId)
                         .map((image) => (
                           <div className="grid">
-                            {/* <button
-                              value={image}
-                              onClick={handleOpenModal}
-                              className="xi-close-square object-cover text-[30px] bg-white text-red-600 absolute mt-[-10px] ml-[-10px]  p-0 border-0"
-                            ></button> */}
                             <DeleteButton
                               value={image}
                               onClick={handleOpenModal}

@@ -8,7 +8,7 @@ const BcmanagerMain = ({ recentRequestList, recentUploadList }) => {
   return (
     <>
       <div className="flex">
-        <div>
+        <div className="bg-slate-200">
           <div>
             <BcmanagerHeader></BcmanagerHeader>
           </div>

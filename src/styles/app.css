@@ -513,12 +513,6 @@ video {
 .mb-px {
   margin-bottom: 1px;
 }
-.mt-\[-10px\] {
-  margin-top: -10px;
-}
-.ml-\[-10px\] {
-  margin-left: -10px;
-}
 .mb-10 {
   margin-bottom: 2.5rem;
 }
@@ -578,6 +572,9 @@ video {
 }
 .max-h-screen {
   max-height: 100vh;
+}
+.max-h-\[45vh\] {
+  max-height: 45vh;
 }
 .min-h-screen {
   min-height: 100vh;
@@ -678,6 +675,9 @@ video {
 .overflow-x-scroll {
   overflow-x: scroll;
 }
+.overflow-y-scroll {
+  overflow-y: scroll;
+}
 .break-all {
   word-break: break-all;
 }
@@ -699,9 +699,6 @@ video {
 }
 .border-2 {
   border-width: 2px;
-}
-.border-0 {
-  border-width: 0px;
 }
 .border-y {
   border-top-width: 1px;
@@ -733,6 +730,10 @@ video {
 .bg-slate-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(248 250 252 / var(--tw-bg-opacity));
+}
+.bg-slate-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity));
 }
 .bg-slate-100 {
   --tw-bg-opacity: 1;
@@ -781,19 +782,8 @@ video {
 .bg-\[\#00000092\] {
   background-color: #00000092;
 }
-.bg-gradient-to-t {
-  background-image: linear-gradient(to top, var(--tw-gradient-stops));
-}
 .bg-\[url\(bg\.png\)\] {
   background-image: url(bg.png);
-}
-.from-slate-200 {
-  --tw-gradient-from: #e2e8f0;
-  --tw-gradient-to: rgb(226 232 240 / 0);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-.to-slate-100 {
-  --tw-gradient-to: #f1f5f9;
 }
 .bg-cover {
   background-size: cover;
@@ -804,14 +794,14 @@ video {
 .p-5 {
   padding: 1.25rem;
 }
-.p-1 {
-  padding: 0.25rem;
-}
 .p-4 {
   padding: 1rem;
 }
 .p-2 {
   padding: 0.5rem;
+}
+.p-1 {
+  padding: 0.25rem;
 }
 .p-10 {
   padding: 2.5rem;
@@ -821,9 +811,6 @@ video {
 }
 .p-6 {
   padding: 1.5rem;
-}
-.p-0 {
-  padding: 0px;
 }
 .py-7 {
   padding-top: 1.75rem;
@@ -867,12 +854,6 @@ video {
 }
 .pt-6 {
   padding-top: 1.5rem;
-}
-.pl-5 {
-  padding-left: 1.25rem;
-}
-.pr-4 {
-  padding-right: 1rem;
 }
 .pt-1 {
   padding-top: 0.25rem;
@@ -942,9 +923,6 @@ video {
   font-size: 1.25rem;
   line-height: 1.75rem;
 }
-.text-\[30px\] {
-  font-size: 30px;
-}
 .text-sm {
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -960,6 +938,10 @@ video {
 }
 .font-light {
   font-weight: 300;
+}
+.text-violet-800 {
+  --tw-text-opacity: 1;
+  color: rgb(91 33 182 / var(--tw-text-opacity));
 }
 .text-blue-500 {
   --tw-text-opacity: 1;

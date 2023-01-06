@@ -1,9 +1,8 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
-import ModalPotal from "../modals/modalPotal.tsx";
+
 import loadImage from "blueimp-load-image";
-import { logDOM } from "@testing-library/react";
 
 function DeleteButton(props) {
   return (
@@ -88,8 +87,6 @@ function ConsumerUpload({
       return index != index2;
     });
 
-    console.log(img);
-
     setimages(image);
     setimgs(img);
   };
@@ -128,65 +125,33 @@ function ConsumerUpload({
     input.capture = "camera";
     input.multiple = "multiple";
     document.body.appendChild(input);
-
     input.click();
     input.onchange = function (e) {
-      console.log(e);
       const imageFileArr = e.target.files;
-      console.log(imageFileArr);
-      let fileURLs = [];
-      let imgfiles = [];
-      let file;
-      let filesLength = imageFileArr.length > 10 ? 10 : imageFileArr.length;
-      for (let i = 0; i < filesLength; i++) {
-        file = imageFileArr[i];
-        imgfiles[i] = file;
-
-        // imgs.length === 0
-        //   ? setimgs([...imgfiles])
-        //   : setimgs(imgs.concat([...imgfiles]));
-        // setimgs((imgs) => imgs.concat(imgfiles));
-        let reader = new FileReader();
-        // reader.onload = () => {
-        //   fileURLs[i] = reader.result;
-        //   images.length === 0
-        //     ? setimages([...fileURLs])
-        //     : setimages(images.concat([...fileURLs]));
-
-        //   // setimages((imgs) => imgs.concat(fileURLs));
-        //   document.body.removeChild(input);
-        // };
-
-        // reader.readAsDataURL(file);
-        if (file) {
-          loadImage(file, { meta: true, canvas: true, orientation: true }).then(
-            (img) => {
-              img.image.toBlob((blob) => {
-                const rotateFile = new File([blob], file.name, {
-                  type: file.type,
-                });
-                reader.onloadend = (rd) => {
-                  fileURLs[i] = rd.currentTarget.result;
-                  images.length === 0
-                    ? setimages([...fileURLs])
-                    : setimages(images.concat([...fileURLs]));
-                  imgs.length === 0
-                    ? setimgs([...fileURLs])
-                    : setimgs(imgs.concat([...imgfiles]));
-                  // setimages((imgs) => imgs.concat(fileURLs));
-                  document.body.removeChild(input);
-                };
-                reader.readAsDataURL(rotateFile);
-              }, file.type);
-            }
-          );
-          reader.readAsDataURL(file);
-        }
-      }
-      e.target.value = "";
+      const formData = new FormData();
+      formData.append("uuid", id);
+      Array.from(imageFileArr).forEach((file) => {
+        loadImage(file, { meta: true, canvas: true, orientation: true }).then(
+          (img, data) => {
+            img.image.toBlob(
+              (blob) => {
+                const files = new File([blob], file.name);
+                setimgs((prev) => prev.concat([files]));
+              },
+              "image/jpeg",
+              0.8
+            );
+            setimages((prev) => prev.concat(img.image.toDataURL()));
+          }
+        );
+      });
+      setimageModalOpen(false);
+      document.body.removeChild(input);
     };
+
     setimageModalOpen(false);
   };
+
   const handleGalleryImageUpload = (e) => {
     e.preventDefault();
     let input = document.createElement("input");
@@ -195,38 +160,24 @@ function ConsumerUpload({
     input.accept = "image/*";
     input.multiple = "multiple";
     input.onchange = function (e) {
-      console.log(e);
       const imageFileArr = e.target.files;
-      console.log(imageFileArr);
-      let fileURLs = [];
-      let imgfiles = [];
-      let file;
-      let filesLength = imageFileArr.length;
-      for (let i = 0; i < filesLength; i++) {
-        file = imageFileArr[i];
-        imgfiles[i] = file;
-        imgs.length === 0
-          ? setimgs([...imgfiles])
-          : setimgs(imgs.concat([...imgfiles]));
-        // setimgs((imgs) => imgs.concat(imgfiles));
-        let reader = new FileReader();
 
-        reader.onload = () => {
-          fileURLs[i] = reader.result;
-          images.length === 0
-            ? setimages([...fileURLs])
-            : setimages(images.concat([...fileURLs]));
-          // setimages((imgs) => imgs.concat(fileURLs));
-        };
-        reader.onerror = function (e) {
-          alert(e);
-        };
-        reader.readAsDataURL(file);
-      }
-      e.target.value = "";
+      Array.from(imageFileArr).forEach((file) => {
+        loadImage(file, { meta: true, canvas: true, orientation: true }).then(
+          (img, data) => {
+            img.image.toBlob((blob) => {
+              const files = new File([blob], file.name);
+              setimgs((prev) => prev.concat([files]));
+            }, "image/jpeg");
+            setimages((prev) => prev.concat(img.image.toDataURL()));
+          }
+        );
+      });
+
+      setimageModalOpen(false);
     };
+
     input.click();
-    setimageModalOpen(false);
   };
 
   //modal 팝업 부분
@@ -309,11 +260,6 @@ function ConsumerUpload({
               <div className="grid grid-cols-3 mt-[20px] w-full">
                 {images.map((image, index) => (
                   <div className="grid ">
-                    {/* <button
-                      value={index}
-                      onClick={handleimageDelete}
-                      className="xi-close-square object-cover text-[30px] bg-white text-red-600 absolute mt-[-10px] ml-[-10px]  p-0 border-0"
-                    ></button> */}
                     <DeleteButton value={index} onClick={handleimageDelete} />
                     <img
                       value={index}

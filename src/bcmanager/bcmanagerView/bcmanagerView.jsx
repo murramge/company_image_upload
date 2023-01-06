@@ -18,8 +18,6 @@ function BcmanagerView({
   const [imgs, setimgs] = useState([]);
   const [docs, setdocs] = useState([]);
 
-  console.log(datas);
-
   useEffect(() => {
     bizdatadetail(id);
   }, []);
@@ -76,7 +74,7 @@ function BcmanagerView({
   return (
     <>
       <div className="flex">
-        <div className="bg-slate-200 border-r-2 border-slate-300 ">
+        <div className="bg-slate-200">
           <div>
             <BcmanagerHeader></BcmanagerHeader>
           </div>
@@ -84,6 +82,7 @@ function BcmanagerView({
             <BcmanagerInfoBar
               companyData={data}
               companyAll={recentRequestList}
+              companyParamsId={id}
             />
           </div>
         </div>
@@ -98,7 +97,7 @@ function BcmanagerView({
             </p>
             <div className="min-h-[15vh]">
               {imgs.length !== 0 ? (
-                <div className=" overflow-x-scroll">
+                <div className="overflow-x-scroll">
                   <div className="flex">
                     {imgs
                       .map((image) => image.fileStorageId)
@@ -160,15 +159,19 @@ function BcmanagerView({
             <div className="min-h-[15vh] ">
               {datas ? (
                 <>
-                  <div className=" min-h-[15vh] rounded-md shadow-md bg-gray-50 p-10">
-                    <p>
-                      {datas.businessMemo}{" "}
-                      <button
-                        onClick={() => handleClipBoard(datas.businessMemo)}
-                        className="xi-library-books-o text-[20px] text-slate-600"
-                      ></button>
-                    </p>
-                  </div>
+                  {datas.businessMemo !== "" ? (
+                    <div className=" min-h-[15vh] rounded-md shadow-md bg-gray-50 p-10">
+                      <p>
+                        {datas.businessMemo}
+                        <button
+                          onClick={() => handleClipBoard(datas.businessMemo)}
+                          className="xi-library-books-o text-[20px] text-slate-600 px-2"
+                        ></button>
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="text-center pt-12"> 홍보문구가 없습니다.</p>
+                  )}
                 </>
               ) : (
                 <div>

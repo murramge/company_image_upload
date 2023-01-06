@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-const BcmanagerInfoBar = ({ companyData, companyAll }) => {
+const BcmanagerInfoBar = ({ companyData, companyAll, companyParamsId }) => {
   const [companyName, setcompanyName] = useState();
   const [companyPhoneNumber, setcompanyphoneNumber] = useState();
   const [companyAddress, setcompanyAddress] = useState();
   const [companyCategorys, setcompanyCategorys] = useState();
-  const [companyURL, setcompanyURL] = useState();
-  const [isOpen, setisOpen] = useState(false);
+  const [companyURL, setcompanyURL] = useState([]);
 
   useEffect(() => {
     companyData.map((item) => {
@@ -25,13 +24,9 @@ const BcmanagerInfoBar = ({ companyData, companyAll }) => {
     setcompanyURL(company);
   }, [companyAll]);
 
-  const handleOpen = (e) => {
-    setisOpen((isOpen) => !isOpen);
-  };
-
   return (
     <div className="min-h-screen ">
-      <div className=" h-screen w-64  bg-slate-200">
+      <div className=" h-screen w-64 border-r-2 border-slate-300">
         <div className="py-7 px-2">
           <div className="w-full h-40  bg-slate-50 border border-slate-300 rounded-md shadow-md pt-6">
             <p className="text-center text-[20px] ">{companyName}</p>
@@ -41,31 +36,28 @@ const BcmanagerInfoBar = ({ companyData, companyAll }) => {
           </div>
         </div>
         <div>
-          <button
-            onClick={handleOpen}
-            className="w-full bg-gradient-to-t from-slate-200 to-slate-100 p-1 shadow-sm border-2 border-slate-300 mb-px text-left pl-5"
-          >
-            <div className="flex justify-between">
-              <p>전체 보기</p>
-              <i className="xi-angle-down pr-4 pt-1"></i>
-            </div>
-          </button>
-          {isOpen && (
-            <ul className="w-full break-all">
-              {companyURL.map((item) => (
-                <li className="  break-all p-4 bg-slate-100  border-2 border-slate-300 mb-px">
-                  <a href={`http://localhost:3000/manager/view/${item.uuid}`}>
+          <ul className="w-full break-all">
+            {companyURL.map((item) => (
+              <li
+                className={
+                  companyParamsId == item.uuid
+                    ? "  bg-slate-300 text-violet-800 border border-slate-400 break-all p-4 border-2 border-slate-300 mb-px"
+                    : "bg-slate-100 break-all text-blue-500 p-4 border-2 border-slate-300 mb-px"
+                }
+              >
+                <a href={`http://localhost:3000/manager/view/${item.uuid}`}>
+                  <div>
                     <p
-                      className=" break-all text-blue-500
+                      className=" break-all
                       active:text-violet-700
                       focus:text-violet-700
                     "
                     >{`http://localhost:3000/manager/view/${item.uuid}`}</p>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          )}
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

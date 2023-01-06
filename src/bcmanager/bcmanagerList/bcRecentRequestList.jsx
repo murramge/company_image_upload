@@ -3,7 +3,7 @@ import React from "react";
 function BcRecentRequestList({ recentRequestList }) {
   return (
     <>
-      <div>
+      <div className="max-h-[45vh] overflow-y-scroll">
         <ul>
           {recentRequestList.map((item, index) => (
             <li className="border ">

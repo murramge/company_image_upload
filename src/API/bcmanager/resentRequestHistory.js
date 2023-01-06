@@ -9,27 +9,27 @@ class RecentRequestHistory {
     this.topQty = topQty;
   }
 
-  // async recentrequest() {
-  //   const response = await this.RecentRequestHistory.get();
-  //   return response.data;
-  // }
-
   async recentrequest() {
-    let mockData = [...MOCK_DATA];
-    mockData = mockData.sort(
-      (a, b) => new Date(b.expired_date) - new Date(a.expired_date)
-    );
-    const mockList = mockData.slice(0, this.topQty);
-
-    return {
-      code: 0,
-      message: null,
-      data: {
-        total: mockList.length,
-        result: mockList,
-      },
-    };
+    const response = await this.RecentRequestHistory.get();
+    return response.data;
   }
+
+  // async recentrequest() {
+  //   let mockData = [...MOCK_DATA];
+  //   mockData = mockData.sort(
+  //     (a, b) => new Date(b.expired_date) - new Date(a.expired_date)
+  //   );
+  //   const mockList = mockData.slice(0, this.topQty);
+
+  //   return {
+  //     code: 0,
+  //     message: null,
+  //     data: {
+  //       total: mockList.length,
+  //       result: mockList,
+  //     },
+  //   };
+  // }
 }
 
 export default RecentRequestHistory;

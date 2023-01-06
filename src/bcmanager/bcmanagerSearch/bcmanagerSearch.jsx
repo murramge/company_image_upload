@@ -28,8 +28,8 @@ const BcmanagerSearch = ({
 
   return (
     <>
-      <div className="flex">
-        <div>
+      <div className="flex ">
+        <div className=" bg-slate-200">
           <div>
             <BcmanagerHeader></BcmanagerHeader>
           </div>
@@ -41,7 +41,7 @@ const BcmanagerSearch = ({
           <div className="h-14 bg-sky-700"> </div>
           <div className="h-8 bg-slate-700 text-white px-2 py-1">업체 검색</div>
           <div className="w-full">
-            <div className="py-7 bg-slate-100 shadow-sm border-y border-slate-300 ">
+            <div className="py-7 bg-slate-100 shadow-sm border-y border-slate-300 w-full">
               <div className="flex justify-center ">
                 <p className="mx-2 my-1">검색어</p>
                 <input
@@ -63,6 +63,7 @@ const BcmanagerSearch = ({
                 업체명, 전화번호 등으로 검색 가능합니다.
               </p>
             </div>
+
             {searchlist && (
               <ul>
                 {searchlist.map((item, index) => (
@@ -82,6 +83,7 @@ const BcmanagerSearch = ({
                 ))}
               </ul>
             )}
+
             {nonexistcompany && (
               <div className="text-center p-10">{nonexistcompany}</div>
             )}
