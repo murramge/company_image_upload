@@ -9,7 +9,6 @@ function BcmanagerLogin(props) {
 
   const handleLogin = () => {
     if (id == "dd" && password == 1234) {
-      setUser({});
       navigate(`/manager`);
     } else {
       alert("잘못 로그인 하셨습니다.");
