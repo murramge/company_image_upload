@@ -264,15 +264,20 @@ const ConsumerConfirm = memo(
 
     //modal part (팝업)
     const [modalOpen, setModalOpen] = useState(false);
+    const [allRemoveOpen, setAllRemoveOpen] = useState(false);
     const [imagemodalOpen, setimageModalOpen] = useState(false);
 
-    const handleExit = () => {
-      setModalOpen(false);
-    };
     const handleOpenModal = (e) => {
       e.preventDefault();
-      setfileid(e.currentTarget.value);
+      setfileid(e.currentTarget.value || "");
       setModalOpen(true);
+    };
+
+    const handleRemoveOpenModal = (e) => {
+      setAllRemoveOpen(true);
+    };
+    const handleRemoveCloseModal = (e) => {
+      setAllRemoveOpen(false);
     };
 
     const handleCloseModal = () => {
@@ -369,69 +374,106 @@ const ConsumerConfirm = memo(
               )}
               {switchs == "image" && (
                 <>
-                  <ModalPortal>
-                    <Modal
-                      open={modalOpen}
-                      close={handleCloseModal}
-                      header={
-                        <p>
-                          해당 이미지를 삭제하시겠습니까? <br></br> (삭제 시
-                          복구 불가능)
-                        </p>
-                      }
-                      head="이미지 삭제"
-                    >
-                      <div className="flex justify-end">
-                        <div className="w-max px-1">
-                          <button
-                            onClick={handleExit}
-                            className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full text-sm
-                              hover:bg-neutral-700 hover:text-white
-                              active:bg-neutral-500
-                              focus:bg-neutral-700"
-                          >
-                            취소
-                          </button>
-                        </div>
-                        <div className="w-max">
-                          <button
-                            onClick={handleDataDelete}
-                            className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full  text-sm
-                              hover:bg-neutral-700 hover:text-white
-                              active:bg-neutral-500
-                              focus:bg-neutral-700"
-                          >
-                            확인
-                          </button>
-                        </div>
-                      </div>
-                    </Modal>
-                  </ModalPortal>
-
-                  <button
-                    onClick={handleAllremove}
-                    className="w-max p-1 my-2 text-red-500  hover:bg-red-50 focus:bg-red-100 shadow-sm border border-red-300 text-sm text-center text-[15px]"
+                  <Modal
+                    open={modalOpen}
+                    close={handleCloseModal}
+                    header={
+                      <p>
+                        해당 이미지를 삭제하시겠습니까? <br></br> (삭제 시 복구
+                        불가능)
+                      </p>
+                    }
+                    head="이미지 삭제"
                   >
-                    전체삭제
-                  </button>
+                    <div className="flex justify-end">
+                      <div className="w-max px-1">
+                        <button
+                          onClick={handleCloseModal}
+                          className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full text-sm
+                              hover:bg-neutral-700 hover:text-white
+                              active:bg-neutral-500
+                              focus:bg-neutral-700"
+                        >
+                          취소
+                        </button>
+                      </div>
+                      <div className="w-max">
+                        <button
+                          onClick={handleDataDelete}
+                          className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full  text-sm
+                              hover:bg-neutral-700 hover:text-white
+                              active:bg-neutral-500
+                              focus:bg-neutral-700"
+                        >
+                          확인
+                        </button>
+                      </div>
+                    </div>
+                  </Modal>
 
+                  <Modal
+                    open={allRemoveOpen}
+                    close={handleRemoveCloseModal}
+                    header={
+                      <p>
+                        이미지를 전체 삭제하시겠습니까? <br></br> (삭제 시 복구
+                        불가능)
+                      </p>
+                    }
+                    head="이미지 삭제"
+                  >
+                    <div className="flex justify-end">
+                      <div className="w-max px-1">
+                        <button
+                          onClick={handleRemoveCloseModal}
+                          className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full text-sm
+                              hover:bg-neutral-700 hover:text-white
+                              active:bg-neutral-500
+                              focus:bg-neutral-700"
+                        >
+                          취소
+                        </button>
+                      </div>
+                      <div className="w-max">
+                        <button
+                          onClick={handleAllremove}
+                          className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full  text-sm
+                              hover:bg-neutral-700 hover:text-white
+                              active:bg-neutral-500
+                              focus:bg-neutral-700"
+                        >
+                          확인
+                        </button>
+                      </div>
+                    </div>
+                  </Modal>
+                  {imgs.length !== 0 && (
+                    <button
+                      onClick={handleRemoveOpenModal}
+                      className="w-max p-1 my-2 text-red-500  hover:bg-red-50 focus:bg-red-100 shadow-sm border border-red-300 text-sm text-center text-[15px]"
+                    >
+                      전체삭제
+                    </button>
+                  )}
                   <div className="min-h-[30vh]">
                     <div className="grid grid-cols-3 lg:grid-cols-6">
                       {imgs
                         .map((image) => image.fileStorageId)
                         .map((image) => (
-                          <div className="grid">
-                            <DeleteButton
-                              value={image}
-                              onClick={handleOpenModal}
-                            />
+                          <>
+                            <div className="grid">
+                              <DeleteButton
+                                value={image}
+                                onClick={handleOpenModal}
+                              />
 
-                            <img
-                              value={image}
-                              src={`/api/bizContent/preview/${image}`}
-                              className=" p-1 object-cover h-[100%] w-[100%] "
-                            ></img>
-                          </div>
+                              <img
+                                value={image}
+                                src={`/api/bizContent/preview/${image}`}
+                                className=" p-1 object-cover h-[100%] w-[100%] "
+                              ></img>
+                            </div>
+                          </>
                         ))}
                     </div>
                   </div>
@@ -497,7 +539,7 @@ const ConsumerConfirm = memo(
                     <div className="flex justify-end">
                       <div className="w-max px-1">
                         <button
-                          onClick={handleExit}
+                          onClick={handleCloseModal}
                           className=" bg-neutral-500 text-white p-2 m-1 text-center rounded-3xl w-full text-sm
                               hover:bg-neutral-700 hover:text-white
                               active:bg-neutral-500

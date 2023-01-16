@@ -13,6 +13,7 @@ import ConsumerConfirm from "./consumer/consumerConfirm/consumerConfirm.jsx";
 import BcmanagerMain from "./bcmanager/bcmanagerMain/bcmanagerMain.jsx";
 import BcmanagerSearch from "./bcmanager/bcmanagerSearch/bcmanagerSearch.jsx";
 import BcmanagerView from "./bcmanager/bcmanagerView/bcmanagerView.jsx";
+import BcmanagerLogin from "./bcmanager/bcmanagerLogin/bcmanagerLogin.jsx";
 import Loding from "./consumer/loding/loding.jsx";
 
 const App = memo(({ bizcontent, infoList }) => {
@@ -197,6 +198,7 @@ function ManagerRouter(props) {
           />
         }
       ></Route>
+      <Route path="/login" element={<BcmanagerLogin />}></Route>
       <Route
         path="/view/:id"
         element={

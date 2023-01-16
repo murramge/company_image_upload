@@ -22,6 +22,7 @@ function BcmanagerView({
 
   useEffect(() => {
     setdays(data[0]);
+    console.log(datas);
   }, [data]);
 
   useEffect(() => {
