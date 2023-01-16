@@ -132,17 +132,14 @@ const ConsumerConfirm = memo(
         const imageFileArr = e.target.files;
         const formData = new FormData();
         formData.append("uuid", id);
-        console.log(formData.get("uuid"));
 
         const loadedImages = Array.from(imageFileArr).map((file) =>
           rotateImageFile(file)
         );
 
         Promise.all(loadedImages).then((result) => {
-          console.log(result);
           Array.from(result).forEach((file) => {
             formData.append("images", file);
-            console.log(formData.get("images"));
           });
           handlebizPutdataUpdate(formData, () => {
             handlebizDataUpdate(id);
@@ -180,17 +177,14 @@ const ConsumerConfirm = memo(
         const imageFileArr = e.target.files;
         const formData = new FormData();
         formData.append("uuid", id);
-        console.log(formData.get("uuid"));
 
         const loadedImages = Array.from(imageFileArr).map((file) =>
           rotateImageFile(file)
         );
 
         Promise.all(loadedImages).then((result) => {
-          console.log(result);
           Array.from(result).forEach((file) => {
             formData.append("images", file);
-            console.log(formData.get("images"));
           });
           handlebizPutdataUpdate(formData, () => {
             handlebizDataUpdate(id);
@@ -303,7 +297,6 @@ const ConsumerConfirm = memo(
           <div> </div>
         </div>
         <div className="bg-[url(bg.png)] h-screen">
-          <div></div>
           <div className="grid grid-cols-3 gap-1 w-max pt-6 px-3 xl:px-20">
             <div className="flex justify-center">
               <button
@@ -459,21 +452,21 @@ const ConsumerConfirm = memo(
                     <div className="grid grid-cols-3 lg:grid-cols-6">
                       {imgs
                         .map((image) => image.fileStorageId)
-                        .map((image) => (
-                          <>
-                            <div className="grid">
-                              <DeleteButton
-                                value={image}
-                                onClick={handleOpenModal}
-                              />
+                        .map((image, index) => (
+                          <div key={index} className="grid">
+                            <DeleteButton
+                              key={index}
+                              value={image}
+                              onClick={handleOpenModal}
+                            />
 
-                              <img
-                                value={image}
-                                src={`/api/bizContent/preview/${image}`}
-                                className=" p-1 object-cover h-[100%] w-[100%] "
-                              ></img>
-                            </div>
-                          </>
+                            <img
+                              key={image}
+                              value={image}
+                              src={`/api/bizContent/preview/${image}`}
+                              className=" p-1 object-cover h-[100%] w-[100%] "
+                            ></img>
+                          </div>
                         ))}
                     </div>
                   </div>
@@ -566,14 +559,16 @@ const ConsumerConfirm = memo(
                       {docs
                         .map((doc) => doc.fileStorageId)
                         .map((item, index) => (
-                          <div className="flex">
+                          <div key={item} className="flex">
                             <button
+                              key={item}
                               value={item}
                               onClick={handleOpenModal}
                               className="xi-close-circle-o text-[20px] text-red-600 "
                             ></button>
 
                             <button
+                              key={index}
                               value={item}
                               onClick={handleDocsDownload}
                               className="text-blue-500
@@ -581,7 +576,10 @@ const ConsumerConfirm = memo(
                       focus:text-violet-700
                     "
                             >
-                              <li className="list-none  p-1 text-left">
+                              <li
+                                key={index}
+                                className="list-none  p-1 text-left"
+                              >
                                 {docs[index].originalFilename}
                               </li>
                             </button>

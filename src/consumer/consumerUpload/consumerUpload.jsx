@@ -64,7 +64,6 @@ function ConsumerUpload({
 
     files.forEach((item) => formData.append("docs", item));
 
-    console.log(handlebizPutdataUpdate);
     handlebizPutdataUpdate(formData, () => {
       navigate(`/${id}/confirm`);
     });
@@ -130,17 +129,14 @@ function ConsumerUpload({
       const imageFileArr = e.target.files;
       const formData = new FormData();
       formData.append("uuid", id);
-      console.log(formData.get("uuid"));
 
       const loadedImages = Array.from(imageFileArr).map((file) =>
         rotateImageFile(file)
       );
 
       Promise.all(loadedImages).then((result) => {
-        console.log(result);
         Array.from(result).forEach((file) => {
           formData.append("images", file);
-          console.log(formData.get("images"));
         });
         handlebizPutdataUpdate(formData, () => {
           handlebizDataUpdate(id);
@@ -166,17 +162,14 @@ function ConsumerUpload({
       const imageFileArr = e.target.files;
       const formData = new FormData();
       formData.append("uuid", id);
-      console.log(formData.get("uuid"));
 
       const loadedImages = Array.from(imageFileArr).map((file) =>
         rotateImageFile(file)
       );
 
       Promise.all(loadedImages).then((result) => {
-        console.log(result);
         Array.from(result).forEach((file) => {
           formData.append("images", file);
-          console.log(formData.get("images"));
         });
         handlebizPutdataUpdate(formData, () => {
           handlebizDataUpdate(id);
@@ -268,11 +261,15 @@ function ConsumerUpload({
               <div className="grid grid-cols-3 mt-[20px] w-full">
                 {imgs
                   .map((image) => image.fileStorageId)
-                  .map((image) => (
-                    <div className="grid">
-                      <DeleteButton value={image} onClick={handleimageDelete} />
-
+                  .map((image, index) => (
+                    <div key={index} className="grid">
+                      <DeleteButton
+                        key={index}
+                        value={image}
+                        onClick={handleimageDelete}
+                      />
                       <img
+                        key={image}
                         value={image}
                         src={`/api/bizContent/preview/${image}`}
                         className=" p-1 object-cover h-[100%] w-[100%] "
@@ -283,7 +280,7 @@ function ConsumerUpload({
             </div>
             <div className="bg-white p-4 rounded-md shadow-md my-5 min-h-[30vh]">
               <label
-                for="file"
+                htmlFor="file"
                 className=" bg-neutral-500 text-white p-2 text-center rounded-md  text-sm
                 hover:bg-neutral-700 hover:text-white
                 active:bg-neutral-500
@@ -302,22 +299,21 @@ function ConsumerUpload({
               />
 
               {files.map((file, index) => (
-                <>
-                  <div className="flex ">
-                    <button
-                      className="xi-close-circle-o text-[20px] text-red-600 pt-3 "
-                      value={index}
-                      onClick={handleDocsDelete}
-                    ></button>
+                <div className="flex" key={index}>
+                  <button
+                    key={index}
+                    className="xi-close-circle-o text-[20px] text-red-600 pt-3 "
+                    value={index}
+                    onClick={handleDocsDelete}
+                  ></button>
 
-                    <li
-                      key={file.name}
-                      className="list-none pt-2 pl-2 mt-1 text-left"
-                    >
-                      {file.name}
-                    </li>
-                  </div>
-                </>
+                  <li
+                    key={file.name}
+                    className="list-none pt-2 pl-2 mt-1 text-left"
+                  >
+                    {file.name}
+                  </li>
+                </div>
               ))}
             </div>
             <div className="bg-white  p-4 rounded-md shadow-md ">

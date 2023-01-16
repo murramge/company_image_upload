@@ -5,7 +5,13 @@ import React, {
   memo,
   useContext,
 } from "react";
-import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useParams,
+  useNavigate,
+} from "react-router-dom";
 import ConsumerMain from "./consumer/consumerMain/consumerMain.jsx";
 import Consumererror from "./consumer/consumerMain/consumererror.jsx";
 import ConsumerUpload from "./consumer/consumerUpload/consumerUpload.jsx";
@@ -24,7 +30,7 @@ const App = memo(({ bizcontent, infoList }) => {
   const [errorcode, seterrorcode] = useState([]);
   const [lode, setlode] = useState(false);
   const { setErrorMessage } = useContext(ErrorContext);
-
+  const navigate = useNavigate();
   const bizinfoApiUpdate = useCallback((uuid) => {
     (async () => {
       const result = await bizcontent
@@ -35,6 +41,10 @@ const App = memo(({ bizcontent, infoList }) => {
       setErrorMessage(result.message);
     })();
   }, []);
+
+  const refreshPage = () => {
+    navigate(0);
+  };
 
   const bizdataApiUpdate = useCallback((uuid) => {
     (async () => {
@@ -149,8 +159,10 @@ function ManagerRouter(props) {
         .contentdetail(id)
         .catch((error) => console.log(error));
       setdata(result.data);
-      setimgs(Array.from(result.data.images));
-      setdocs(Array.from(result.data.docs));
+      if (result.data) {
+        setimgs(Array.from(result.data.images));
+        setdocs(Array.from(result.data.docs));
+      }
     })();
   }, []);
 
@@ -208,6 +220,7 @@ function ManagerRouter(props) {
             bizdata={bizdata}
             dataimgs={imgs}
             datadocs={docs}
+            refreshPage={true}
           ></BcmanagerView>
         }
       ></Route>

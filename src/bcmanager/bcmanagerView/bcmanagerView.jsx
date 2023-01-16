@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router";
 import BcmanagerInfoBar from "../bcmanagerBar/bcmanagerInfoBar";
 import BcmanagerHeader from "../bcmanagerHeader/bcmanagerHeader";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function BcmanagerView({
   recentRequestList,
@@ -11,23 +12,27 @@ function BcmanagerView({
   dataimgs,
   datadocs,
 }) {
+  const navigate = useNavigate();
+  function handlelistMove(uid) {
+    navigate(`/manager/view/${uid}`);
+  }
+
   const { id } = useParams();
+
   const data = recentRequestList.filter((item) => item.uuid == id);
 
   const [datas, setdata] = useState([]);
   const [imgs, setimgs] = useState([]);
   const [docs, setdocs] = useState([]);
   const [days, setdays] = useState();
-  const [fileId, setfileId] = useState([]);
 
   useEffect(() => {
     setdays(data[0]);
-    console.log(datas);
   }, [data]);
 
   useEffect(() => {
     bizdatadetail(id);
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     setdata(bizdata);
@@ -126,6 +131,7 @@ function BcmanagerView({
               companyData={data}
               companyAll={recentRequestList}
               companyParamsId={id}
+              handlelistMove={handlelistMove}
             />
           </div>
         </div>
@@ -141,7 +147,7 @@ function BcmanagerView({
               이미지
             </p>
             <div className="min-h-[15vh]">
-              {imgs.length !== 0 ? (
+              {datas !== null ? (
                 <>
                   <button
                     onClick={handleimgAllDown}
@@ -155,6 +161,7 @@ function BcmanagerView({
                         .map((image) => image.fileStorageId)
                         .map((image) => (
                           <img
+                            key={image}
                             value={image}
                             src={`/api/bizContent/preview/${image}`}
                             className=" p-1 object-cover h-[100%] w-[100%] h-[400px] w-[400px]"
@@ -173,13 +180,14 @@ function BcmanagerView({
               문서
             </p>
             <div className="min-h-[15vh]">
-              {docs.length !== 0 ? (
+              {datas !== null ? (
                 <div>
                   <div className=" bg-gray-50 border">
                     {docs
                       .map((doc) => doc.fileStorageId)
                       .map((item, index) => (
                         <div
+                          key={index}
                           className={`${
                             index % 2 == 0 ? " bg-gray-100 " : "bg-white "
                           }`}
@@ -192,7 +200,10 @@ function BcmanagerView({
                       focus:text-violet-700
                     "
                           >
-                            <li className="list-none p-1 pl-4 py-2 text-left ">
+                            <li
+                              key={index}
+                              className="list-none p-1 pl-4 py-2 text-left "
+                            >
                               {docs[index].originalFilename}
                             </li>
                           </button>

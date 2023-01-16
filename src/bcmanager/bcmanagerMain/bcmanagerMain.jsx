@@ -22,7 +22,11 @@ const BcmanagerMain = ({ recentRequestList, recentUploadList }) => {
           </div>
         </div>
         <div className="w-full bg-slate-200">
-          <div className="h-14 bg-sky-700"> </div>
+          <div className="h-14 bg-sky-700 flex justify-end">
+            <button className="w-max p-2 m-2 text-sky-500 bg-slate-100 hover:bg-blue-100 focus:bg-blue-100 shadow-sm border-2 border-slate-300 mb-px text-center text-[15px]">
+              로그아웃
+            </button>
+          </div>
           <div className="h-8 bg-slate-700 text-white px-2 pt-1">
             업로드 목록
           </div>

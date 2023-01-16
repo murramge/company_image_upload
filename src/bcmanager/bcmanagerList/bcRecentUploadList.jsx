@@ -6,7 +6,7 @@ function BcRecentUploadList({ recentUploadList }) {
       <div className="max-h-[45vh] overflow-y-scroll">
         <ul>
           {recentUploadList.map((item, index) => (
-            <li className="border">
+            <li key={index} className="border">
               <p className=" px-5 py-2 bg-gray-50">{`${index + 1}. ${
                 item.company_name
               }, ${item.categorys}`}</p>

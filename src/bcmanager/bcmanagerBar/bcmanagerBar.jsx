@@ -2,8 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const BcmanagerBar = ({ switchs }) => {
-  console.log(switchs);
-
   return (
     <div className="max-h-screen  ">
       <div className=" h-screen border-r-2 border-slate-300 bg-slate-200">

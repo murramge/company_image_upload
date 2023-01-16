@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const BcmanagerInfoBar = ({ companyData, companyAll, companyParamsId }) => {
+const BcmanagerInfoBar = ({
+  companyData,
+  companyAll,
+  companyParamsId,
+  handlelistMove,
+}) => {
   const [companyName, setcompanyName] = useState();
   const [companyPhoneNumber, setcompanyphoneNumber] = useState();
   const [companyAddress, setcompanyAddress] = useState();
@@ -23,6 +30,11 @@ const BcmanagerInfoBar = ({ companyData, companyAll, companyParamsId }) => {
     setcompanyURL(company);
   }, [companyAll]);
 
+  const handlemove = (e) => {
+    const id = e.currentTarget.value;
+    handlelistMove(id);
+  };
+
   return (
     <div className="min-h-screen ">
       <div className=" h-screen w-64 border-r-2 border-slate-300">
@@ -41,25 +53,24 @@ const BcmanagerInfoBar = ({ companyData, companyAll, companyParamsId }) => {
           <ul className="w-full break-all ">
             {companyURL.map((item) => (
               <li
+                key={item.uuid}
                 className={
                   companyParamsId == item.uuid
                     ? "  bg-gradient-to-t from-sky-700 to-sky-600 text-white break-all shadow-sm  p-4 border-2 border-sky-700  "
                     : "bg-gradient-to-t from-slate-200 to-slate-100  break-all text-slate-600 p-4 shadow-sm border-2 border-slate-300  "
                 }
               >
-                <a href={`http://localhost:3000/manager/view/${item.uuid}`}>
-                  <div>
-                    <div className=" break-all">
-                      <span className="text-md font-bold px-1">{`${item.uuid}`}</span>
-                      <span className="text-sm  px-2">
-                        {item.action_dtime.substr(0, 10)}
-                        <span className="px-1">
-                          {item.action_dtime.substr(11, 5)}
-                        </span>
+                <button key={item.uuid} value={item.uuid} onClick={handlemove}>
+                  <div className=" break-all">
+                    <span className="text-md font-bold px-1">{`${item.uuid}`}</span>
+                    <span className="text-sm  px-2">
+                      {item.action_dtime.substr(0, 10)}
+                      <span className="px-1">
+                        {item.action_dtime.substr(11, 5)}
                       </span>
-                    </div>
+                    </span>
                   </div>
-                </a>
+                </button>
               </li>
             ))}
           </ul>

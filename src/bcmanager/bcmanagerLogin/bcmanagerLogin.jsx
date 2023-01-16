@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 
 function BcmanagerLogin(props) {
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+
+  console.log(id, password);
+
   return (
     <>
       <div className="bg-slate-200 bg-cover  w-screen h-screen flex">
@@ -20,6 +25,7 @@ function BcmanagerLogin(props) {
               <input
                 type="text"
                 placeholder="사용자 아이디"
+                onChange={(e) => setId(e.target.value)}
                 className="w-full border border-slate-300 border-2  p-2"
               ></input>
             </div>
@@ -27,6 +33,7 @@ function BcmanagerLogin(props) {
               <input
                 type="password"
                 placeholder="암호"
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full border border-slate-300 border-2  p-2"
               ></input>
             </div>

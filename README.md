@@ -64,3 +64,12 @@ https://velog.io/@yiyb0603/React%EC%97%90%EC%84%9C-axios-%EC%BB%A4%EC%8A%A4%ED%8
 https://velog.io/@ansrjsdn/React%EC%97%90%EC%84%9C-Clipboard-API-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%B3%B5%EC%82%AC%ED%95%98%EA%B8%B0
 
 https://junjangsee.tistory.com/entry/React-%EB%A6%AC%EC%95%A1%ED%8A%B8%EB%A1%9C-%ED%81%B4%EB%A6%BD%EB%B3%B4%EB%93%9C-%EB%B3%B5%EC%82%AC-%EA%B8%B0%EB%8A%A5-%EB%A7%8C%EB%93%A4%EC%96%B4%EB%B3%B4%EA%B8%B0-feat-Custom-Hook
+
+react로 로그인 인증 막기
+https://www.daleseo.com/react-router-authentication/
+
+react 로그인
+https://blog.naver.com/PostView.naver?blogId=ks2414e&logNo=222157861838&parentCategoryNo=119&categoryNo=58&viewDate=&isShowPopularPosts=false&from=postView
+
+세션 쿠키 로그인
+https://okky.kr/articles/871550
