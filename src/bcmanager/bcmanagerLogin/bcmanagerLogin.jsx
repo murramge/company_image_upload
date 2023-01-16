@@ -1,10 +1,20 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 
 function BcmanagerLogin(props) {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
 
-  console.log(id, password);
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    if (id == "dd" && password == 1234) {
+      setUser({});
+      navigate(`/manager`);
+    } else {
+      alert("잘못 로그인 하셨습니다.");
+    }
+  };
 
   return (
     <>
@@ -42,7 +52,10 @@ function BcmanagerLogin(props) {
               <span className="px-2 ">아이디 저장</span>
             </div>
             <div className="p-5">
-              <button className="border border-slate-500 w-20 mx-2 bg-blue-500 text-white p-2">
+              <button
+                className="border border-slate-500 w-20 mx-2 bg-blue-500 text-white p-2"
+                onClick={handleLogin}
+              >
                 로그인
               </button>
             </div>

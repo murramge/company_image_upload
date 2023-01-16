@@ -21,6 +21,7 @@ import BcmanagerSearch from "./bcmanager/bcmanagerSearch/bcmanagerSearch.jsx";
 import BcmanagerView from "./bcmanager/bcmanagerView/bcmanagerView.jsx";
 import BcmanagerLogin from "./bcmanager/bcmanagerLogin/bcmanagerLogin.jsx";
 import Loding from "./consumer/loding/loding.jsx";
+import { signIn } from "./bcmanager/auth.js";
 
 const App = memo(({ bizcontent, infoList }) => {
   const [infolist, setinfolist] = useState(infoList);
@@ -153,6 +154,7 @@ function ManagerRouter(props) {
   const [bizdata, setdata] = useState([]);
   const [imgs, setimgs] = useState([]);
   const [docs, setdocs] = useState([]);
+
   const bizdatadetail = useCallback((id) => {
     (async () => {
       const result = await props.bizcontent

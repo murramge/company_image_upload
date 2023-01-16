@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router";
 import BcmanagerInfoBar from "../bcmanagerBar/bcmanagerInfoBar";
 import BcmanagerHeader from "../bcmanagerHeader/bcmanagerHeader";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 function BcmanagerView({
   recentRequestList,
