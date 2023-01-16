@@ -155,6 +155,18 @@ const ConsumerConfirm = memo(
       setimageModalOpen(false);
     };
 
+    const handleAllremove = (e) => {
+      imgs
+        .map((image) => image.fileStorageId)
+        .map((image) =>
+          axios
+            .delete(`/api/bizContent/deleteFile/A3200007/${image}`)
+            .then((response) => console.log(response))
+        );
+
+      handlebizDataUpdate(id);
+    };
+
     const handleGalleryImageUpload = (e) => {
       e.preventDefault();
       let input = document.createElement("input");
@@ -395,6 +407,13 @@ const ConsumerConfirm = memo(
                       </div>
                     </Modal>
                   </ModalPortal>
+
+                  <button
+                    onClick={handleAllremove}
+                    className="w-max p-1 my-2 text-red-500  hover:bg-red-50 focus:bg-red-100 shadow-sm border border-red-300 text-sm text-center text-[15px]"
+                  >
+                    전체삭제
+                  </button>
 
                   <div className="min-h-[30vh]">
                     <div className="grid grid-cols-3 lg:grid-cols-6">

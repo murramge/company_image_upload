@@ -18,6 +18,7 @@ function BcmanagerView({
   const [imgs, setimgs] = useState([]);
   const [docs, setdocs] = useState([]);
   const [days, setdays] = useState();
+  const [fileId, setfileId] = useState([]);
 
   useEffect(() => {
     setdays(data[0]);
@@ -66,6 +67,42 @@ function BcmanagerView({
     });
   };
 
+  const handleimgAllDown = (e) => {
+    imgs
+      .map((images) => images.fileStorageId)
+      .map((image) => {
+        const fileid = image;
+        const filter = imgs.filter((item) => item.fileStorageId == fileid);
+        const filename = filter[0].originalFilename;
+        axios({
+          url: `/api/bizContent/download/${fileid}`,
+          method: "GET",
+          responseType: "blob",
+          headers: "Content-Disposition",
+        }).then((response) => {
+          const blob = new Blob([response.data]);
+
+          // blob을 사용해 객체 URL을 생성합니다.
+          const fileObjectUrl = window.URL.createObjectURL(blob);
+
+          // blob 객체 URL을 설정할 링크를 만듭니다.
+          const link = document.createElement("a");
+          link.href = fileObjectUrl;
+          link.style.display = "none";
+
+          link.download = filename;
+
+          // 링크를 body에 추가하고 강제로 click 이벤트를 발생시켜 파일 다운로드를 실행시킵니다.
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+
+          // 다운로드가 끝난 리소스(객체 URL)를 해제합니다.
+          window.URL.revokeObjectURL(fileObjectUrl);
+        });
+      });
+  };
+
   const handleClipBoard = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -104,19 +141,27 @@ function BcmanagerView({
             </p>
             <div className="min-h-[15vh]">
               {imgs.length !== 0 ? (
-                <div className="overflow-x-auto">
-                  <div className="flex">
-                    {imgs
-                      .map((image) => image.fileStorageId)
-                      .map((image) => (
-                        <img
-                          value={image}
-                          src={`/api/bizContent/preview/${image}`}
-                          className=" p-1 object-cover h-[100%] w-[100%] h-[300px] w-[400px]"
-                        ></img>
-                      ))}
+                <>
+                  <button
+                    onClick={handleimgAllDown}
+                    className="w-max p-2 m-2 text-sky-500 bg-slate-100 hover:bg-blue-100 focus:bg-blue-100 shadow-sm border-2 border-slate-300 mb-px text-center text-[15px]"
+                  >
+                    전체 저장
+                  </button>
+                  <div className="overflow-x-auto">
+                    <div className="flex">
+                      {imgs
+                        .map((image) => image.fileStorageId)
+                        .map((image) => (
+                          <img
+                            value={image}
+                            src={`/api/bizContent/preview/${image}`}
+                            className=" p-1 object-cover h-[100%] w-[100%] h-[400px] w-[400px]"
+                          ></img>
+                        ))}
+                    </div>
                   </div>
-                </div>
+                </>
               ) : (
                 <div>
                   <p className="text-center pt-12"> 이미지가 없습니다.</p>
