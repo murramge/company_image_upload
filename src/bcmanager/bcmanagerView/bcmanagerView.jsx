@@ -12,6 +12,13 @@ function BcmanagerView({
   datadocs,
 }) {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("id") === null) {
+      navigate(`/manager/login`);
+    }
+  }, []);
+
   function handlelistMove(uid) {
     navigate(`/manager/view/${uid}`);
   }

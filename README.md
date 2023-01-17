@@ -73,3 +73,5 @@ https://blog.naver.com/PostView.naver?blogId=ks2414e&logNo=222157861838&parentCa
 
 세션 쿠키 로그인
 https://okky.kr/articles/871550
+
+https://pro-self-studier.tistory.com/118

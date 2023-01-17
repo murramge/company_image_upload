@@ -42,10 +42,6 @@ const App = memo(({ bizcontent, infoList }) => {
     })();
   }, []);
 
-  const refreshPage = () => {
-    navigate(0);
-  };
-
   const bizdataApiUpdate = useCallback((uuid) => {
     (async () => {
       const result = await bizcontent

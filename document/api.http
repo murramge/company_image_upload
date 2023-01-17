@@ -1,8 +1,8 @@
-@baseUrl = http://115.89.138.200:8081
+@baseUrl = http://115.89.138.200:8082
 @uuid = A3200007
 @uuid_quote = "A3200007"
 
-@fileStorageId = 50242
+@fileStorageId = 56305
 
 
 # URL 정보 가져오기

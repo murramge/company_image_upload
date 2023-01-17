@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 function BcmanagerLogin(props) {
@@ -7,11 +7,30 @@ function BcmanagerLogin(props) {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (localStorage.getItem("id")) {
+      navigate(`/manager`);
+    }
+  }, []);
+
+  const users = [
+    { email: "kim@test.com", password: "123", name: "김진주" },
+    { email: "lee@test.com", password: "456", name: "이민지" },
+    { email: "park@test.com", password: "789", name: "박수희" },
+  ];
+
   const handleLogin = () => {
-    if (id == "dd" && password == 1234) {
+    const user = users.find(
+      (user) => user.email === id && user.password === password
+    );
+
+    if (user) {
+      localStorage.setItem("id", user.email);
+      localStorage.setItem("password", user.password);
+      localStorage.setItem("name", user.name);
       navigate(`/manager`);
     } else {
-      alert("잘못 로그인 하셨습니다.");
+      alert("로그인 실패 다시 확인해주세요.");
     }
   };
 

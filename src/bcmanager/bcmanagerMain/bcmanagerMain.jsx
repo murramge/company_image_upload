@@ -7,14 +7,28 @@ import BcmanagerHeader from "../bcmanagerHeader/bcmanagerHeader";
 
 const BcmanagerMain = ({ recentRequestList, recentUploadList }) => {
   const [switchs, setswitchs] = useState();
+  const [getname, setgetname] = useState();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("id") === null) {
+      navigate(`/manager/login`);
+    }
+  }, []);
+
   useEffect(() => {
     setswitchs("main");
   }, []);
 
   const handleLogOut = () => {
-    navigate(`/manager/login`);
+    if (localStorage.getItem("id")) {
+      localStorage.clear();
+      navigate(`/manager/login`);
+    }
+
+    setgetname(localStorage.getItem("name"));
+    console.log(getname);
   };
 
   return (
@@ -30,6 +44,10 @@ const BcmanagerMain = ({ recentRequestList, recentUploadList }) => {
         </div>
         <div className="w-full bg-slate-200">
           <div className="h-14 bg-sky-700 flex justify-end">
+            <span className="text-white py-4">
+              {" "}
+              {localStorage.getItem("name")} 님{" "}
+            </span>
             <button
               className=" w-max h-10 p-2 m-2 text-sky-700 text-[20px] bg-blue-100 hover:bg-blue-200 focus:bg-blue-100 shadow-sm border-2 border-slate-300 mb-px text-center text-[15px]
             "
