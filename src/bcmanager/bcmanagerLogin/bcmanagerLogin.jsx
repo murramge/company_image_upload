@@ -1,15 +1,16 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router";
 
 function BcmanagerLogin(props) {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [idChecked, setidChecked] = useState(false);
+  const [rememberId, setrememberId] = useState();
   const idRef = useRef();
   const pwRef = useRef();
 
   const navigate = useNavigate();
-
+  console.log(id);
   useEffect(() => {
     if (localStorage.getItem("id")) {
       navigate(`/manager`);
@@ -26,9 +27,10 @@ function BcmanagerLogin(props) {
     const user = users.find(
       (user) => user.email === id && user.password === password
     );
-
-    console.log(idRef.current.value);
-
+    if (idChecked) {
+      localStorage.setItem("rememberid", id);
+      idRef.current.value = id;
+    }
     if (user) {
       localStorage.setItem("id", user.email);
       localStorage.setItem("password", user.password);
@@ -37,15 +39,15 @@ function BcmanagerLogin(props) {
     } else {
       alert("로그인 실패 다시 확인해주세요.");
       if (!localStorage.getItem("rememberid")) {
-        idRef.current.value = "";
+        idRef.current.value = null;
       }
-      pwRef.current.value = "";
+      pwRef.current.value = null;
     }
   };
 
   useEffect(() => {
     if (localStorage.getItem("rememberid") !== null) {
-      setId(localStorage.getItem("rememberid"));
+      setrememberId(localStorage.getItem("rememberid"));
       setidChecked(true);
     }
   }, []);
@@ -53,9 +55,11 @@ function BcmanagerLogin(props) {
   const handleOnchange = (e) => {
     setidChecked(e.target.checked);
     if (e.target.checked) {
-      localStorage.setItem("rememberid", id);
+      // localStorage.setItem("rememberid", id);
+      console.log("dd");
     } else {
       localStorage.removeItem("rememberid");
+      setId("");
     }
   };
 
@@ -79,7 +83,6 @@ function BcmanagerLogin(props) {
                 type="text"
                 ref={idRef}
                 placeholder="사용자 아이디"
-                value={id}
                 onChange={(e) => setId(e.target.value)}
                 className="w-full border border-slate-300 border-2  p-2"
               ></input>
