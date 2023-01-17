@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router";
 
 function BcmanagerLogin(props) {
-  const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [idChecked, setidChecked] = useState(false);
 
@@ -20,8 +19,6 @@ function BcmanagerLogin(props) {
   useEffect(() => {
     if (idChecked) {
       idRef.current.value = localStorage.getItem("rememberid");
-    } else {
-      idRef.current.value = null;
     }
   }, [idChecked]);
 
@@ -33,10 +30,10 @@ function BcmanagerLogin(props) {
 
   const handleLogin = () => {
     const user = users.find(
-      (user) => user.email === id && user.password === password
+      (user) => user.email === idRef.current.value && user.password === password
     );
     if (idChecked) {
-      localStorage.setItem("rememberid", id);
+      localStorage.setItem("rememberid", idRef.current.value);
     }
     if (user) {
       localStorage.setItem("id", user.email);
@@ -47,6 +44,7 @@ function BcmanagerLogin(props) {
       alert("로그인 실패 다시 확인해주세요.");
       if (!localStorage.getItem("rememberid")) {
         localStorage.removeItem("rememberid");
+        idRef.current.value = null;
       }
       pwRef.current.value = null;
     }
@@ -64,7 +62,6 @@ function BcmanagerLogin(props) {
       localStorage.setItem("rememberid", idRef.current.value);
     } else {
       localStorage.removeItem("rememberid");
-      setId("");
     }
   };
 
@@ -88,7 +85,6 @@ function BcmanagerLogin(props) {
                 type="text"
                 ref={idRef}
                 placeholder="사용자 아이디"
-                onChange={(e) => setId(e.target.value)}
                 className="w-full border border-slate-300 border-2  p-2"
               ></input>
             </div>

@@ -33,10 +33,11 @@ const BcmanagerSearch = ({
       bizdataSearchCompont(searchvalue);
     }
   };
-
   const handleLogOut = () => {
     if (localStorage.getItem("id")) {
-      localStorage.clear();
+      localStorage.removeItem("id");
+      localStorage.removeItem("password");
+      localStorage.removeItem("name");
       navigate(`/manager/login`);
     }
   };

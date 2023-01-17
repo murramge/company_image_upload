@@ -60,9 +60,14 @@ const BcmanagerInfoBar = ({
                     : "bg-gradient-to-t from-slate-200 to-slate-100  break-all text-slate-600 p-4 shadow-sm border-2 border-slate-300  "
                 }
               >
-                <button key={item.uuid} value={item.uuid} onClick={handlemove}>
+                <button
+                  key={item.uuid}
+                  value={item.uuid}
+                  onClick={handlemove}
+                  className="w-full"
+                >
                   <div className=" break-all">
-                    <span className="text-md font-bold px-1">{`${item.uuid}`}</span>
+                    <p className="text-md font-bold ">{`${item.uuid}`}</p>
                     <span className="text-sm  px-2">
                       {item.action_dtime.substr(0, 10)}
                       <span className="px-1">

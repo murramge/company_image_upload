@@ -75,3 +75,7 @@ https://blog.naver.com/PostView.naver?blogId=ks2414e&logNo=222157861838&parentCa
 https://okky.kr/articles/871550
 
 https://pro-self-studier.tistory.com/118
+
+https://jacobgrowthstory.tistory.com/m/34
+
+https://youngble.tistory.com/67
