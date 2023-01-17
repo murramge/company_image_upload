@@ -5,17 +5,25 @@ function BcmanagerLogin(props) {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [idChecked, setidChecked] = useState(false);
-  const [rememberId, setrememberId] = useState();
+
   const idRef = useRef();
   const pwRef = useRef();
 
   const navigate = useNavigate();
-  console.log(id);
+
   useEffect(() => {
     if (localStorage.getItem("id")) {
       navigate(`/manager`);
     }
   }, []);
+
+  useEffect(() => {
+    if (idChecked) {
+      idRef.current.value = localStorage.getItem("rememberid");
+    } else {
+      idRef.current.value = null;
+    }
+  }, [idChecked]);
 
   const users = [
     { email: "kim@test.com", password: "123", name: "김진주" },
@@ -29,7 +37,6 @@ function BcmanagerLogin(props) {
     );
     if (idChecked) {
       localStorage.setItem("rememberid", id);
-      idRef.current.value = id;
     }
     if (user) {
       localStorage.setItem("id", user.email);
@@ -39,7 +46,7 @@ function BcmanagerLogin(props) {
     } else {
       alert("로그인 실패 다시 확인해주세요.");
       if (!localStorage.getItem("rememberid")) {
-        idRef.current.value = null;
+        localStorage.removeItem("rememberid");
       }
       pwRef.current.value = null;
     }
@@ -47,7 +54,6 @@ function BcmanagerLogin(props) {
 
   useEffect(() => {
     if (localStorage.getItem("rememberid") !== null) {
-      setrememberId(localStorage.getItem("rememberid"));
       setidChecked(true);
     }
   }, []);
@@ -55,8 +61,7 @@ function BcmanagerLogin(props) {
   const handleOnchange = (e) => {
     setidChecked(e.target.checked);
     if (e.target.checked) {
-      // localStorage.setItem("rememberid", id);
-      console.log("dd");
+      localStorage.setItem("rememberid", idRef.current.value);
     } else {
       localStorage.removeItem("rememberid");
       setId("");

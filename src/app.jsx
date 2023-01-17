@@ -5,13 +5,7 @@ import React, {
   memo,
   useContext,
 } from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  useParams,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
 import ConsumerMain from "./consumer/consumerMain/consumerMain.jsx";
 import Consumererror from "./consumer/consumerMain/consumererror.jsx";
 import ConsumerUpload from "./consumer/consumerUpload/consumerUpload.jsx";

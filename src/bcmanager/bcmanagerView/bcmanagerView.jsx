@@ -127,7 +127,6 @@ function BcmanagerView({
   const handleClipBoard = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
-
       alert("클립보드에 복사가 완료되었습니다.");
     } catch (error) {
       alert("복사를 실패하였습니다.");

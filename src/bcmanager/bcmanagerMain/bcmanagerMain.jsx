@@ -7,7 +7,6 @@ import BcmanagerHeader from "../bcmanagerHeader/bcmanagerHeader";
 
 const BcmanagerMain = ({ recentRequestList, recentUploadList }) => {
   const [switchs, setswitchs] = useState();
-  const [getname, setgetname] = useState();
 
   const navigate = useNavigate();
 
