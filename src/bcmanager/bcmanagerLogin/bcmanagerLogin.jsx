@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router";
 
 function BcmanagerLogin(props) {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
+  const [idChecked, setidChecked] = useState(false);
+  const idRef = useRef();
+  const pwRef = useRef();
 
   const navigate = useNavigate();
 
@@ -24,6 +27,8 @@ function BcmanagerLogin(props) {
       (user) => user.email === id && user.password === password
     );
 
+    console.log(idRef.current.value);
+
     if (user) {
       localStorage.setItem("id", user.email);
       localStorage.setItem("password", user.password);
@@ -31,6 +36,26 @@ function BcmanagerLogin(props) {
       navigate(`/manager`);
     } else {
       alert("로그인 실패 다시 확인해주세요.");
+      if (!localStorage.getItem("rememberid")) {
+        idRef.current.value = "";
+      }
+      pwRef.current.value = "";
+    }
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("rememberid") !== null) {
+      setId(localStorage.getItem("rememberid"));
+      setidChecked(true);
+    }
+  }, []);
+
+  const handleOnchange = (e) => {
+    setidChecked(e.target.checked);
+    if (e.target.checked) {
+      localStorage.setItem("rememberid", id);
+    } else {
+      localStorage.removeItem("rememberid");
     }
   };
 
@@ -52,7 +77,9 @@ function BcmanagerLogin(props) {
             <div className="w-[80%] py-3">
               <input
                 type="text"
+                ref={idRef}
                 placeholder="사용자 아이디"
+                value={id}
                 onChange={(e) => setId(e.target.value)}
                 className="w-full border border-slate-300 border-2  p-2"
               ></input>
@@ -63,10 +90,16 @@ function BcmanagerLogin(props) {
                 placeholder="암호"
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full border border-slate-300 border-2  p-2"
+                ref={pwRef}
               ></input>
             </div>
             <div className="w-full px-20 py-2 flex justify-start">
-              <input type="checkbox" className="w-[20px] h-[20px]  " />
+              <input
+                type="checkbox"
+                className="w-[20px] h-[20px]"
+                onChange={handleOnchange}
+                checked={idChecked}
+              />
               <span className="px-2 ">아이디 저장</span>
             </div>
             <div className="p-5">

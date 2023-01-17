@@ -34,6 +34,13 @@ const BcmanagerSearch = ({
     }
   };
 
+  const handleLogOut = () => {
+    if (localStorage.getItem("id")) {
+      localStorage.clear();
+      navigate(`/manager/login`);
+    }
+  };
+
   const handleOnKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSubmit();
@@ -52,7 +59,18 @@ const BcmanagerSearch = ({
           </div>
         </div>
         <div className="w-full bg-slate-200 ">
-          <div className="h-14 bg-sky-700"> </div>
+          <div className="h-14 bg-sky-700  flex justify-end">
+            <span className="text-white py-4">
+              {localStorage.getItem("name")} 님
+            </span>
+            <button
+              className=" w-max h-10 p-2 m-2 text-sky-700 text-[20px] bg-blue-100 hover:bg-blue-200 focus:bg-blue-100 shadow-sm border-2 border-slate-300 mb-px text-center text-[15px]
+            "
+              onClick={handleLogOut}
+            >
+              로그아웃
+            </button>
+          </div>
           <div className="h-8 bg-slate-700 text-white px-2 py-1">업체 검색</div>
           <div className="w-full">
             <div className="py-10 bg-slate-100 shadow-sm border-y border-slate-300 w-full">

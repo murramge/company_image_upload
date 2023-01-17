@@ -30,7 +30,7 @@ const App = memo(({ bizcontent, infoList }) => {
   const [errorcode, seterrorcode] = useState([]);
   const [lode, setlode] = useState(false);
   const { setErrorMessage } = useContext(ErrorContext);
-  const navigate = useNavigate();
+
   const bizinfoApiUpdate = useCallback((uuid) => {
     (async () => {
       const result = await bizcontent
@@ -149,12 +149,13 @@ function ManagerRouter(props) {
   const [bizdata, setdata] = useState([]);
   const [imgs, setimgs] = useState([]);
   const [docs, setdocs] = useState([]);
+  const [error, seterror] = useState([]);
 
   const bizdatadetail = useCallback((id) => {
     (async () => {
       const result = await props.bizcontent
         .contentdetail(id)
-        .catch((error) => console.log(error));
+        .catch((error) => setdata(error));
       setdata(result.data);
       if (result.data) {
         setimgs(Array.from(result.data.images));

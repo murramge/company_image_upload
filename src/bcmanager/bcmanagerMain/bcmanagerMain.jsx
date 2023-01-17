@@ -23,12 +23,11 @@ const BcmanagerMain = ({ recentRequestList, recentUploadList }) => {
 
   const handleLogOut = () => {
     if (localStorage.getItem("id")) {
-      localStorage.clear();
+      localStorage.removeItem("id");
+      localStorage.removeItem("password");
+      localStorage.removeItem("name");
       navigate(`/manager/login`);
     }
-
-    setgetname(localStorage.getItem("name"));
-    console.log(getname);
   };
 
   return (
@@ -45,8 +44,7 @@ const BcmanagerMain = ({ recentRequestList, recentUploadList }) => {
         <div className="w-full bg-slate-200">
           <div className="h-14 bg-sky-700 flex justify-end">
             <span className="text-white py-4">
-              {" "}
-              {localStorage.getItem("name")} 님{" "}
+              {localStorage.getItem("name")} 님
             </span>
             <button
               className=" w-max h-10 p-2 m-2 text-sky-700 text-[20px] bg-blue-100 hover:bg-blue-200 focus:bg-blue-100 shadow-sm border-2 border-slate-300 mb-px text-center text-[15px]
