@@ -1,6 +1,7 @@
 import React from "react";
 
 function BcRecentRequestList({ recentRequestList }) {
+  console.log(recentRequestList);
   return (
     <>
       <div className="max-h-[45vh] overflow-y-scroll">
@@ -15,7 +16,7 @@ function BcRecentRequestList({ recentRequestList }) {
                   className="px-6 text-blue-600	"
                   href={`http://localhost:3000/manager/view/${item.uuid}`}
                 >
-                  {`- http://localhost:3000/manager/view/${item.uuid}`}
+                  {`- ${item.url_subject}`}
                 </a>
               </p>
             </li>

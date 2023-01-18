@@ -67,13 +67,13 @@ const BcmanagerInfoBar = ({
                   className="w-full"
                 >
                   <div className=" break-all">
-                    <p className="text-md font-bold ">{`${item.uuid}`}</p>
-                    <span className="text-sm  px-2">
+                    <p className="text-md font-bold ">{`${item.url_subject}`}</p>
+                    {/* <span className="text-sm  px-2">
                       {item.action_dtime.substr(0, 10)}
                       <span className="px-1">
                         {item.action_dtime.substr(11, 5)}
                       </span>
-                    </span>
+                    </span> */}
                   </div>
                 </button>
               </li>

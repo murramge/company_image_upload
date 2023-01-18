@@ -15,7 +15,7 @@ function BcRecentUploadList({ recentUploadList }) {
                   className="px-6 text-blue-600"
                   href={`http://localhost:3000/manager/view/${item.uuid}`}
                 >
-                  {`- http://localhost:3000/manager/view/${item.uuid}`}
+                  {`- ${item.url_subject}`}
                 </a>
               </p>
             </li>

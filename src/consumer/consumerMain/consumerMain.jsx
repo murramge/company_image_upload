@@ -106,18 +106,21 @@ const ConsumerMain = memo(
 
         <div className="w-3/5 sm:w-2/4	md:w-2/5 lg:w-4/12 xl:w-3/12 2xl:w-1/5">
           {isEmpty === true && (
-            <div className="justify-center ">
-              <button
-                className="bg-neutral-500 text-white p-3 text-center rounded-xl w-full mx-auto
+            <>
+              <p className="text-center mb-10">{infolist.url_subject}</p>
+              <div className="justify-center ">
+                <button
+                  className="bg-neutral-500 text-white p-3 mb-10 text-center rounded-xl w-full mx-auto
             hover:bg-neutral-700 hover:text-white
             active:bg-neutral-500
             focus:bg-neutral-700
             "
-                onClick={handleImageUpdate}
-              >
-                업로드 하기
-              </button>
-            </div>
+                  onClick={handleImageUpdate}
+                >
+                  업로드 하기
+                </button>
+              </div>
+            </>
           )}
           {isEmpty === false && (
             <div className="justify-center">
