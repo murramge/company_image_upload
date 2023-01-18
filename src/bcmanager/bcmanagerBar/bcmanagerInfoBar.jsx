@@ -53,8 +53,8 @@ const BcmanagerInfoBar = ({
                 key={item.uuid}
                 className={
                   companyParamsId == item.uuid
-                    ? "  bg-gradient-to-t from-sky-700 to-sky-600 text-white break-all shadow-sm  p-4 border-2 border-sky-700  "
-                    : "bg-gradient-to-t from-slate-200 to-slate-100  break-all text-slate-600 p-4 shadow-sm border-2 border-slate-300  "
+                    ? "  bg-gradient-to-t from-sky-700 to-sky-600 text-white break-all shadow-sm p-1 border-2 border-sky-700  "
+                    : "bg-gradient-to-t from-slate-200 to-slate-100  break-all text-slate-600 p-1 shadow-sm border-2 border-slate-300  "
                 }
               >
                 <button
@@ -64,13 +64,13 @@ const BcmanagerInfoBar = ({
                   className="w-full"
                 >
                   <div className=" break-all">
-                    <p className="text-md font-bold ">{`${item.url_subject}`}</p>
-                    {/* <span className="text-sm  px-2">
+                    <p className="text-[14px] font-bold ">{`${item.url_subject}`}</p>
+                    <span className="text-sm  px-2">
                       {item.action_dtime.substr(0, 10)}
                       <span className="px-1">
                         {item.action_dtime.substr(11, 5)}
                       </span>
-                    </span> */}
+                    </span>
                   </div>
                 </button>
               </li>

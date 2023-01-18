@@ -10,24 +10,24 @@ const BcmanagerMain = ({ recentRequestList, recentUploadList }) => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (localStorage.getItem("id") === null) {
-      navigate(`/manager/login`);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem("id") === null) {
+  //     navigate(`/manager/login`);
+  //   }
+  // }, []);
 
   useEffect(() => {
     setswitchs("main");
   }, []);
 
-  const handleLogOut = () => {
-    if (localStorage.getItem("id")) {
-      localStorage.removeItem("id");
-      localStorage.removeItem("password");
-      localStorage.removeItem("name");
-      navigate(`/manager/login`);
-    }
-  };
+  // const handleLogOut = () => {
+  //   if (localStorage.getItem("id")) {
+  //     localStorage.removeItem("id");
+  //     localStorage.removeItem("password");
+  //     localStorage.removeItem("name");
+  //     navigate(`/manager/login`);
+  //   }
+  // };
 
   return (
     <>
@@ -48,7 +48,7 @@ const BcmanagerMain = ({ recentRequestList, recentUploadList }) => {
             <button
               className=" w-max h-10 p-2 m-2 text-sky-700 text-[20px] bg-blue-100 hover:bg-blue-200 focus:bg-blue-100 shadow-sm border-2 border-slate-300 mb-px text-center text-[15px]
             "
-              onClick={handleLogOut}
+              // onClick={handleLogOut}
             >
               로그아웃
             </button>

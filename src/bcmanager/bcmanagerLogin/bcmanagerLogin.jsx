@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router";
 
-function BcmanagerLogin(props) {
+function BcmanagerLogin({ loginauth }) {
+  const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [idChecked, setidChecked] = useState(false);
 
@@ -10,60 +11,65 @@ function BcmanagerLogin(props) {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (localStorage.getItem("id")) {
-      navigate(`/manager`);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem("id")) {
+  //     navigate(`/manager`);
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    if (idChecked) {
-      idRef.current.value = localStorage.getItem("rememberid");
-    }
-  }, [idChecked]);
+  // useEffect(() => {
+  //   if (idChecked) {
+  //     idRef.current.value = localStorage.getItem("rememberid");
+  //   }
+  // }, [idChecked]);
 
-  const users = [
-    { email: "kim@test.com", password: "123", name: "김진주" },
-    { email: "lee@test.com", password: "456", name: "이민지" },
-    { email: "park@test.com", password: "789", name: "박수희" },
-  ];
+  // const users = [
+  //   { email: "kim@test.com", password: "123", name: "김진주" },
+  //   { email: "lee@test.com", password: "456", name: "이민지" },
+  //   { email: "park@test.com", password: "789", name: "박수희" },
+  // ];
 
   const handleLogin = () => {
-    const user = users.find(
-      (user) => user.email === idRef.current.value && user.password === password
-    );
-    if (idChecked) {
-      localStorage.setItem("rememberid", idRef.current.value);
-    }
-    if (user) {
-      localStorage.setItem("id", user.email);
-      localStorage.setItem("password", user.password);
-      localStorage.setItem("name", user.name);
-      navigate(`/manager`);
-    } else {
-      alert("로그인 실패 다시 확인해주세요.");
-      if (!localStorage.getItem("rememberid")) {
-        localStorage.removeItem("rememberid");
-        idRef.current.value = null;
-      }
-      pwRef.current.value = null;
-    }
+    loginauth(id, password);
+    navigate(`/manager`);
   };
 
-  useEffect(() => {
-    if (localStorage.getItem("rememberid") !== null) {
-      setidChecked(true);
-    }
-  }, []);
+  // const handleLogin = () => {
+  //   const user = users.find(
+  //     (user) => user.email === idRef.current.value && user.password === password
+  //   );
+  //   if (idChecked) {
+  //     localStorage.setItem("rememberid", idRef.current.value);
+  //   }
+  //   if (user) {
+  //     localStorage.setItem("id", user.email);
+  //     localStorage.setItem("password", user.password);
+  //     localStorage.setItem("name", user.name);
+  //     navigate(`/manager`);
+  //   } else {
+  //     alert("로그인 실패 다시 확인해주세요.");
+  //     if (!localStorage.getItem("rememberid")) {
+  //       localStorage.removeItem("rememberid");
+  //       idRef.current.value = null;
+  //     }
+  //     pwRef.current.value = null;
+  //   }
+  // };
 
-  const handleOnchange = (e) => {
-    setidChecked(e.target.checked);
-    if (e.target.checked) {
-      localStorage.setItem("rememberid", idRef.current.value);
-    } else {
-      localStorage.removeItem("rememberid");
-    }
-  };
+  // useEffect(() => {
+  //   if (localStorage.getItem("rememberid") !== null) {
+  //     setidChecked(true);
+  //   }
+  // }, []);
+
+  // const handleOnchange = (e) => {
+  //   setidChecked(e.target.checked);
+  //   if (e.target.checked) {
+  //     localStorage.setItem("rememberid", idRef.current.value);
+  //   } else {
+  //     localStorage.removeItem("rememberid");
+  //   }
+  // };
 
   return (
     <>
@@ -84,6 +90,7 @@ function BcmanagerLogin(props) {
               <input
                 type="text"
                 ref={idRef}
+                onChange={(e) => setId(e.target.value)}
                 placeholder="사용자 아이디"
                 className="w-full border border-slate-300 border-2  p-2"
               ></input>
@@ -101,8 +108,8 @@ function BcmanagerLogin(props) {
               <input
                 type="checkbox"
                 className="w-[20px] h-[20px]"
-                onChange={handleOnchange}
-                checked={idChecked}
+                // onChange={handleOnchange}
+                // checked={idChecked}
               />
               <span className="px-2 ">아이디 저장</span>
             </div>

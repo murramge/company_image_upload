@@ -16,7 +16,7 @@ import BcmanagerView from "./bcmanager/bcmanagerView/bcmanagerView.jsx";
 import BcmanagerLogin from "./bcmanager/bcmanagerLogin/bcmanagerLogin.jsx";
 import Loding from "./consumer/loding/loding.jsx";
 
-const App = memo(({ bizcontent, infoList }) => {
+const App = memo(({ bizcontent, infoList, auth }) => {
   const [infolist, setinfolist] = useState(infoList);
   const [bizdata, setdata] = useState([]);
   const [imgs, setimgs] = useState([]);
@@ -146,6 +146,7 @@ const UploadAppLoader = (props) => {
 const ErrorContext = React.createContext();
 
 function ManagerRouter(props) {
+  const { auth } = props;
   const [recentRequestlist, setRecentRequestlist] = useState([]);
   const [recentUploadlist, setRecentUploadlist] = useState([]);
   const [searchlist, setSearchlist] = useState([]);
@@ -153,6 +154,8 @@ function ManagerRouter(props) {
   const [bizdata, setdata] = useState([]);
   const [imgs, setimgs] = useState([]);
   const [docs, setdocs] = useState([]);
+  const [accToken, setaccToken] = useState();
+  const [refToken, setrefToken] = useState();
 
   const bizdatadetail = useCallback((id) => {
     (async () => {
@@ -166,6 +169,16 @@ function ManagerRouter(props) {
       }
     })();
   }, []);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const result = await props.bizcontent
+  //       .recentrequest(10)
+  //       .catch((error) => console.log(error));
+  //     const data = result.data.result;
+  //     setRecentRequestlist(data);
+  //   })();
+  // }, []);
 
   useEffect(() => {
     (async () => {
@@ -199,6 +212,15 @@ function ManagerRouter(props) {
     })();
   }, []);
 
+  const loginauth = useCallback((companyCode, password) => {
+    (async () => {
+      const result = await auth
+        .loginauth(companyCode, password)
+        .catch((error) => console.log(error));
+      const data = JSON.parse(result.request.response);
+    })();
+  }, []);
+
   return (
     <Routes>
       <Route
@@ -207,6 +229,8 @@ function ManagerRouter(props) {
           <BcmanagerMain
             recentRequestList={recentRequestlist}
             recentUploadList={recentUploadlist}
+            accToken={accToken}
+            refToken={refToken}
           />
         }
       ></Route>
@@ -220,7 +244,10 @@ function ManagerRouter(props) {
           />
         }
       ></Route>
-      <Route path="/login" element={<BcmanagerLogin />}></Route>
+      <Route
+        path="/login"
+        element={<BcmanagerLogin loginauth={loginauth} />}
+      ></Route>
       <Route
         path="/view/:id"
         element={

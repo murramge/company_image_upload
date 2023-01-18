@@ -34,7 +34,7 @@ class Bizcontent {
   }
 
   async searchcompony(searchvalue) {
-    const response = await this.Bizcontent.post(`/searchCompany`, {
+    const response = await this.Bizcontent.post(`/admin/searchCompany`, {
       topQty: 10,
       searchText: searchvalue,
     });
@@ -43,14 +43,27 @@ class Bizcontent {
 
   async recentrequest(topQty) {
     const response = await this.Bizcontent.get(
-      `/recentRequestHistory/${topQty}`
+      `/admin/recentRequestHistory/${topQty}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
     );
+    console.log(response.data);
     return response.data;
   }
 
   async recentupload(topQty) {
     const response = await this.Bizcontent.get(
-      `/recentUploadHistory/${topQty}`
+      `/admin/recentUploadHistory/${topQty}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
     );
     return response.data;
   }

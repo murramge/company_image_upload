@@ -203,7 +203,7 @@ function BcmanagerView({
                               <img
                                 key={image}
                                 value={image}
-                                src={`/api/bizContent/preview/${image}`}
+                                src={`http://115.89.138.200:8082/api/bizContent/preview/${image}`}
                                 className=" p-1 object-cover h-[100%] w-[100%] h-[400px] w-[400px]"
                               ></img>
                             ))}
