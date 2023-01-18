@@ -61,7 +61,7 @@ function BcmanagerView({
     const filter = docs.filter((item, index) => item.fileStorageId == fileid);
     const filename = filter[0].originalFilename;
     axios({
-      url: `/api/bizContent/download/${fileid}`,
+      url: `http://115.89.138.200:8082/api/bizContent/download/${fileid}`,
       method: "GET",
       responseType: "blob",
       headers: "Content-Disposition",
@@ -96,7 +96,7 @@ function BcmanagerView({
         const filter = imgs.filter((item) => item.fileStorageId == fileid);
         const filename = filter[0].originalFilename;
         axios({
-          url: `/api/bizContent/download/${fileid}`,
+          url: `http://115.89.138.200:8082/api/bizContent/download/${fileid}`,
           method: "GET",
           responseType: "blob",
           headers: "Content-Disposition",

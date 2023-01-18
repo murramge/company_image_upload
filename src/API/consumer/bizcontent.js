@@ -3,7 +3,7 @@ import axios from "axios";
 class Bizcontent {
   constructor() {
     this.Bizcontent = axios.create({
-      baseURL: `/api/bizContent/`,
+      baseURL: `http://115.89.138.200:8082/api/bizContent/`,
     });
   }
 

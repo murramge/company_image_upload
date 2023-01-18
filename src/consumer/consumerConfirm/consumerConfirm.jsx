@@ -99,7 +99,9 @@ const ConsumerConfirm = memo(
     const handleDataDelete = (e) => {
       e.preventDefault();
       axios
-        .delete(`/api/bizContent/deleteFile/A3200007/${fileid}`)
+        .delete(
+          `http://115.89.138.200:8082/api/bizContent/deleteFile/A3200007/${fileid}`
+        )
         .then((response) => console.log(response));
 
       handlebizDataUpdate(id);
@@ -157,7 +159,9 @@ const ConsumerConfirm = memo(
         .map((image) => image.fileStorageId)
         .map((image) =>
           axios
-            .delete(`/api/bizContent/deleteFile/A3200007/${image}`)
+            .delete(
+              `http://115.89.138.200:8082/api/bizContent/deleteFile/A3200007/${image}`
+            )
             .then((response) => console.log(response))
         );
 
@@ -229,7 +233,7 @@ const ConsumerConfirm = memo(
       const filter = docs.filter((item, index) => item.fileStorageId == fileid);
       const filename = filter[0].originalFilename;
       axios({
-        url: `/api/bizContent/download/${fileid}`,
+        url: `http://115.89.138.200:8082/api/bizContent/download/${fileid}`,
         method: "GET",
         responseType: "blob",
         headers: "Content-Disposition",

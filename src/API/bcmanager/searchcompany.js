@@ -4,7 +4,7 @@ import MOCK_DATA from "../MOCK_DATA.json";
 class Searchcompany {
   constructor() {
     this.Searchcompany = axios.create({
-      baseURL: `/api/bizContent`,
+      baseURL: `http://115.89.138.200:8082/api/bizContent`,
     });
   }
 

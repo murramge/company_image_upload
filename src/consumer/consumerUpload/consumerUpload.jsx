@@ -73,7 +73,9 @@ function ConsumerUpload({
     e.preventDefault();
 
     axios
-      .delete(`/api/bizContent/deleteFile/${id}/${e.currentTarget.value}`)
+      .delete(
+        `http://115.89.138.200:8082/api/bizContent/deleteFile/${id}/${e.currentTarget.value}`
+      )
       .then((response) => console.log(response));
     handlebizDataUpdate(id);
   };

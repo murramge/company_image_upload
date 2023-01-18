@@ -4,7 +4,7 @@ import MOCK_DATA from "../MOCK_DATA.json";
 class RecentUploadHistory {
   constructor(topQty) {
     this.RecentUploadHistory = axios.create({
-      baseURL: `/api/bizContent/recentUploadHistory/${topQty}`,
+      baseURL: `http://115.89.138.200:8082/api/bizContent/recentUploadHistory/${topQty}`,
     });
     this.topQty = topQty;
   }
