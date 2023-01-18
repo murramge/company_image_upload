@@ -1,5 +1,9 @@
+# @baseUrl = http://115.89.138.200:8081
+# @baseUrl = http://localhost:8082
 @baseUrl = http://115.89.138.200:8082
+
 @uuid = A3200007
+
 @uuid_quote = "A3200007"
 
 @fileStorageId = 56305
@@ -65,21 +69,39 @@ Content-Type: application/json
 }
 
 ###
-# 관리자용API, 최근 요청된 건 가져오기
-GET {{baseUrl}}/api/bizContent/recentRequestHistory/10 HTTP/1.1
+#로그인
+POST {{baseUrl}}/api/auth/login HTTP/1.1
 Content-Type: application/json
+
+{"jikwonCode": "", "password": ""}
+
+###
+#토큰 갱신
+POST {{baseUrl}}/api/auth/refreshToken HTTP/1.1
+Content-Type: application/json
+Cookie: access_token=; refresh_token=;
+
+###
+#로그아웃
+POST {{baseUrl}}/api/auth/logout HTTP/1.1
+
+###
+# 관리자용API, 최근 요청된 건 가져오기
+GET {{baseUrl}}/api/bizContent/admin/recentRequestHistory/10 HTTP/1.1
+Content-Type: application/json
+Cookie: access_token=; refresh_token=;
 
 ###
 # 관리자용API, 최근 업로드된 건 가져오기
-GET {{baseUrl}}/api/bizContent/recentUploadHistory/10 HTTP/1.1
+GET {{baseUrl}}/api/bizContent/admin/recentUploadHistory/10 HTTP/1.1
 Content-Type: application/json
-
+Cookie: access_token=; refresh_token=;
 
 ###
 # 관리자용API, 업체 검색
-
-POST {{baseUrl}}/api/bizContent/searchCompany HTTP/1.1
+POST {{baseUrl}}/api/bizContent/admin/searchCompany HTTP/1.1
 Content-Type: application/json
+Cookie: access_token=; refresh_token=;
 
 {
     "topQty": 20,
