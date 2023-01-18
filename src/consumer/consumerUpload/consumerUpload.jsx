@@ -28,6 +28,7 @@ function ConsumerUpload({
   bizdata,
   handlebizPutdataUpdate,
   dataimgs,
+  handlebizDataDelete,
 }) {
   //비즈니스 message 값 가져오려고 Ref 사용
   const messageRef = useRef();
@@ -72,11 +73,9 @@ function ConsumerUpload({
   const handleimageDelete = (e) => {
     e.preventDefault();
 
-    axios
-      .delete(
-        `http://115.89.138.200:8082/api/bizContent/deleteFile/${id}/${e.currentTarget.value}`
-      )
-      .then((response) => console.log(response));
+    handlebizDataDelete(id, e.currentTarget.value, () => {
+      handlebizDataUpdate(id);
+    });
     handlebizDataUpdate(id);
   };
 

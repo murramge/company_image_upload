@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 const BcmanagerInfoBar = ({
   companyData,
@@ -12,7 +10,6 @@ const BcmanagerInfoBar = ({
   const [companyPhoneNumber, setcompanyphoneNumber] = useState();
   const [companyAddress, setcompanyAddress] = useState();
   const [companyCategorys, setcompanyCategorys] = useState();
-  const [companyURL, setcompanyURL] = useState([]);
 
   useEffect(() => {
     companyData.map((item) => {
@@ -23,12 +20,12 @@ const BcmanagerInfoBar = ({
     });
   }, [companyData]);
 
-  useEffect(() => {
-    const company = companyAll.filter(
-      (item) => item.company_name == companyName
-    );
-    setcompanyURL(company);
-  }, [companyAll]);
+  // useEffect(() => {
+  //   const company = companyAll.filter(
+  //     (item) => item.company_name == companyName
+  //   );
+  //   setcompanyURL(company);
+  // }, [companyAll]);
 
   const handlemove = (e) => {
     const id = e.currentTarget.value;
@@ -51,7 +48,7 @@ const BcmanagerInfoBar = ({
             업로드 목록
           </p>
           <ul className="w-full break-all ">
-            {companyURL.map((item) => (
+            {companyAll.map((item) => (
               <li
                 key={item.uuid}
                 className={

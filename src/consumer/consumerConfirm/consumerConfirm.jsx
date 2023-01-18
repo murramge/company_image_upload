@@ -30,6 +30,7 @@ const ConsumerConfirm = memo(
     dataimgs,
     datadocs,
     handlebizPutdataUpdate,
+    handlebizDataDelete,
   }) => {
     //upload 에서 보낸 api 받음
     const [data, setdata] = useState([]);
@@ -97,12 +98,10 @@ const ConsumerConfirm = memo(
     //이미지,문서 삭제
     const handleDataDelete = (e) => {
       e.preventDefault();
-      axios
-        .delete(
-          `http://115.89.138.200:8082/api/bizContent/deleteFile/A3200007/${fileid}`
-        )
-        .then((response) => console.log(response));
-      handlebizDataUpdate(id);
+
+      handlebizDataDelete(id, fileid, () => {
+        handlebizDataUpdate(id);
+      });
       setModalOpen(false);
     };
 
@@ -156,14 +155,11 @@ const ConsumerConfirm = memo(
       imgs
         .map((image) => image.fileStorageId)
         .map((image) =>
-          axios
-            .delete(
-              `http://115.89.138.200:8082/api/bizContent/deleteFile/A3200007/${image}`
-            )
-            .then((response) => console.log(response))
+          handlebizDataDelete(id, image, () => {
+            handlebizDataUpdate(id);
+          })
         );
-
-      handlebizDataUpdate(id);
+      setAllRemoveOpen(false);
     };
 
     const handleGalleryImageUpload = (e) => {

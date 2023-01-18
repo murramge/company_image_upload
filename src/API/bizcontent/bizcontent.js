@@ -26,6 +26,13 @@ class Bizcontent {
     return response;
   }
 
+  async contentdelete(id, fileid) {
+    const response = await this.Bizcontent.delete(
+      `/deleteFile/${id}/${fileid}`
+    );
+    return response;
+  }
+
   async searchcompony(searchvalue) {
     const response = await this.Bizcontent.post(`/searchCompany`, {
       topQty: 10,

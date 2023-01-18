@@ -64,6 +64,16 @@ const App = memo(({ bizcontent, infoList }) => {
     })();
   }, []);
 
+  const bizdataApiDelete = useCallback((uuid, fileid, callback) => {
+    (async () => {
+      const result = await bizcontent.contentdelete(uuid, fileid);
+      console.log(result);
+      if (callback) {
+        callback();
+      }
+    })();
+  }, []);
+
   return (
     <>
       {lode ? <Loding /> : null}
@@ -89,6 +99,7 @@ const App = memo(({ bizcontent, infoList }) => {
               handlebizDataUpdate={bizdataApiUpdate}
               bizdata={bizdata}
               dataimgs={imgs}
+              handlebizDataDelete={bizdataApiDelete}
             />
           }
         ></Route>
@@ -101,6 +112,7 @@ const App = memo(({ bizcontent, infoList }) => {
               dataimgs={imgs}
               datadocs={docs}
               handlebizPutdataUpdate={bizputdataApiUpdate}
+              handlebizDataDelete={bizdataApiDelete}
             />
           }
         ></Route>
