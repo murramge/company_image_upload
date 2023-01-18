@@ -134,8 +134,6 @@ const UploadAppLoader = (props) => {
 const ErrorContext = React.createContext();
 
 function ManagerRouter(props) {
-  const { recentRequest, recentUpload, searchCompany } = props;
-
   const [recentRequestlist, setRecentRequestlist] = useState([]);
   const [recentUploadlist, setRecentUploadlist] = useState([]);
   const [searchlist, setSearchlist] = useState([]);
@@ -143,7 +141,6 @@ function ManagerRouter(props) {
   const [bizdata, setdata] = useState([]);
   const [imgs, setimgs] = useState([]);
   const [docs, setdocs] = useState([]);
-  const [error, seterror] = useState([]);
 
   const bizdatadetail = useCallback((id) => {
     (async () => {
@@ -159,19 +156,28 @@ function ManagerRouter(props) {
   }, []);
 
   useEffect(() => {
-    recentRequest
-      .recentrequest()
-      .then((item) => setRecentRequestlist(item.data.result));
+    (async () => {
+      const result = await props.bizcontent
+        .recentrequest(10)
+        .catch((error) => console.log(error));
+      const data = result.data.result;
+      setRecentRequestlist(data);
+    })();
   }, []);
 
   useEffect(() => {
-    recentUpload
-      .recentupload()
-      .then((item) => setRecentUploadlist(item.data.result));
+    (async () => {
+      const result = await props.bizcontent
+        .recentupload(10)
+        .catch((error) => console.log(error));
+      const data = result.data.result;
+      setRecentUploadlist(data);
+    })();
   }, []);
+
   const bizdataSearchCompony = useCallback((searchvalue) => {
     (async () => {
-      const result = await searchCompany
+      const result = await props.bizcontent
         .searchcompony(searchvalue)
         .catch((error) => console.log(error));
       const data = result.data.result;

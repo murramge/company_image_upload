@@ -1,7 +1,6 @@
 import React, { useState, useEffect, memo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../modals/modal";
-import ModalPortal from "../modals/modalPotal.tsx";
 import axios from "axios";
 import loadImage from "blueimp-load-image";
 
@@ -103,7 +102,6 @@ const ConsumerConfirm = memo(
           `http://115.89.138.200:8082/api/bizContent/deleteFile/A3200007/${fileid}`
         )
         .then((response) => console.log(response));
-
       handlebizDataUpdate(id);
       setModalOpen(false);
     };
