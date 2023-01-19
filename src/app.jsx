@@ -170,16 +170,6 @@ function ManagerRouter(props) {
     })();
   }, []);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const result = await props.bizcontent
-  //       .recentrequest(10)
-  //       .catch((error) => console.log(error));
-  //     const data = result.data.result;
-  //     setRecentRequestlist(data);
-  //   })();
-  // }, []);
-
   useEffect(() => {
     (async () => {
       const result = await props.bizcontent
@@ -218,6 +208,7 @@ function ManagerRouter(props) {
         .loginauth(companyCode, password)
         .catch((error) => console.log(error));
       const data = JSON.parse(result.request.response);
+      console.log(data);
     })();
   }, []);
 

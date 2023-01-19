@@ -11,6 +11,7 @@ class Auth {
       jikwonCode: companyCode,
       password: password,
     });
+
     return response;
   }
 }

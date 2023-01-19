@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, {  useState, useRef } from "react";
 import { useNavigate } from "react-router";
 
 function BcmanagerLogin({ loginauth }) {
@@ -31,6 +31,7 @@ function BcmanagerLogin({ loginauth }) {
 
   const handleLogin = () => {
     loginauth(id, password);
+    if()
     navigate(`/manager`);
   };
 
